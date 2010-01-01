@@ -28,7 +28,7 @@ See also: http://manpages.ubuntu.com/manpages/gutsy/man8/clock.8.html
 ## 图形界面控制
 
 ```bash
-echo "manual" | sudo tee -a /etc/init/lxdm.override
+echo manual | sudo tee -a /etc/init/lxdm.override
 ```
 
 ```bash
