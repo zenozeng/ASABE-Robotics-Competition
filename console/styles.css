@@ -1,0 +1,11 @@
+html, body, h1 {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-weight: normal;
+    padding: 1em;
+    background: #333;
+    color: #fff;
+}
