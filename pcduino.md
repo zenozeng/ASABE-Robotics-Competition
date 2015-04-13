@@ -14,3 +14,7 @@ sudo stop lightdm # 关闭
 sudo start lightdm # 打开
 sudo restart lightdm # 重启
 ```
+
+## Node.js
+
+node.pcduino 库
