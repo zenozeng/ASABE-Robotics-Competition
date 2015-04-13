@@ -25,3 +25,4 @@ ASABE Robotics Competition
         - 初始化 Browser 端控制台代码
         - 命名为控制台为 Console (Thanks to 张海)
         - Console: util.coordinateTransform
+        - Console: util.coordinateTransform 覆盖单元测试
