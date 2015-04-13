@@ -17,11 +17,21 @@ echo 'YOUR PUB KEY' > authorized_keys
 sudo apt-get install mosh
 ```
 
+## proxychains
+
+开发板是 armhf 架构。
+
+http://ports.ubuntu.com/pool/universe/p/proxychains/
+
 ## Editor
 
 ```bash
 sudo apt-get install emacs23-nox
 ```
+
+## Wifi
+
+sudo iwlist scanning
 
 ## AP
 
