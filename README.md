@@ -26,3 +26,4 @@ ASABE Robotics Competition
         - 命名为控制台为 Console (Thanks to 张海)
         - Console: util.coordinateTransform
         - Console: util.coordinateTransform 覆盖单元测试
+        - pcDuino 的初始化配置：密码重设、SSH、系统更新、常用软件包（git, emacs23-nox等）

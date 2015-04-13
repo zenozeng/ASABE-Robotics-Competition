@@ -1,10 +1,32 @@
 # Pcduino 操作 log
 
+## 常用操作
+
+- Ctrl + Alt + T 开启终端
+
+- `df -hl` 以查看剩余空间
+
 ## SSH
 
 ```bash
 cd ~/.ssh
 echo 'YOUR PUB KEY' > authorized_keys
+```
+
+```bash
+sudo apt-get install mosh
+```
+
+## Editor
+
+```bash
+sudo apt-get install emacs23-nox
+```
+
+## AP
+
+```bash
+sudo apt-get install git
 ```
 
 ## date
