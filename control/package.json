@@ -9,7 +9,7 @@
   "author": "Zeno Zeng",
   "license": "MIT",
   "dependencies": {
-    "koa": "^0.19.1",
+    "express": "^4.12.3",
     "pcduino": "0.0.6"
   }
 }
