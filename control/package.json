@@ -7,5 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Zeno Zeng",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^0.19.1",
+    "pcduino": "0.0.6"
+  }
 }

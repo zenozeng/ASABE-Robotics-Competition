@@ -74,6 +74,6 @@ vi /bin/auto-root-login
 
 注释掉代码。
 
-## Node.js
+## io.js
 
 node.pcduino 库
