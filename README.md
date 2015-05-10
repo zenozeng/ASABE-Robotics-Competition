@@ -8,6 +8,12 @@ ASABE Robotics Competition
 
 - [基于pcDuino的WiFi实时视频监控智能小车——硬件部分（二）](http://my.oschina.net/pcduino/blog/147196)
 
+## Sync Node Modules
+
+- scp
+
+- node-gyp rebuild
+
 ## Timelog
 
 - 2015-04-08：第一次组会
