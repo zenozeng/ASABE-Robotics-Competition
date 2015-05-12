@@ -18,9 +18,23 @@ body {
     font-size: 14px;
 }
 
+hr {
+    border: none;
+    border-bottom: 3px solid #ddd;
+    margin: 16px 0;
+}
+
 h1 {
     font-weight: normal;
-    color: #333;
+    color: #777;
     font-family: "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
-    font-size: 24px;
+    font-size: 28px;
+    line-height: 36px;
+    vertical-align: top;
+}
+
+h1 .fa {
+    padding-right: .5em;
+    color: #00CFFF;
+    font-size: 36px;
 }
