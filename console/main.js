@@ -10,6 +10,18 @@ var fetchLogs = function() {
     });
 };
 
+var bootTime = Date.now(); // fake boot time
+
+/**
+ * Write a log to current page
+ *
+ */
+var writeLog = function(log) {
+    var d = new Date(bootTime + log.timestamp);
+    $('#logs').append('<p class="timestamp">' + d.toString() + '</p>');
+    $('#logs').append('<p class="message">' + log.message + '</p>');
+};
+
 /**
  * Draw a log
  *
@@ -18,27 +30,9 @@ var drawLog = function(log) {
 };
 
 /**
- * Draw Logs (with UUID based diff)
- * @param {Array} logs - Logs (JSON Object)
- */
-var drawnLogs = [];
-var drawLogs = function(logs) {
-
-    // Sort logs by time-stamp (older first)
-    logs.sort(function(a, b) {
-        return a.timestamp - b.timestamp;
-    });
-
-    logs.filter(function(log) {
-        // ignore drawn logs
-        return !drawnLogs.indexOf(log.uuid);
-    }).forEach(function(log) {
-        drawLog(log);
-        drawnLogs.push(log.uuid);
-    });
-};
-
-/**
  * Main Logic
  */
-fetchLogs.then(drawLogs);
+fetchLogs().then(function(logs) {
+    logs.forEach(writeLog);
+    logs.forEach(drawLog);
+});

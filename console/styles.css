@@ -3,9 +3,24 @@ html, body, h1 {
     padding: 0;
 }
 
+body {
+    width: 600px;
+    margin: 50px auto;
+}
+
+#logs .timestamp {
+    color: #555;
+    font-size: 12px;
+}
+
+#logs .message {
+    color: #000;
+    font-size: 14px;
+}
+
 h1 {
     font-weight: normal;
-    padding: 1em;
-    background: #333;
-    color: #fff;
+    color: #333;
+    font-family: "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+    font-size: 24px;
 }

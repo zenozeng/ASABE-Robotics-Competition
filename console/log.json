@@ -1,11 +1,20 @@
 [
     {
-        "uuid": "1",
-        "timestamp": "Mon Apr 13 2015 12:29:48 GMT+0800 (CST)",
-        "position": {
-            "x": 0,
-            "y": 2
-        },
-        "message": "Position update: (0, 2)"
+        "timestamp": 0,
+        "message": "System alive!"
+    },
+    {
+        "timestamp": 500,
+        "message": "Robot start!"
+    },
+    {
+        "timestamp": 1000,
+        "tree":
+        {
+            "x": 1,
+            "y": 1,
+            "height": "low",
+            "color": "green"
+        }
     }
 ]
