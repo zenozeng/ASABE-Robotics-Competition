@@ -83,3 +83,13 @@ h1 .fa {
     font-weight: normal;
     color: #777;
 }
+
+#collected .fa {
+    font-size: 36px;
+    margin-right: 12px;
+}
+
+#collected .fa.low {
+    font-size: 18px;
+}
+

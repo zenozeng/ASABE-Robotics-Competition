@@ -30,13 +30,24 @@ var writeLog = function(log) {
  * Draw a log
  *
  */
+var types = [];
 var treeCount = 0;
 var drawLog = function(log) {
+    // update tree count
     if (log.tree) {
         treeCount++;
     }
     var progress = parseInt(treeCount / 25 * 100) + '%';
     $('#progress').html('<h2>Current Progress</h2>' + treeCount + ' / 25 = ' + progress);
+
+    // update collected types
+    if (log.tree) {
+        var typeid = log.tree.height + log.tree.color;
+        if (types.indexOf(typeid) < 0) {
+            types.push(typeid);
+            $('#collected').append('<i class="fa fa-tree ' + log.tree.height+ ' ' + log.tree.color + '"></i>');
+        }
+    }
 };
 
 /**
@@ -48,7 +59,7 @@ fetchLogs().then(function(logs) {
         writeLog(log);
         drawLog(log);
         if (logs.length > 0) {
-            setTimeout(process, 500);
+            setTimeout(process, 1000);
         }
     };
     process();
