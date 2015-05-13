@@ -6,16 +6,17 @@ html, body, h1 {
 body {
     width: 600px;
     margin: 50px auto;
+    font-family: "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
 }
 
 #logs .timestamp {
     color: #555;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 #logs .message {
     color: #000;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 hr {
@@ -27,7 +28,6 @@ hr {
 h1 {
     font-weight: normal;
     color: #777;
-    font-family: "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
     font-size: 28px;
     line-height: 36px;
     vertical-align: top;
@@ -37,4 +37,49 @@ h1 .fa {
     padding-right: .5em;
     color: #00CFFF;
     font-size: 36px;
+}
+
+.yellow {
+    color: #DAA520;
+}
+
+.green {
+    color: #008000;
+}
+
+.brown {
+    color: #8B4513;
+}
+
+.low {
+    font-size: .5em;
+}
+
+.message .fa {
+    padding-right: .5em;
+}
+
+#canvas {
+    float: right;
+}
+
+#graph::after {
+    clear: both;
+    display: block;
+    content: '';
+}
+
+#progress {
+    font-size: 36px;
+    color: #00CFFF;
+}
+
+#collected {
+    margin-top: .5em;
+}
+
+#collected h2, #progress h2 {
+    font-size: 28px;
+    font-weight: normal;
+    color: #777;
 }
