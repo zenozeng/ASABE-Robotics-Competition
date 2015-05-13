@@ -35,9 +35,9 @@
 
     { "timestamp": 4000, "tree": { "x": 1, "y": 3, "height": "high", "color": "brown" } },
     { "timestamp": 4000, "tree": { "x": 2, "y": 3, "height": "low", "color": "green" } },
-    { "timestamp": 4000, "tree": { "x": 4, "y": 3, "height": "high", "color": "yellow" } },
-    { "timestamp": 4000, "tree": { "x": 5, "y": 3, "height": "high", "color": "green" } },
-    { "timestamp": 4000, "tree": { "x": 3, "y": 3, "height": "low", "color": "brown" } },
+    { "timestamp": 4000, "tree": { "x": 3, "y": 3, "height": "high", "color": "yellow" } },
+    { "timestamp": 4000, "tree": { "x": 4, "y": 3, "height": "high", "color": "green" } },
+    { "timestamp": 4000, "tree": { "x": 5, "y": 3, "height": "low", "color": "brown" } },
     { "timestamp": 5000, "message": "All types detected, job done. Go back now."}
 
 ]

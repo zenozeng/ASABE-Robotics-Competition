@@ -93,3 +93,15 @@ h1 .fa {
     font-size: 18px;
 }
 
+#canvas {
+    position: relative;
+}
+
+#canvas .fa {
+    font-size: 36px;
+    position: absolute;
+}
+
+#canvas .fa.low {
+    font-size: 24px;
+}
