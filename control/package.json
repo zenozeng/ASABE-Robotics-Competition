@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.12.3",
-    "pcduino": "0.0.6"
+    "pcduino": "0.0.6",
+    "yapcduino": "^0.1.0"
   }
 }
