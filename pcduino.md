@@ -90,6 +90,12 @@ rm ChangeLog LICENSE README.md
 sudo cp -R * /usr/local
 ```
 
+### Install Node-gyp
+
+```bash
+sudo npm install node-gyp -g -dd
+```
+
 ### add-apt-repository not found
 
 sudo apt-get install python-software-properties
@@ -110,3 +116,27 @@ sudo ln -s gcc-4.8 gcc
 ```
 
 see also: http://ubuntuhandbook.org/index.php/2013/08/install-gcc-4-8-via-ppa-in-ubuntu-12-04-13-04/
+
+## 网络架构
+
+- （可选）pcduino 插内网网线
+
+- 发射无线信号作为通讯用
+
+### pc机
+
+```
+sslocal -c jp.zenozeng.com.json -b 0.0.0.0
+```
+
+### SSH 隧道
+
+```
+-R [bind_address:]port:host:hostport
+```
+
+## NPM
+
+```bash
+npm config set registry http://mirrors.zju.edu.cn/npm
+```
