@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rsync -rv --exclude node_modules * ubuntu@192.168.10.1:control
+rsync -rv --exclude node_modules * ubuntu@10.75.44.25:control
