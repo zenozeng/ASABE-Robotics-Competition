@@ -9,6 +9,7 @@ using namespace std;
 using namespace cv;
 
 // http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html
+// 分离颜色通道&多通道图像混合：http://blog.csdn.net/poem_qianmo/article/details/21176257
 
 int main()
 {
@@ -24,8 +25,22 @@ int main()
     {
         Mat frame;
         capture >> frame;
-        imshow("vision", frame);
+
+        Mat hls;
+        cvtColor(frame, hls, CV_BGR2HLS);
+
+        vector<Mat> hlsChannels;
+        split(hls, hlsChannels);
+
+        Mat h;
+        h = hlsChannels.at(0);
+
+        // GaussianBlur(edges, edges, Size(3, 3), 1.5, 1.5);
+        // Canny(edges, edges, 0, 30, 3);
+
+        imshow("vision", h);
         waitKey(100);
+        // usleep(100 * 1000);
     }
 
     return 0;
