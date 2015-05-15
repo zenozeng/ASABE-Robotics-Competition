@@ -6,15 +6,11 @@ function setAngle(pin, angle) {
     if (angle >= 0 && angle <= 180) {
         // translate angle to a pulse width value between 500-2480
         var pulse = angle * (2000 / 180) + 500;
+        var dutyCycle = pulse / PWM_PERIOD;
     } else {
         throw new Error('Invalid angle. angle should be >=0 && <=180');
     }
-    var loops = 100; // 保持脉冲让机械臂有时间运动过去
-    pcduino.digitalPulse(pin, pulse, PWM_PERIOD, loops);
-}
-
-// todo
-function lockAngle(pin, angle) {
+    pcduino.digitalWritePWM(pin, dutyCycle);
 }
 
 module.exports = {
