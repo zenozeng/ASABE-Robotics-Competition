@@ -3,6 +3,9 @@
 
 // https://github.com/peterbraden/node-opencv/blob/05e42b70aa498cbae94713da1df31084090a2088/examples/coffeescript/camera.coffee
 
+// 由于计算性能有限，尽量减少色彩转换比如如果要求比较 HSL
+// 可以将比较规则转换为 RGB 规则，然后比较 RGB，这样可以节省计算资源
+
 var cv = require('opencv');
 
 var camera = new cv.VideoCapture(0);
