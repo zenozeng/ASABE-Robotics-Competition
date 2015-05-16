@@ -19,7 +19,11 @@ var bootTime = Date.now(); // fake boot time
 var writeLog = function(log) {
     var d = new Date(bootTime + log.timestamp);
     if (log.tree) {
-        log.message = '<i class="fa fa-tree ' + log.tree.height+ ' ' + log.tree.color + '"></i>';
+        if (log.tree.empty) {
+            log.message = '<i class="fa fa-circle-thin"></i>';
+        } else {
+            log.message = '<i class="fa fa-tree ' + log.tree.height+ ' ' + log.tree.color + '"></i>';
+        }
         log.message += 'Tree detected: ' + JSON.stringify(log.tree);
     }
     $('#logs').prepend('<p class="message">' + log.message + '</p>');

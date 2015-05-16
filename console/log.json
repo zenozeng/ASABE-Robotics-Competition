@@ -21,18 +21,15 @@
         "timestamp": 2000,
         "tree": { "x": 2, "y": 1, "height": "high", "color": "green" }
     },
-    {
-        "timestamp": 3000,
-        "tree": { "x": 3, "y": 1, "height": "low", "color": "green" }
-    },
+    { "timestamp": 3000, "tree": { "x": 3, "y": 1, "empty": true } },
     { "timestamp": 4000, "tree": { "x": 4, "y": 1, "height": "high", "color": "yellow" } },
     { "timestamp": 4000, "tree": { "x": 5, "y": 1, "height": "high", "color": "green" } },
 
     { "timestamp": 4000, "tree": { "x": 5, "y": 2, "height": "high", "color": "yellow" } },
-    { "timestamp": 4000, "tree": { "x": 4, "y": 2, "height": "high", "color": "yellow" } },
+    { "timestamp": 4000, "tree": { "x": 4, "y": 2, "empty": true } },
     { "timestamp": 4000, "tree": { "x": 3, "y": 2, "height": "high", "color": "brown" } },
     { "timestamp": 4000, "tree": { "x": 2, "y": 2, "height": "low", "color": "yellow" } },
-    { "timestamp": 4000, "tree": { "x": 1, "y": 2, "height": "high", "color": "brown" } },
+    { "timestamp": 4000, "tree": { "x": 1, "y": 2, "empty": true } },
 
     { "timestamp": 4000, "tree": { "x": 1, "y": 3, "height": "high", "color": "brown" } },
     { "timestamp": 4000, "tree": { "x": 2, "y": 3, "height": "low", "color": "green" } },
@@ -45,12 +42,12 @@
     { "timestamp": 4000, "tree": { "x": 5, "y": 4, "height": "high", "color": "green" } },
     { "timestamp": 4000, "tree": { "x": 4, "y": 4, "height": "high", "color": "yellow" } },
     { "timestamp": 4000, "tree": { "x": 3, "y": 4, "height": "high", "color": "brown" } },
-    { "timestamp": 4000, "tree": { "x": 2, "y": 4, "height": "low", "color": "yellow" } },
+    { "timestamp": 4000, "tree": { "x": 2, "y": 4, "empty": true } },
     { "timestamp": 4000, "tree": { "x": 1, "y": 4, "height": "high", "color": "brown" } },
 
     { "timestamp": 4000, "tree": { "x": 5, "y": 5, "height": "high", "color": "brown" } },
     { "timestamp": 4000, "tree": { "x": 4, "y": 5, "height": "high", "color": "green" } },
-    { "timestamp": 4000, "tree": { "x": 3, "y": 5, "height": "high", "color": "brown" } },
+    { "timestamp": 4000, "tree": { "x": 3, "y": 5, "empty": true } },
     { "timestamp": 4000, "tree": { "x": 2, "y": 5, "height": "low", "color": "yellow" } },
     { "timestamp": 4000, "tree": { "x": 1, "y": 5, "height": "high", "color": "yellow" } }
 
