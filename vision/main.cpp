@@ -14,6 +14,8 @@ using namespace cv;
 // 摄像头共两个，在小车两侧的边缘底部挂着。接近地面。摄像头距离小树轴心 16cm。
 // https://github.com/zenozeng/ASABE-Robotics-Competition/issues/61
 
+#define DEBUG true
+
 int main()
 {
     cout << "Vision Started." << endl;
@@ -27,9 +29,12 @@ int main()
     }
 
     // create window for debug
-    namedWindow("frame");
-    namedWindow("h");
-    namedWindow("s");
+    if (DEBUG) {
+        namedWindow("frame");
+        namedWindow("h");
+        namedWindow("s");
+        namedWindow("roi-bottom-s");
+    }
 
     while (true)
     {
@@ -68,19 +73,37 @@ int main()
         int height = h.rows;
         int width = h.cols;
 
-        // 下边界标示
-        rectangle(s, Point(0, height * 0.65), Point(width, height * 0.75), Scalar(255 * 0.8), -1, 8);
-        // 上边界标示
-        rectangle(s, Point(0, height * 0.25), Point(width, height * 0.3), Scalar(255 * 0.8), -1, 8);
-        rectangle(s, Point(0, height * 0.15), Point(width, height * 0.2), Scalar(255 * 0.8), -1, 8);
+        // 判断树是否存在
+        Rect bottom(int(width * 0.1), int(height * 0.75), int(width * 0.8), int(height * 0.24)); // x, y, width, height
+        Mat bottomROI = s(bottom);
 
-        // 左右边界
-        rectangle(s, Point(width * 0.1, 0), Point(width * 0.12, height), Scalar(255 * 0.5), -1, 8);
-        rectangle(s, Point(width * 0.9, 0), Point(width * 0.88, height), Scalar(255 * 0.5), -1, 8);
+        double rate = sum(bottomROI)[0] / (bottomROI.rows * bottomROI.cols * 255);
+        bool exists = rate > 0.1 ? true : false;
 
+        cout << rate << endl;
+        cout << exists << endl;
 
-        imshow("h", h);
-        imshow("s", s);
+        // 若树存在，判断其颜色类型
+        if (exists) {
+        }
+
+        // 判断高矮
+
+        if (DEBUG) {
+            // 下边界标示
+            rectangle(s, Point(0, height * 0.65), Point(width, height * 0.75), Scalar(255 * 0.8), -1, 8);
+            // 上边界标示
+            rectangle(s, Point(0, height * 0.25), Point(width, height * 0.3), Scalar(255 * 0.8), -1, 8);
+            rectangle(s, Point(0, height * 0.15), Point(width, height * 0.2), Scalar(255 * 0.8), -1, 8);
+
+            // 左右边界
+            rectangle(s, Point(width * 0.08, 0), Point(width * 0.1, height), Scalar(255 * 0.5), -1, 8);
+            rectangle(s, Point(width * 0.9, 0), Point(width * 0.92, height), Scalar(255 * 0.5), -1, 8);
+
+            imshow("roi-bottom-s", bottomROI);
+            imshow("h", h);
+            imshow("s", s);
+        }
         waitKey(100);
         // usleep(100 * 1000);
     }
