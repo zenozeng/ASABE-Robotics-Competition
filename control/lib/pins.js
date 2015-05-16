@@ -27,11 +27,11 @@ module.exports = {
     LEFT_STEPPING_MOTOR_CLK: 8,
 
     // 左轮步进电机方向
-    LEFT_STEPPING_MOTOR_CLK: 9,
+    LEFT_STEPPING_MOTOR_CW: 9,
 
     // 右轮步进电机脉冲
-    LEFT_STEPPING_MOTOR_CLK: 10,
+    RIGHT_STEPPING_MOTOR_CLK: 10,
 
     // 右轮步进电机方向
-    LEFT_STEPPING_MOTOR_CLK: 11
+    RIGHT_STEPPING_MOTOR_CW: 11
 };
