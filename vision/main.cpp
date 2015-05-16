@@ -15,11 +15,18 @@ int main()
 {
     cout << "Vision Started." << endl;
 
-    VideoCapture capture(0);
-    cout << "Open video0." << endl;
+    VideoCapture capture(1);
+    if (capture.isOpened()) {
+        cout << "Video opened." << endl;
+    } else {
+        cout << "Fail to open video" << endl;
+        return -1;
+    }
 
-    // for debug
-    namedWindow("vision"); // create window
+    // create window for debug
+    namedWindow("h");
+    namedWindow("s");
+    namedWindow("l");
 
     while (true)
     {
@@ -32,13 +39,17 @@ int main()
         vector<Mat> hlsChannels;
         split(hls, hlsChannels);
 
-        Mat h;
+        Mat h, s, l;
         h = hlsChannels.at(0);
+        l = hlsChannels.at(1);
+        s = hlsChannels.at(2);
 
         // GaussianBlur(edges, edges, Size(3, 3), 1.5, 1.5);
         // Canny(edges, edges, 0, 30, 3);
 
-        imshow("vision", h);
+        imshow("h", h);
+        imshow("s", s);
+        imshow("l", l);
         waitKey(100);
         // usleep(100 * 1000);
     }
