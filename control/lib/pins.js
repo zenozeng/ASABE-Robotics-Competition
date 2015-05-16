@@ -1,7 +1,3 @@
-// pin define
-
-// 0, 1, 2 口为舵机控制 pin
-
 module.exports = {
     // 机械臂舵机
     MANIPULATOR_SERVO: 0,
