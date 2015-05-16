@@ -30,7 +30,6 @@ int main()
     namedWindow("frame");
     namedWindow("h");
     namedWindow("s");
-    namedWindow("l");
 
     while (true)
     {
@@ -66,9 +65,22 @@ int main()
         // 0 - 30 -> 0
         threshold(s, s, 30, 255, 0);
 
-        // imshow("h", h);
-        // imshow("s", s);
-        // imshow("l", l);
+        int height = h.rows;
+        int width = h.cols;
+
+        // 下边界标示
+        rectangle(s, Point(0, height * 0.65), Point(width, height * 0.75), Scalar(255 * 0.8), -1, 8);
+        // 上边界标示
+        rectangle(s, Point(0, height * 0.25), Point(width, height * 0.3), Scalar(255 * 0.8), -1, 8);
+        rectangle(s, Point(0, height * 0.15), Point(width, height * 0.2), Scalar(255 * 0.8), -1, 8);
+
+        // 左右边界
+        rectangle(s, Point(width * 0.1, 0), Point(width * 0.12, height), Scalar(255 * 0.5), -1, 8);
+        rectangle(s, Point(width * 0.9, 0), Point(width * 0.88, height), Scalar(255 * 0.5), -1, 8);
+
+
+        imshow("h", h);
+        imshow("s", s);
         waitKey(100);
         // usleep(100 * 1000);
     }
