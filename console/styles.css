@@ -105,3 +105,7 @@ h1 .fa {
 #canvas .fa.low {
     font-size: 24px;
 }
+
+.fa-circle-thin {
+    color: #F08080;
+}

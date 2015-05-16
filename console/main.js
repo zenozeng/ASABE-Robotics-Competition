@@ -20,7 +20,7 @@ var writeLog = function(log) {
     var d = new Date(bootTime + log.timestamp);
     if (log.tree) {
         if (log.tree.empty) {
-            log.message = '<i class="fa fa-circle-thin"></i>';
+            log.message = '<i class="fa fa-circle-thin"></i>' + 'Empty ';
         } else {
             log.message = '<i class="fa fa-tree ' + log.tree.height+ ' ' + log.tree.color + '"></i>';
         }
@@ -50,13 +50,22 @@ var drawLog = function(log) {
     var left = 74;
     var top = 280;
     left += (log.tree.x - 1) * 39;
-    top -= (log.tree.y - 1) * 68;
+    top -= (log.tree.y - 1) * 67;
     var size = log.tree.height === "high" ? 36 : 18;
     left -= size / 2;
     top -= size / 2;
-    $('#canvas').append('<i class="fa fa-tree ' + log.tree.height+ ' ' + log.tree.color + '" style="top:' + top + 'px; left: ' + left + 'px"></i>');
+    if (log.tree.empty) {
+        left -= 7;
+        top -= 7;
+        $('#canvas').append('<i class="fa fa-circle-thin" style="top:' + top + 'px; left: ' + left + 'px"></i>');
+    } else {
+        $('#canvas').append('<i class="fa fa-tree ' + log.tree.height+ ' ' + log.tree.color + '" style="top:' + top + 'px; left: ' + left + 'px"></i>');
+    }
 
     // update collected types
+    if (log.tree.empty) {
+        return;
+    }
     var typeid = log.tree.height + log.tree.color;
     if (types.indexOf(typeid) < 0) {
         types.push(typeid);
