@@ -33,7 +33,6 @@ int main()
         namedWindow("frame");
         namedWindow("roi-bottom-s");
         namedWindow("roi-top-s");
-        namedWindow("result");
     }
 
     while (true)
@@ -50,11 +49,6 @@ int main()
         Mat h, s, l;
         h = hlsChannels.at(0);
         s = hlsChannels.at(2);
-
-        // GaussianBlur(edges, edges, Size(3, 3), 1.5, 1.5);
-        // Canny(edges, edges, 0, 30, 3);
-
-
 
         // http://docs.opencv.org/doc/tutorials/imgproc/threshold/threshold.html
         // 30 - 255 -> 255; 0 - 30 -> 0
@@ -128,7 +122,6 @@ int main()
             imshow("roi-bottom-s", bottomROI);
         }
         waitKey(100);
-        // usleep(100 * 1000);
     }
 
     return 0;
