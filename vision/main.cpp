@@ -104,6 +104,8 @@ int main()
             }
         }
 
+        imwrite("../console/frame.jpg", frame);
+
         if (DEBUG) {
             Scalar grey(255 * 0.1, 255 * 0.1, 255 * 0.1);
             // 下边界标示
@@ -118,8 +120,8 @@ int main()
 
             imshow("frame", frame);
             imshow("roi-bottom-s", bottomROI);
+            waitKey(100);
         }
-        waitKey(100);
     }
 
     return 0;
