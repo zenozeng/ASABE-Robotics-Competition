@@ -19,12 +19,16 @@ int main()
     cout << "Vision Started." << endl;
 
     VideoCapture capture(0);
+
     if (capture.isOpened()) {
         cout << "Video opened." << endl;
     } else {
         cout << "Fail to open video" << endl;
         return -1;
     }
+
+    capture.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 
     // create window for debug
     if (DEBUG) {
@@ -38,13 +42,19 @@ int main()
         Mat frame;
         capture >> frame;
 
+        // narrow to 1:1 rect based on height
+        int width = frame.cols;
+        int height = frame.rows;
+        frame = frame(Rect((width - height) / 2, 0, height, height));
+        width = height;
+
         Mat hls;
         cvtColor(frame, hls, CV_BGR2HLS);
 
+        // HSL 通道分离
         vector<Mat> hlsChannels;
+        Mat h, s;
         split(hls, hlsChannels);
-
-        Mat h, s, l;
         h = hlsChannels.at(0);
         s = hlsChannels.at(2);
 
@@ -52,11 +62,8 @@ int main()
         // 30 - 255 -> 255; 0 - 30 -> 0
         threshold(s, s, 30, 255, 0);
 
-        int height = s.rows;
-        int width = s.cols;
-
         // 判断树是否存在
-        Rect bottom(width * 0.1, height * 0.75, width * 0.8, height * 0.24); // x, y, width, height
+        Rect bottom(0, height * 0.75, width, height * 0.24); // x, y, width, height
         Mat bottomROI = s(bottom);
 
         double rate = sum(bottomROI)[0] / (bottomROI.rows * bottomROI.cols * 255);
@@ -93,7 +100,7 @@ int main()
 
         // 若树存在，判断高矮
         if (exists) {
-            Rect top(width * 0.1, height * 0.2, width * 0.8, height * 0.05);
+            Rect top(0, height * 0.2, width, height * 0.05); // x, y, width, height
             Mat topROI = s(top);
             double topROIRate = sum(topROI)[0] / (topROI.rows * topROI.cols * 255);
             bool isHigh = topROIRate > 0.1;
@@ -110,10 +117,6 @@ int main()
         // 上边界标示
         rectangle(frame, Point(0, height * 0.25), Point(width, height * 0.3), grey, -1, 8);
         rectangle(frame, Point(0, height * 0.15), Point(width, height * 0.2), grey, -1, 8);
-
-        // 左右边界
-        rectangle(frame, Point(width * 0.08, 0), Point(width * 0.1, height), grey, -1, 8);
-        rectangle(frame, Point(width * 0.9, 0), Point(width * 0.92, height), grey, -1, 8);
 
         imwrite("../console/frame.jpg", frame);
 
