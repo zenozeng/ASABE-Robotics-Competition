@@ -70,6 +70,9 @@ int main()
         double rate = sum(bottomROI)[0] / (bottomROI.rows * bottomROI.cols * 255);
         bool exists = rate > 0.1;
 
+        cout << endl;
+        cout << "<Tree Detect Loop>" << endl;
+
         cout << "Tree Exists? " << exists << ", (BottomROI Rate: "<< rate << ")" << endl;
 
         // 若树存在，判断其颜色类型
@@ -85,7 +88,15 @@ int main()
                 }
             }
             double hue = 1.0 * hueSum / count / 255 * 360;
-            cout << "Ava Hue [0-360): " << hue << endl;
+            string color;
+            if (hue > 35 && hue < 75) {
+                color = "Yellow";
+            } else if (hue > 75 && hue < 240) {
+                color = "Green";
+            } else {
+                color = "Brown";
+            }
+            cout << "Color: " << color << ", Ava Hue [0-360): " << hue << endl;
         }
 
         // 若树存在，判断高矮
