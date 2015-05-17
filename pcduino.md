@@ -6,6 +6,10 @@
 
 - `df -hl` 以查看剩余空间
 
+## List Installed Packages
+
+
+
 ## SSH
 
 ```bash
