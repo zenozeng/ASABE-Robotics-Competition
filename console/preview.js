@@ -16,6 +16,9 @@ $(function() {
             ctx.drawImage(image, 0, 0, w, h);
             setTimeout(display, 500);
         };
+        image.onerror = function() {
+            display();
+        };
     };
     display();
 });
