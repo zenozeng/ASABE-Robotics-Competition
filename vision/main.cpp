@@ -31,18 +31,15 @@ int main()
     // create window for debug
     if (DEBUG) {
         namedWindow("frame");
-        namedWindow("h");
-        namedWindow("s");
         namedWindow("roi-bottom-s");
         namedWindow("roi-top-s");
+        namedWindow("result");
     }
 
     while (true)
     {
         Mat frame;
         capture >> frame;
-
-        imshow("frame", frame);
 
         Mat hls;
         cvtColor(frame, hls, CV_BGR2HLS);
@@ -52,7 +49,6 @@ int main()
 
         Mat h, s, l;
         h = hlsChannels.at(0);
-        l = hlsChannels.at(1);
         s = hlsChannels.at(2);
 
         // GaussianBlur(edges, edges, Size(3, 3), 1.5, 1.5);
@@ -61,18 +57,11 @@ int main()
 
 
         // http://docs.opencv.org/doc/tutorials/imgproc/threshold/threshold.html
-        /* 0: Binary
-           1: Binary Inverted
-           2: Threshold Truncated
-           3: Threshold to Zero
-           4: Threshold to Zero Inverted
-        */
-        // 30 - 255 -> 255
-        // 0 - 30 -> 0
+        // 30 - 255 -> 255; 0 - 30 -> 0
         threshold(s, s, 30, 255, 0);
 
-        int height = h.rows;
-        int width = h.cols;
+        int height = s.rows;
+        int width = s.cols;
 
         // 判断树是否存在
         Rect bottom(width * 0.1, height * 0.75, width * 0.8, height * 0.24); // x, y, width, height
@@ -85,6 +74,18 @@ int main()
 
         // 若树存在，判断其颜色类型
         if (exists) {
+            int count = 0;
+            int hueSum = 0;
+            for (int y = 0; y < bottomROI.rows; y++) {
+                for (int x = 0; x < bottomROI.cols; x++) {
+                    if (s.at<Vec3b>(x, y)[0] == 255) {
+                        count++;
+                        hueSum += h.at<Vec3b>(x, y)[0];
+                    }
+                }
+            }
+            double hue = 1.0 * hueSum / count / 255 * 360;
+            cout << "Ava Hue [0-360): " << hue << endl;
         }
 
         // 若树存在，判断高矮
@@ -92,8 +93,8 @@ int main()
             Rect top(width * 0.1, height * 0.2, width * 0.8, height * 0.05);
             Mat topROI = s(top);
             double topROIRate = sum(topROI)[0] / (topROI.rows * topROI.cols * 255);
-            bool isHeight = topROIRate > 0.1;
-            cout << "Tree is Height? " << isHeight << ", (TopROI Rate: " << topROIRate << ")" << endl;
+            bool isHigh = topROIRate > 0.1;
+            cout << "Tree is High? " << isHigh << ", (TopROI Rate: " << topROIRate << ")" << endl;
 
             if (DEBUG) {
                 imshow("roi-top-s", topROI);
@@ -101,19 +102,19 @@ int main()
         }
 
         if (DEBUG) {
+            Scalar grey(255 * 0.1, 255 * 0.1, 255 * 0.1);
             // 下边界标示
-            rectangle(s, Point(0, height * 0.65), Point(width, height * 0.75), Scalar(255 * 0.8), -1, 8);
+            rectangle(frame, Point(0, height * 0.65), Point(width, height * 0.75), grey, -1, 8);
             // 上边界标示
-            rectangle(s, Point(0, height * 0.25), Point(width, height * 0.3), Scalar(255 * 0.8), -1, 8);
-            rectangle(s, Point(0, height * 0.15), Point(width, height * 0.2), Scalar(255 * 0.8), -1, 8);
+            rectangle(frame, Point(0, height * 0.25), Point(width, height * 0.3), grey, -1, 8);
+            rectangle(frame, Point(0, height * 0.15), Point(width, height * 0.2), grey, -1, 8);
 
             // 左右边界
-            rectangle(s, Point(width * 0.08, 0), Point(width * 0.1, height), Scalar(255 * 0.5), -1, 8);
-            rectangle(s, Point(width * 0.9, 0), Point(width * 0.92, height), Scalar(255 * 0.5), -1, 8);
+            rectangle(frame, Point(width * 0.08, 0), Point(width * 0.1, height), grey, -1, 8);
+            rectangle(frame, Point(width * 0.9, 0), Point(width * 0.92, height), grey, -1, 8);
 
+            imshow("frame", frame);
             imshow("roi-bottom-s", bottomROI);
-            imshow("h", h);
-            imshow("s", s);
         }
         waitKey(100);
         // usleep(100 * 1000);
