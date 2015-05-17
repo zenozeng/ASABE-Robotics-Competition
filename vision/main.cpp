@@ -104,20 +104,20 @@ int main()
             }
         }
 
+        Scalar grey(255 * 0.1, 255 * 0.1, 255 * 0.1);
+        // 下边界标示
+        rectangle(frame, Point(0, height * 0.65), Point(width, height * 0.75), grey, -1, 8);
+        // 上边界标示
+        rectangle(frame, Point(0, height * 0.25), Point(width, height * 0.3), grey, -1, 8);
+        rectangle(frame, Point(0, height * 0.15), Point(width, height * 0.2), grey, -1, 8);
+
+        // 左右边界
+        rectangle(frame, Point(width * 0.08, 0), Point(width * 0.1, height), grey, -1, 8);
+        rectangle(frame, Point(width * 0.9, 0), Point(width * 0.92, height), grey, -1, 8);
+
         imwrite("../console/frame.jpg", frame);
 
         if (DEBUG) {
-            Scalar grey(255 * 0.1, 255 * 0.1, 255 * 0.1);
-            // 下边界标示
-            rectangle(frame, Point(0, height * 0.65), Point(width, height * 0.75), grey, -1, 8);
-            // 上边界标示
-            rectangle(frame, Point(0, height * 0.25), Point(width, height * 0.3), grey, -1, 8);
-            rectangle(frame, Point(0, height * 0.15), Point(width, height * 0.2), grey, -1, 8);
-
-            // 左右边界
-            rectangle(frame, Point(width * 0.08, 0), Point(width * 0.1, height), grey, -1, 8);
-            rectangle(frame, Point(width * 0.9, 0), Point(width * 0.92, height), grey, -1, 8);
-
             imshow("frame", frame);
             imshow("roi-bottom-s", bottomROI);
             waitKey(100);
