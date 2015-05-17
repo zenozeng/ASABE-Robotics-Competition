@@ -88,9 +88,9 @@ int main()
             }
             double hue = 1.0 * hueSum / count / 255 * 360;
             string color;
-            if (hue > 35 && hue < 75) {
+            if (hue > 35 && hue < 70) {
                 color = "Yellow";
-            } else if (hue > 75 && hue < 240) {
+            } else if (hue > 70 && hue < 240) {
                 color = "Green";
             } else {
                 color = "Brown";
