@@ -34,6 +34,7 @@ int main()
         namedWindow("h");
         namedWindow("s");
         namedWindow("roi-bottom-s");
+        namedWindow("roi-top-s");
     }
 
     while (true)
@@ -74,20 +75,30 @@ int main()
         int width = h.cols;
 
         // 判断树是否存在
-        Rect bottom(int(width * 0.1), int(height * 0.75), int(width * 0.8), int(height * 0.24)); // x, y, width, height
+        Rect bottom(width * 0.1, height * 0.75, width * 0.8, height * 0.24); // x, y, width, height
         Mat bottomROI = s(bottom);
 
         double rate = sum(bottomROI)[0] / (bottomROI.rows * bottomROI.cols * 255);
-        bool exists = rate > 0.1 ? true : false;
+        bool exists = rate > 0.1;
 
-        cout << rate << endl;
-        cout << exists << endl;
+        cout << "Tree Exists? " << exists << ", (BottomROI Rate: "<< rate << ")" << endl;
 
         // 若树存在，判断其颜色类型
         if (exists) {
         }
 
-        // 判断高矮
+        // 若树存在，判断高矮
+        if (exists) {
+            Rect top(width * 0.1, height * 0.2, width * 0.8, height * 0.05);
+            Mat topROI = s(top);
+            double topROIRate = sum(topROI)[0] / (topROI.rows * topROI.cols * 255);
+            bool isHeight = topROIRate > 0.1;
+            cout << "Tree is Height? " << isHeight << ", (TopROI Rate: " << topROIRate << ")" << endl;
+
+            if (DEBUG) {
+                imshow("roi-top-s", topROI);
+            }
+        }
 
         if (DEBUG) {
             // 下边界标示
