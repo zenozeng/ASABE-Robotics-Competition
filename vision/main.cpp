@@ -14,8 +14,6 @@ using namespace cv;
 // 摄像头共两个，在小车两侧的边缘底部挂着。接近地面。摄像头距离小树轴心 16cm。
 // https://github.com/zenozeng/ASABE-Robotics-Competition/issues/61
 
-#define DEBUG true
-
 int main()
 {
     cout << "Vision Started." << endl;
