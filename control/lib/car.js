@@ -9,7 +9,7 @@ var right = {clk: pins.RIGHT_STEPPING_MOTOR_CLK, cw: pins.RIGHT_STEPPING_MOTOR_C
     pcduino.pinMode(pin, pcduino.OUTPUT);
 });
 
-var period = 20000; // 或者 5000
+var period = 10000; // 或者 5000
 
 var DEBUG = true;
 

@@ -34,4 +34,8 @@ module.exports = {
 
     // 右轮步进电机方向
     RIGHT_STEPPING_MOTOR_CW: 11
+
+    // 尾部舵机或者减速电机: 12
+    // 左超声波 Trig: 13
+    // 左超声波 Echo: 14
 };
