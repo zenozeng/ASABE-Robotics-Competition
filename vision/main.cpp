@@ -11,8 +11,7 @@ using namespace cv;
 // http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html
 // 分离颜色通道&多通道图像混合：http://blog.csdn.net/poem_qianmo/article/details/21176257
 
-// 摄像头共两个，在小车两侧的边缘底部挂着。接近地面。摄像头距离小树轴心 16cm。
-// https://github.com/zenozeng/ASABE-Robotics-Competition/issues/61
+// 摄像头位置，摄像头距离小树 13cm，距离地面 24cm，摄像头角度为 45度
 
 int main()
 {
@@ -39,8 +38,6 @@ int main()
     // create window for debug
     if (DEBUG) {
         namedWindow("frame");
-        namedWindow("roi-bottom-s");
-        namedWindow("roi-top-s");
     }
 
     while (true)
@@ -69,10 +66,11 @@ int main()
         threshold(s, s, 30, 255, 0);
 
         // 判断树是否存在
-        Rect bottom(0, height * 0.75, width, height * 0.24); // x, y, width, height
-        Mat bottomROI = s(bottom);
+        Rect roi_rect(0, height * 0.3, width, height * 0.7); // x, y, width, height
+        Mat ROI = s(roi_rect);
+        Mat ROI_H = h(roi_rect);
 
-        double rate = sum(bottomROI)[0] / (bottomROI.rows * bottomROI.cols * 255);
+        double rate = sum(ROI)[0] / (ROI.rows * ROI.cols * 255);
         bool exists = rate > 0.1;
 
         cout << endl;
@@ -84,11 +82,11 @@ int main()
         if (exists) {
             int count = 0;
             int hueSum = 0;
-            for (int y = 0; y < bottomROI.rows; y++) {
-                for (int x = 0; x < bottomROI.cols; x++) {
-                    if (s.at<Vec3b>(x, y)[0] == 255) {
+            for (int y = 0; y < ROI.rows; y++) {
+                for (int x = 0; x < ROI.cols; x++) {
+                    if (ROI.at<Vec3b>(x, y)[0] == 255) {
                         count++;
-                        hueSum += h.at<Vec3b>(x, y)[0];
+                        hueSum += ROI_H.at<Vec3b>(x, y + height * 0.3)[0];
                     }
                 }
             }
@@ -104,31 +102,15 @@ int main()
             cout << "Color: " << color << ", Ava Hue [0-360): " << hue << endl;
         }
 
-        // 若树存在，判断高矮
-        if (exists) {
-            Rect top(0, height * 0.2, width, height * 0.05); // x, y, width, height
-            Mat topROI = s(top);
-            double topROIRate = sum(topROI)[0] / (topROI.rows * topROI.cols * 255);
-            bool isHigh = topROIRate > 0.1;
-            cout << "Tree is High? " << isHigh << ", (TopROI Rate: " << topROIRate << ")" << endl;
-
-            if (DEBUG) {
-                imshow("roi-top-s", topROI);
-            }
-        }
-
         Scalar grey(255 * 0.1, 255 * 0.1, 255 * 0.1);
-        // 下边界标示
-        rectangle(frame, Point(0, height * 0.65), Point(width, height * 0.75), grey, -1, 8);
+
         // 上边界标示
         rectangle(frame, Point(0, height * 0.25), Point(width, height * 0.3), grey, -1, 8);
-        rectangle(frame, Point(0, height * 0.15), Point(width, height * 0.2), grey, -1, 8);
 
         imwrite("../console/frame.jpg", frame);
 
         if (DEBUG) {
             imshow("frame", frame);
-            imshow("roi-bottom-s", bottomROI);
             waitKey(100);
         }
     }
