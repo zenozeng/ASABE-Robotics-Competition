@@ -9,41 +9,48 @@ var right = {clk: pins.RIGHT_STEPPING_MOTOR_CLK, cw: pins.RIGHT_STEPPING_MOTOR_C
     pcduino.pinMode(pin, pcduino.OUTPUT);
 });
 
+var leftMotor = new pcduino.SoftPWM(left.clk);
+var rightMotor = new pcduino.SoftPWM(right.clk);
+
 var period = 10000; // 或者 5000
 
 var DEBUG = true;
 
 function stop() {
-    pcduino.digitalWritePWM(left.clk, 0);
-    pcduino.digitalWritePWM(right.clk, 0);
+    leftMotor.write(0);
+    rightMotor.write(0);
 }
 
 function forward() {
-    pcduino.digitalWrite(left.cw, pcduino.HIGH, period); // 左轮逆时针
-    pcduino.digitalWrite(right.cw, pcduino.LOW, period); // 右轮顺时针
-    pcduino.digitalWritePWM(left.clk, 0.5, period);
-    pcduino.digitalWritePWM(right.clk, 0.5, period);
+    pcduino.digitalWrite(left.cw, pcduino.HIGH); // 左轮逆时针
+    pcduino.digitalWrite(right.cw, pcduino.LOW); // 右轮顺时针
+
+    leftMotor.write(0.5, {period: period});
+    rightMotor.write(0.5, {period: period});
 }
 
 function backward() {
-    pcduino.digitalWrite(left.cw, pcduino.LOW, period); // 左轮顺时针
-    pcduino.digitalWrite(right.cw, pcduino.HIGH, period); // 右轮逆时针
-    pcduino.digitalWritePWM(left.clk, 0.5, period);
-    pcduino.digitalWritePWM(right.clk, 0.5, period);
+    pcduino.digitalWrite(left.cw, pcduino.LOW); // 左轮顺时针
+    pcduino.digitalWrite(right.cw, pcduino.HIGH); // 右轮逆时针
+
+    leftMotor.write(0.5, {period: period});
+    rightMotor.write(0.5, {period: period});
 }
 
 function turnLeft() {
     pcduino.digitalWrite(left.cw, pcduino.HIGH, period);
     pcduino.digitalWrite(right.cw, pcduino.LOW, period);
-    pcduino.digitalWritePWM(left.clk, 0, period);
-    pcduino.digitalWritePWM(right.clk, 0.5, period);
+
+    leftMotor.write(0, {period: period});
+    rightMotor.write(0.5, {period: period});
 }
 
 function turnRight() {
     pcduino.digitalWrite(left.cw, pcduino.HIGH, period);
     pcduino.digitalWrite(right.cw, pcduino.LOW, period);
-    pcduino.digitalWritePWM(left.clk, 0.5, period);
-    pcduino.digitalWritePWM(right.clk, 0, period);
+
+    leftMotor.write(0.5, {period: period});
+    rightMotor.write(0, {period: period});
 }
 
 function auto() {
