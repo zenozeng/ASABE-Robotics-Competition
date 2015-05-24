@@ -67,10 +67,10 @@ int main()
 
         // 判断树是否存在
         Rect roi_rect(0, height * 0.3, width, height * 0.7); // x, y, width, height
-        Mat ROI = s(roi_rect);
+        Mat ROI_S = s(roi_rect);
         Mat ROI_H = h(roi_rect);
 
-        double rate = sum(ROI)[0] / (ROI.rows * ROI.cols * 255);
+        double rate = sum(ROI)[0] / (ROI_S.rows * ROI_S.cols * 255);
         bool exists = rate > 0.1;
 
         cout << endl;
@@ -82,11 +82,11 @@ int main()
         if (exists) {
             int count = 0;
             int hueSum = 0;
-            for (int y = 0; y < ROI.rows; y++) {
-                for (int x = 0; x < ROI.cols; x++) {
-                    if (ROI.at<Vec3b>(x, y)[0] == 255) {
+            for (int y = 0; y < ROI_S.rows; y++) {
+                for (int x = 0; x < ROI_S.cols; x++) {
+                    if (ROI_S.at<Vec3b>(x, y)[0] == 255) {
                         count++;
-                        hueSum += ROI_H.at<Vec3b>(x, y + height * 0.3)[0];
+                        hueSum += ROI_H.at<Vec3b>(x, y)[0];
                     }
                 }
             }
