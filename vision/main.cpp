@@ -18,13 +18,19 @@ int main()
 {
     cout << "Vision Started." << endl;
 
-    VideoCapture capture(0);
+    VideoCapture capture;
 
-    if (capture.isOpened()) {
-        cout << "Video opened." << endl;
-    } else {
-        cout << "Fail to open video" << endl;
-        return -1;
+    for (int i = 0; i < 3; i++) {
+        capture.open(i);
+        if (capture.isOpened()) {
+            cout << "Success to open /dev/vedio" << i << endl;
+            break;
+        }
+    }
+
+    if (!capture.isOpened()) {
+        cout << "Fail to open /dev/vedio0, /dev/vedio1, /dev/vedio2." << endl;
+        return 1;
     }
 
     capture.set(CV_CAP_PROP_FRAME_WIDTH, 320);
