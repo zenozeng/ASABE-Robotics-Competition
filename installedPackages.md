@@ -1,6 +1,6 @@
 # Installed Packages
 
-## Latest Node.JS / IO.js
+## Latest Node.JS / io.js
 
 ```bash
 wget https://raw.githubusercontent.com/nodesource/distributions/master/deb/setup_iojs_2.x
