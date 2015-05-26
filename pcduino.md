@@ -35,6 +35,7 @@ echo "manual" | sudo tee -a /etc/init/lxdm.override
 sudo stop lxdm # 关闭
 sudo start lxdm # 打开
 sudo restart lxdm # 重启
+echo manual | sudo tee /etc/init/lxdm.override # 禁用lxdm自启动
 ```
 
 ## Disable auto root login
