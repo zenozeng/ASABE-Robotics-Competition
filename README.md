@@ -19,3 +19,7 @@ ASABE Robotics Competition
 ### 信息输出系统
 
 http://zenozeng.github.io/ASABE-Robotics-Competition/console/
+
+## Known Issue
+
+pcduino3b 要是刷 pcduino3 的固件的话，会无法使用有线网。rx有，tx无。

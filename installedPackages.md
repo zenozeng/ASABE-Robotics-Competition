@@ -1,24 +1,22 @@
 # Installed Packages
 
-## Dev
-
-### g++ 4.8
-
-```
-deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu quantal main
-deb-src http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu quantal main
-```
+## Latest Node.JS / IO.js
 
 ```bash
-sudo apt-get update
-sudo apt-get install gcc-4.8 g++-4.8
-cd /usr/bin
-sudo ln -s g++-4.8 g++
-sudo ln -s gcc-4.8 gcc
+wget https://raw.githubusercontent.com/nodesource/distributions/master/deb/setup_iojs_2.x
+chmod +x setup_iojs_2.x
+./setup_iojs_2.x
 ```
 
-## opencv2.3
+See also: https://github.com/nodesource/distributions
+
+```bash
+npm install -g node-gyp
+npm install -g node-gyp-install # for iojs
+```
+
+## Packages
 
 ```
-sudo apt-get install libopencv-dev
+sudo apt-get install libopencv-dev git iftop iotop htop tcpdump
 ```
