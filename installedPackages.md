@@ -18,5 +18,5 @@ npm install -g node-gyp-install # for iojs
 ## Packages
 
 ```
-sudo apt-get install libopencv-dev git iftop iotop htop tcpdump
+sudo apt-get install libopencv-dev git iftop iotop htop tcpdump zile proxychains
 ```

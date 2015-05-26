@@ -1,14 +1,12 @@
 # Pcduino 操作 log
 
+开发板是 armhf 架构。
+
 ## 常用操作
 
 - Ctrl + Alt + T 开启终端
 
 - `df -hl` 以查看剩余空间
-
-## List Installed Packages
-
-
 
 ## SSH
 
@@ -19,28 +17,6 @@ echo 'YOUR PUB KEY' > authorized_keys
 
 ```bash
 sudo apt-get install mosh
-```
-
-## proxychains
-
-开发板是 armhf 架构。
-
-http://ports.ubuntu.com/pool/universe/p/proxychains/
-
-## Editor
-
-```bash
-sudo apt-get install emacs23-nox
-```
-
-## Wifi
-
-sudo iwlist scanning
-
-## AP
-
-```bash
-sudo apt-get install git
 ```
 
 ## date
@@ -78,48 +54,7 @@ vi /bin/auto-root-login
 
 注释掉代码。
 
-## node.js
-
-node.pcduino 库
-
 ## FAQ
-
-### Install Node.js 0.10
-
-```bash
-wget http://nodejs.org/dist/v0.10.24/node-v0.10.24-linux-arm-pi.tar.gz
-tar xvzf node-v0.10.24-linux-arm-pi.tar.gz
-cd node-v0.10.24-linux-arm-pi
-rm ChangeLog LICENSE README.md
-sudo cp -R * /usr/local
-```
-
-### Install Node-gyp
-
-```bash
-sudo npm install node-gyp -g -dd
-```
-
-### add-apt-repository not found
-
-sudo apt-get install python-software-properties
-
-### Install g++ 4.8
-
-```
-deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu quantal main
-deb-src http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu quantal main
-```
-
-```bash
-sudo apt-get update
-sudo apt-get install gcc-4.8 g++-4.8
-cd /usr/bin
-sudo ln -s g++-4.8 g++
-sudo ln -s gcc-4.8 gcc
-```
-
-see also: http://ubuntuhandbook.org/index.php/2013/08/install-gcc-4-8-via-ppa-in-ubuntu-12-04-13-04/
 
 ## 网络架构
 
