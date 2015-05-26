@@ -8,17 +8,6 @@
 
 - `df -hl` 以查看剩余空间
 
-## SSH
-
-```bash
-cd ~/.ssh
-echo 'YOUR PUB KEY' > authorized_keys
-```
-
-```bash
-sudo apt-get install mosh
-```
-
 ## date
 
 ```bash

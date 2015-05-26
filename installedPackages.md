@@ -15,6 +15,10 @@ npm install -g node-gyp
 npm install -g node-gyp-install # for iojs
 ```
 
+## WIFI AP
+
+http://learn.linksprite.com/pcduino/linux-applications/pcduino-v3-start-wifi-ap/
+
 ## Packages
 
 ```
