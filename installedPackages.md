@@ -17,12 +17,12 @@ npm install -g node-gyp-install # for iojs
 
 ## WIFI AP
 
+Required packages: isc-dhcp-server
+
 http://learn.linksprite.com/pcduino/linux-applications/pcduino-v3-start-wifi-ap/
-
-
 
 ## Packages
 
 ```
-sudo apt-get install libopencv-dev git iftop iotop htop tcpdump zile proxychains curl
+sudo apt-get install libopencv-dev git iftop iotop htop tcpdump zile proxychains curl dhcpd
 ```
