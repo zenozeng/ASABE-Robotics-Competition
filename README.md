@@ -26,4 +26,4 @@ http://zenozeng.github.io/ASABE-Robotics-Competition/console/
 
 ## Known Issue
 
-无法将系统写入SD卡并启动，疑似卡损坏
+None.
