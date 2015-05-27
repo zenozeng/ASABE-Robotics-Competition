@@ -1,27 +1,28 @@
-var pcduino = require('yapcduino');
+require('yapcduino')({global: true});
 
-var pinEcho = 3;
+var pinEcho = 1;
 var pinTrigger = 0;
 
-var HIGH = pcduino.HIGH;
-var LOW = pcduino.LOW;
+pinMode(pinTrigger, OUTPUT);
+pinMode(pinEcho, INPUT);
 
 function findDistance(pinEcho, pinTrigger)
 {
     var duration, cm;
 
     // output a pulse
-    pcduino.pinMode(pinTrigger, pcduino.OUTPUT);
-    pcduino.digitalWrite(pinTrigger, HIGH);
-    pcduino.delayMicroseconds(20);
-    pcduino.digitalWrite(pinTrigger, LOW);
+    digitalWrite(pinTrigger, LOW);
+    delayMicroseconds(10);
+    digitalWrite(pinTrigger, HIGH);
+    delayMicroseconds(20);
+    digitalWrite(pinTrigger, LOW);
 
-    duration = pcduino.pulseIn(pinEcho, HIGH, 10000000);
+    duration = pulseIn(pinEcho, HIGH, 10 * 1000 * 1000);
     cm= duration / 29 / 2;
 
     console.log("Distance (cm): ", cm);
-
-    pcduino.delay(1000);
+    delay(3 * 1000);
 }
 
-findDistance(pinEcho, pinTrigger);
+for (;;)
+    findDistance(pinEcho, pinTrigger);

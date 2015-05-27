@@ -74,9 +74,8 @@ int main()
         bool exists = rate > 0.1;
 
         cout << endl;
-        cout << "<Tree Detect Loop>" << endl;
 
-        cout << "Tree Exists? " << exists << ", (BottomROI Rate: "<< rate << ")" << endl;
+        cout << '{"exists": ' << exists << ", (BottomROI Rate: "<< rate << ")" << endl;
 
         // 若树存在，判断其颜色类型
         if (exists) {
