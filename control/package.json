@@ -10,8 +10,6 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.12.3",
-    "opencv": "^3.0.0",
-    "pcduino": "0.0.6",
-    "yapcduino": "^0.1.0"
+    "yapcduino": "^0.9.1"
   }
 }

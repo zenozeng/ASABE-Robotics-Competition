@@ -22,4 +22,4 @@ http://zenozeng.github.io/ASABE-Robotics-Competition/console/
 
 ## Known Issue
 
-pcduino3b 要是刷 pcduino3 的固件的话，会无法使用有线网。rx有，tx无。
+无法将系统写入SD卡并启动，疑似卡损坏
