@@ -14,6 +14,10 @@ ASABE Robotics Competition
 
 - node-gyp rebuild
 
+## 舵机
+
+舵机控制其实只要保证前面的 2ms 准确就好了，后面的其实是可选的。
+
 ## Parts
 
 ### 信息输出系统

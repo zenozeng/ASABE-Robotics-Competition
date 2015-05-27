@@ -70,14 +70,13 @@ int main()
         Mat ROI_S = s(roi_rect);
         Mat ROI_H = h(roi_rect);
 
-        double rate = sum(ROI)[0] / (ROI_S.rows * ROI_S.cols * 255);
+        double rate = sum(ROI_S)[0] / (ROI_S.rows * ROI_S.cols * 255);
         bool exists = rate > 0.1;
 
-        cout << endl;
-
-        cout << '{"exists": ' << exists << ", (BottomROI Rate: "<< rate << ")" << endl;
-
         // 若树存在，判断其颜色类型
+        string color = "null";
+        double hue;
+
         if (exists) {
             int count = 0;
             int hueSum = 0;
@@ -89,8 +88,8 @@ int main()
                     }
                 }
             }
-            double hue = 1.0 * hueSum / count / 255 * 360;
-            string color;
+            hue = 1.0 * hueSum / count / 255 * 360;
+
             if (hue > 35 && hue < 70) {
                 color = "Yellow";
             } else if (hue > 70 && hue < 240) {
@@ -98,8 +97,10 @@ int main()
             } else {
                 color = "Brown";
             }
-            cout << "Color: " << color << ", Ava Hue [0-360): " << hue << endl;
         }
+
+        cout << "{\"exists\": \"" << exists << "\", \"color\": \"" << color << "\", \"hue\": \"" << (int) hue << "\"}" << endl;
+
 
         Scalar grey(255 * 0.1, 255 * 0.1, 255 * 0.1);
 
