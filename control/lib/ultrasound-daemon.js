@@ -1,12 +1,15 @@
 require('yapcduino')({global: true});
 
-var pinEcho = process.args[1];
-var pinTrigger = process.args[2];
+var pinEcho = process.argv[2];
+var pinTrigger = process.argv[3];
 
 // The distance between car and tree is less than 50cm
 // So very small time is enough
 
 var timeout = 100 * 1000; // 100ms (in us)
+
+pinMode(pinTrigger, OUTPUT);
+pinMode(pinEcho, INPUT);
 
 while (true) {
     // output a pulse
@@ -19,6 +22,8 @@ while (true) {
     var duration = pulseIn(pinEcho, HIGH, timeout);
     var cm = duration / 29 / 2;
     var meters = cm / 100;
-    var msg = {distance: meters};
+    var msg = {distance: meters, duration: duration};
+
     process.send(msg);
+    delayMicroseconds(timeout * 1.1); // avoid mess
 }
