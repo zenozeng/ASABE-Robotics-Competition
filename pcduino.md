@@ -68,3 +68,9 @@ sslocal -c jp.zenozeng.com.json -b 0.0.0.0
 ```bash
 npm config set registry http://mirrors.zju.edu.cn/npm
 ```
+
+## Crontab
+
+```bash
+* * * * * /bin/sync
+```
