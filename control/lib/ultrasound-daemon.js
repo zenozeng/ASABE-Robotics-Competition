@@ -1,18 +1,14 @@
 require('yapcduino')({global: true});
 
-function Ultrasound(options) {
-    this.pinEcho = options.pinEcho;
-    this.pinTrigger = options.pinTrigger;
+var pinEcho = process.args[1];
+var pinTrigger = process.args[2];
 
-    pinMode(pinTrigger, OUTPUT);
-    pinMode(pinEcho, INPUT);
+// The distance between car and tree is less than 50cm
+// So very small time is enough
 
-    while (true) {
-        // todo: suicide if parent dead
-    }
-}
+var timeout = 100 * 1000; // 100ms (in us)
 
-Ultrasound.prototype.updateDistance = function() {
+while (true) {
     // output a pulse
     digitalWrite(pinTrigger, LOW);
     delayMicroseconds(10);
@@ -20,27 +16,9 @@ Ultrasound.prototype.updateDistance = function() {
     delayMicroseconds(20);
     digitalWrite(pinTrigger, LOW);
 
-    var duration = pulseIn(pinEcho, HIGH, 10 * 1000 * 1000);
+    var duration = pulseIn(pinEcho, HIGH, timeout);
     var cm = duration / 29 / 2;
-
-    this.distance = distance;
-    this.time = new Date();
-};
-
-Ultrasound.prototype.log = function() {
-    var u = this;
-    console.log({distance: u.distance, time: u.time});
-};
-
-function findDistance(pinEcho, pinTrigger)
-{
-    var duration, cm;
-
-
-
-    console.log("Distance (cm): ", cm);
-    delay(3 * 1000);
+    var meters = cm / 100;
+    var msg = {distance: meters};
+    process.send(msg);
 }
-
-for (;;)
-    findDistance(pinEcho, pinTrigger);

@@ -12,7 +12,7 @@ https://github.com/zenozeng/ASABE-Robotics-Competition/wiki
 ping zjubio
 ```
 
-密码：qingbuyaowenwomimashishenme
+Wifi Password: qingbuyaowenwomimashishenme
 
 ## 资料
 
