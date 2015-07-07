@@ -11,7 +11,7 @@ function Ultrasound(options) {
     child.on('message', function(msg) {
         _this.distance = msg.distance;
         _this.time = new Date();
-        _this.log();
+        // _this.log();
     });
 
     // kill child process on exit
