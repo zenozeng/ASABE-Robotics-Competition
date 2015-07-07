@@ -6,6 +6,14 @@ ASABE Robotics Competition
 
 https://github.com/zenozeng/ASABE-Robotics-Competition/wiki
 
+## 机器信息
+
+```bash
+ping zjubio
+```
+
+密码：qingbuyaowenwomimashishenme
+
 ## 资料
 
 - [基于pcDuino的WiFi实时视频监控智能小车——硬件部分（一）](http://www.oschina.net/question/1174645_120060)
