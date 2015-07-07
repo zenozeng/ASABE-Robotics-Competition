@@ -2,6 +2,10 @@
 
 ASABE Robotics Competition
 
+各种约定性的文档现在移动到了 Wiki 上，大家直接编辑就好。
+
+https://github.com/zenozeng/ASABE-Robotics-Competition/wiki
+
 ## 资料
 
 - [基于pcDuino的WiFi实时视频监控智能小车——硬件部分（一）](http://www.oschina.net/question/1174645_120060)
