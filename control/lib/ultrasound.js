@@ -9,7 +9,7 @@ function Ultrasound(options) {
     pinMode(this.pinEcho, INPUT);
 
     // update distance on msg
-    var child = cp.fork(__dirname + '/ultrasound-daemon.js');
+    var child = cp.fork(__dirname + '/ultrasound-daemon.js', [this.pinEcho, this.pinTrigger]);
     var _this = this;
     child.on('message', function(msg) {
         _this.distance = msg.distance;
