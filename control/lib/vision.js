@@ -7,18 +7,20 @@ var spawn = require('child_process').spawn;
 // will run on background
 // you can read this.exists || this.color || this.hue when you need it
 
-function Vision() {
+function Vision(options) {
+    options = options || {};
     this.process = spawn(bin);
+    var v = this;
     this.process.stdout.on('data', function(data) {
         var msg = data.toString();
         var obj = null;
         try {
             obj = JSON.parse(msg);
             if (obj) {
-                this.exists = obj.exists;
-                this.color = obj.color;
-                this.hue = obj.hue;
-                this.time = new Date();
+                v.exists = (obj.exists == "1");
+                v.color = obj.color == "null" ? null : obj.color;
+                v.hue = parseInt(obj.hue);
+                v.time = new Date();
             }
         } catch (e) {
             console.warn('Ignore: ', e);
@@ -40,7 +42,7 @@ Vision.prototype.log = function() {
     }));
 };
 
-var vision = new Vision();
+var vision = new Vision({debug: true});
 
 process.on('exit', function(code) {
     console.info('lib/vision.js: about to exit with code(' + code + '), try to kill vision bin process.');
