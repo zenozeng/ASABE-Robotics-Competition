@@ -36,11 +36,11 @@ Car.prototype.go = function(leftCW, rightCW, leftSpeed, rightSpeed) {
     digitalWrite(right.cw, rightCW);
 
     // 设置速度
-    var period = 10000;
+    var period = 100000;
     var motors = [leftMotor, rightMotor];
     [leftSpeed, rightSpeed].forEach(function(speed, index) {
         if (speed === 0) {
-            motors[index].write(0, {period: period});
+            motors[index].write(0);
         } else {
             motors[index].write(0.5, {period: parseInt(period / leftSpeed)});
         }
@@ -73,10 +73,10 @@ Car.prototype.autoForward = function() {
     var car = this;
     car.autoForwardInterval = setInterval(function() {
         var leftIsBlack = whiteSensors.left.isBlack();
-        var middleIsBlack = whiteSensors.middle.isBlack();
+        // var middleIsBlack = whiteSensors.middle.isBlack();
         var rightIsBlack = whiteSensors.right.isBlack();
         if (DEBUG) {
-            console.log([leftIsBlack, middleIsBlack, rightIsBlack]);
+            console.log([leftIsBlack, rightIsBlack]);
         }
 
         if (leftIsBlack && rightIsBlack) {

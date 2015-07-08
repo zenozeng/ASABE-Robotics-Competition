@@ -19,16 +19,17 @@ module.exports = {
     MANIPULATOR_STEPPING_MOTOR_CW: 8,
 
     // 夹持装置控制舵机
-    END_EFFECTOR_SERVO: 3
+    END_EFFECTOR_SERVO: 3,
 
     // 左黑白循迹片
-    // LEFT_BLACK_AND_WHITE_SENSOR: 3,
+    LEFT_BLACK_AND_WHITE_SENSOR: 9,
+
+    // 右循迹片
+    RIGHT_BLACK_AND_WHITE_SENSOR: 10
 
     // 中循迹片
     // MIDDLE_BLACK_AND_WHITE_SENSOR: 4,
 
-    // 右循迹片
-    // RIGHT_BLACK_AND_WHITE_SENSOR: 5
 
     // 机械臂舵机
     // MANIPULATOR_SERVO: 0,

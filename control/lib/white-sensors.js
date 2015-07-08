@@ -3,7 +3,7 @@ var pcduino = require('yapcduino');
 
 var sensors = {
     left: pins.LEFT_BLACK_AND_WHITE_SENSOR,
-    middle: pins.MIDDLE_BLACK_AND_WHITE_SENSOR,
+    // middle: pins.MIDDLE_BLACK_AND_WHITE_SENSOR,
     right: pins.RIGHT_BLACK_AND_WHITE_SENSOR
 };
 
