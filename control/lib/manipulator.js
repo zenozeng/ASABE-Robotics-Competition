@@ -13,4 +13,12 @@ var servo = new Servo(pin, {
     frequency: 390
 });
 
-// module.exports = servo;
+module.exports = {
+    open: function() {
+        servo.write(45);
+        servo.stop();
+    },
+    close: function() {
+        servo.write(90);
+    }
+};
