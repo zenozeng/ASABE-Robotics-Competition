@@ -21,11 +21,11 @@ module.exports = {
     // 夹持装置控制舵机
     END_EFFECTOR_SERVO: 3,
 
-    // 左黑白循迹片
-    LEFT_BLACK_AND_WHITE_SENSOR: 9,
+    // 循迹片从到右
+    LEFT_BLACK_AND_WHITE_SENSOR: 12,
 
     // 右循迹片
-    RIGHT_BLACK_AND_WHITE_SENSOR: 10
+    RIGHT_BLACK_AND_WHITE_SENSOR: 13
 
     // 中循迹片
     // MIDDLE_BLACK_AND_WHITE_SENSOR: 4,

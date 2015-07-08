@@ -34,11 +34,18 @@ Car.prototype.go = function(leftCW, rightCW, leftSpeed, rightSpeed) {
     // 设置方向
     digitalWrite(left.cw, leftCW);
     digitalWrite(right.cw, rightCW);
+    log(JSON.stringify({
+        go: {
+            left: {cw: leftCW, speed: leftSpeed},
+            right: {cw: rightCW, speed: rightSpeed}
+        }
+    }));
 
     // 设置速度
-    var period = 100000;
+    var period = 10000;
     var motors = [leftMotor, rightMotor];
     [leftSpeed, rightSpeed].forEach(function(speed, index) {
+        console.log(index, speed, motors[index]);
         if (speed === 0) {
             motors[index].write(0);
         } else {
@@ -75,14 +82,11 @@ Car.prototype.autoForward = function() {
         var leftIsBlack = whiteSensors.left.isBlack();
         // var middleIsBlack = whiteSensors.middle.isBlack();
         var rightIsBlack = whiteSensors.right.isBlack();
+
         if (DEBUG) {
             console.log([leftIsBlack, rightIsBlack]);
         }
 
-        if (leftIsBlack && rightIsBlack) {
-            // 转弯吧
-            return;
-        }
         if (leftIsBlack) {
             car.turnLeft();
             return;
@@ -100,6 +104,9 @@ Car.prototype.stopAutoForward = function() {
     if (typeof this.autoForwardInterval !== "undefined") {
         clearInterval(this.autoForwardInterval);
     }
+};
+
+Car.prototype.bigTurn = function() {
 };
 
 var car = new Car();
