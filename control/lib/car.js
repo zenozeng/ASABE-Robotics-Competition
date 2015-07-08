@@ -30,26 +30,23 @@ Car.prototype.stop = function() {
     rightMotor.write(0);
 };
 
-Car.prototype.go = function(leftCW, rightCW, leftSpeed, rightSpeed) {
+Car.prototype.go = function(leftCW, rightCW, leftSpeed, rightSpeed, leftSteps, rightSteps) {
     // 设置方向
     digitalWrite(left.cw, leftCW);
     digitalWrite(right.cw, rightCW);
-    log(JSON.stringify({
-        go: {
-            left: {cw: leftCW, speed: leftSpeed},
-            right: {cw: rightCW, speed: rightSpeed}
-        }
-    }));
 
     // 设置速度
     var period = 10000;
     var motors = [leftMotor, rightMotor];
+    var loops = [leftSteps, rightSteps];
     [leftSpeed, rightSpeed].forEach(function(speed, index) {
-        console.log(index, speed, motors[index]);
         if (speed === 0) {
             motors[index].write(0);
         } else {
-            motors[index].write(0.5, {period: parseInt(period / leftSpeed)});
+            motors[index].write(0.5, {
+                period: parseInt(period / speed),
+                loops: loops[index]
+            });
         }
     });
 };
@@ -68,24 +65,22 @@ Car.prototype.backward = function() {
 
 Car.prototype.turnLeft = function() {
     log('turn left');
-    this.go(HIGH, LOW, 0, 1);
+    this.go(HIGH, LOW, 0.5, 1);
 };
 
 Car.prototype.turnRight = function() {
     log('turn right');
-    this.go(HIGH, LOW, 1, 0);
+    this.go(HIGH, LOW, 1, 0.5);
 };
 
 Car.prototype.autoForward = function() {
     var car = this;
     car.autoForwardInterval = setInterval(function() {
+        // console.log(-leftMotor.getLoopCount(0));
+
         var leftIsBlack = whiteSensors.left.isBlack();
         // var middleIsBlack = whiteSensors.middle.isBlack();
         var rightIsBlack = whiteSensors.right.isBlack();
-
-        if (DEBUG) {
-            console.log([leftIsBlack, rightIsBlack]);
-        }
 
         if (leftIsBlack) {
             car.turnLeft();
@@ -97,7 +92,7 @@ Car.prototype.autoForward = function() {
         }
         car.forward();
 
-    }, 100);
+    }, 20);
 };
 
 Car.prototype.stopAutoForward = function() {
@@ -106,7 +101,22 @@ Car.prototype.stopAutoForward = function() {
     }
 };
 
-Car.prototype.bigTurn = function() {
+// bug 如果　stpes to live 为 0
+// 那么重新开始的时候应该要修改那个值
+
+Car.prototype.turn180 = function() {
+    this.stop();
+    this.go(HIGH, HIGH, 2, 2, 245, 245);
+};
+
+Car.prototype.turnLeft90 = function() {
+    this.stop();
+    this.go(LOW, LOW, 2, 2, 125, 125);
+};
+
+Car.prototype.turnRight90 = function() {
+    this.stop();
+    this.go(HIGH, HIGH, 2, 2, 125, 125);
 };
 
 var car = new Car();

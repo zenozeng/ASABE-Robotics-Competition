@@ -8,18 +8,20 @@ var whiteSensors = require('./lib/white-sensors');
 //     ultrasound.log();
 // }, 100);
 
+// 在夹持之前，就地保证处于黑线正中
+// 利用五个循迹片实现
+
 var car = require('./lib/car');
 
-car.turnLeft();
+car.autoForward();
 
-// car.autoForward();
-
-// setInterval(function() {
-//     var leftIsBlack = whiteSensors.left.isBlack();
-//     // var middleIsBlack = whiteSensors.middle.isBlack();
-//     var rightIsBlack = whiteSensors.right.isBlack();
-//     if (leftIsBlack && rightIsBlack) {
-//         car.stopAutoForward();
-//         car.stop();
-//     }
-// }, 20);
+var i = setInterval(function() {
+    var leftIsBlack = whiteSensors.left.isBlack();
+    var rightIsBlack = whiteSensors.right.isBlack();
+    if (leftIsBlack && rightIsBlack) {
+        clearInterval(i);
+        car.stopAutoForward();
+        car.stop();
+        car.turnRound();
+    }
+}, 20);
