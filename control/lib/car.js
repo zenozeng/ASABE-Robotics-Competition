@@ -77,7 +77,7 @@ function auto() {
         }
         console.log('forward');
         forward();
-    }, 1000);
+    }, 100);
 }
 
 module.exports = {
