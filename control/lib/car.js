@@ -101,9 +101,6 @@ Car.prototype.stopAutoForward = function() {
     }
 };
 
-// bug 如果　stpes to live 为 0
-// 那么重新开始的时候应该要修改那个值
-
 Car.prototype.turn180 = function() {
     this.stop();
     this.go(HIGH, HIGH, 2, 2, 245, 245);
