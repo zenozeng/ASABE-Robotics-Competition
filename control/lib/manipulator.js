@@ -1,24 +1,17 @@
-var yapcduino = require('yapcduino');
-var Servo = yapcduino.Servo;
-var pins = require('./pins');
+require('yapcudino')({global: true});
 
-var pin = pins.END_EFFECTOR_SERVO;
+function Manipulator() {
+    this.position = 0;
+}
 
-pin = 5;
+// offset 为正则是向外
+Manipulator.prototype.move = function(offsetSteps) {
+    this.position += offsetSteps;
+};
 
-var servo = new Servo(pin, {
-    minPWM: 1,
-    maxPWM: 200,
-    maxAngle: 180,
-    frequency: 390
-});
-
-module.exports = {
-    open: function() {
-        servo.write(45);
-        servo.stop();
-    },
-    close: function() {
-        servo.write(90);
-    }
+// usage: moveTo(0)
+//        moveTo(100)
+Manipulator.prototype.moveTo = function(position) {
+    var offset = position - this.position;
+    this.move(offset);
 };
