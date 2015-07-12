@@ -116,6 +116,10 @@ Car.prototype.turnRight90 = function() {
     this.go(true, false, 2, 2, 125, 125);
 };
 
+// 就地摆正 (sync)
+Car.prototype.straighten = function() {
+};
+
 var car = new Car();
 
 module.exports = car;

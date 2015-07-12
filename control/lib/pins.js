@@ -22,13 +22,10 @@ module.exports = {
     END_EFFECTOR_SERVO: 5,
 
     // 循迹片从到右
-    LEFT_BLACK_AND_WHITE_SENSOR: 12,
-
-    // 右循迹片
-    RIGHT_BLACK_AND_WHITE_SENSOR: 13
-
-    // 中循迹片
-    // MIDDLE_BLACK_AND_WHITE_SENSOR: 4,
+    BLACK_AND_WHITE_SENSOR_1: 12,
+    BLACK_AND_WHITE_SENSOR_2: 13,
+    BLACK_AND_WHITE_SENSOR_3: 14,
+    BLACK_AND_WHITE_SENSOR_4: 15
 
 
     // 机械臂舵机
