@@ -30,8 +30,10 @@ Car.prototype.stop = function() {
     rightMotor.write(0);
 };
 
-Car.prototype.go = function(leftCW, rightCW, leftSpeed, rightSpeed, leftSteps, rightSteps) {
+Car.prototype.go = function(leftIsForward, rightIsForward, leftSpeed, rightSpeed, leftSteps, rightSteps) {
     // 设置方向
+    var leftCW = leftIsForward ? HIGH : LOW; // 左轮向前为顺时针
+    var rightCW = rightIsForward ? LOW : HIGH; // 右轮向前为逆时针
     digitalWrite(left.cw, leftCW);
     digitalWrite(right.cw, rightCW);
 
@@ -52,25 +54,23 @@ Car.prototype.go = function(leftCW, rightCW, leftSpeed, rightSpeed, leftSteps, r
 };
 
 Car.prototype.forward = function() {
-    // 左轮逆时针，右轮顺时针
     log('forward');
-    this.go(HIGH, LOW, 1, 1);
+    this.go(true, true, 1, 1);
 };
 
 Car.prototype.backward = function() {
-    // 左轮顺时针，右轮逆时针
     log('backward');
-    this.go(LOW, HIGH, 1, 1);
+    this.go(false, false, 1, 1);
 };
 
 Car.prototype.turnLeft = function() {
     log('turn left');
-    this.go(HIGH, LOW, 0.5, 1);
+    this.go(true, true, 0.5, 1);
 };
 
 Car.prototype.turnRight = function() {
     log('turn right');
-    this.go(HIGH, LOW, 1, 0.5);
+    this.go(true, true, 1, 0.5);
 };
 
 Car.prototype.autoForward = function() {
@@ -103,17 +103,17 @@ Car.prototype.stopAutoForward = function() {
 
 Car.prototype.turn180 = function() {
     this.stop();
-    this.go(HIGH, HIGH, 2, 2, 245, 245);
+    this.go(true, false, 2, 2, 245, 245);
 };
 
 Car.prototype.turnLeft90 = function() {
     this.stop();
-    this.go(LOW, LOW, 2, 2, 125, 125);
+    this.go(false, true, 2, 2, 125, 125);
 };
 
 Car.prototype.turnRight90 = function() {
     this.stop();
-    this.go(HIGH, HIGH, 2, 2, 125, 125);
+    this.go(true, false, 2, 2, 125, 125);
 };
 
 var car = new Car();
