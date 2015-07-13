@@ -77,21 +77,15 @@ Car.prototype.turnRight = function() {
 Car.prototype.autoForward = function() {
     var car = this;
     car.autoForwardInterval = setInterval(function() {
-        // console.log(-leftMotor.getLoopCount(0));
 
-        var leftIsBlack = whiteSensors.left.isBlack();
-        // var middleIsBlack = whiteSensors.middle.isBlack();
-        var rightIsBlack = whiteSensors.right.isBlack();
-
-        if (leftIsBlack) {
-            car.turnLeft();
-            return;
-        }
-        if (rightIsBlack) {
+        var dir = head.getBlackLineDirection();
+        if (dir > 0) {
             car.turnRight();
-            return;
+        } else if (dir < 0) {
+            car.turnLeft();
+        } else {
+            car.forward();
         }
-        car.forward();
 
     }, 20);
 };
