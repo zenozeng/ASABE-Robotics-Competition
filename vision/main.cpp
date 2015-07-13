@@ -13,6 +13,9 @@ using namespace cv;
 
 // 摄像头位置，摄像头距离小树 13cm，距离地面 24cm，摄像头角度为 45度
 
+Mat narrowToSquare(Mat frame) {
+}
+
 int main()
 {
     cout << "Vision Started." << endl;
@@ -45,7 +48,7 @@ int main()
         Mat frame;
         capture >> frame;
 
-        // narrow to 1:1 rect based on height
+        // narrow to 1:1 square based on height
         int width = frame.cols;
         int height = frame.rows;
         frame = frame(Rect((width - height) / 2, 0, height, height));
@@ -60,6 +63,10 @@ int main()
         split(hls, hlsChannels);
         h = hlsChannels.at(0);
         s = hlsChannels.at(2);
+
+        if (DEBUG) {
+            imshow("s", s);
+        }
 
         // http://docs.opencv.org/doc/tutorials/imgproc/threshold/threshold.html
         // 30 - 255 -> 255; 0 - 30 -> 0
@@ -101,11 +108,7 @@ int main()
 
         cout << "{\"exists\": \"" << exists << "\", \"color\": \"" << color << "\", \"hue\": \"" << (int) hue << "\"}" << endl;
 
-
         Scalar grey(255 * 0.1, 255 * 0.1, 255 * 0.1);
-
-        // 上边界标示
-        rectangle(frame, Point(0, height * 0.25), Point(width, height * 0.3), grey, -1, 8);
 
         imwrite("../console/frame.jpg", frame);
 

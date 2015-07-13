@@ -79,10 +79,9 @@ Car.prototype.autoForward = function() {
     car.autoForwardInterval = setInterval(function() {
 
         var dir = head.getBlackLineDirection();
-        if (dir > 0) {
-            car.turnRight();
-        } else if (dir < 0) {
-            car.turnLeft();
+        if (dir != 0) {
+            var clockwise = dir > 0;
+            car.rotate(clockwise);
         } else {
             car.forward();
         }
