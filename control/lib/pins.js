@@ -25,11 +25,11 @@ module.exports = {
     // 注意这个是 A0 口，不是 GPIO 0 口
     IR: 0,
 
-    // 循迹片从到右
-    BLACK_AND_WHITE_SENSOR_1: 14,
-    BLACK_AND_WHITE_SENSOR_2: 15,
-    BLACK_AND_WHITE_SENSOR_3: 16,
-    BLACK_AND_WHITE_SENSOR_4: 17
+    // 循迹片
+    BLACK_AND_WHITE_SENSOR_1: 14, // 前左
+    BLACK_AND_WHITE_SENSOR_2: 15, // 前右
+    BLACK_AND_WHITE_SENSOR_3: 16, // 后左
+    BLACK_AND_WHITE_SENSOR_4: 17  // 后右
 
     // 尾部舵机或者减速电机: 12
     // 左超声波 Trig: 13
