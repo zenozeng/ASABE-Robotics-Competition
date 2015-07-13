@@ -21,24 +21,15 @@ module.exports = {
     // 夹持装置控制舵机
     END_EFFECTOR_SERVO: 5,
 
+    // 红外线
+    // 注意这个是 A0 口，不是 GPIO 0 口
+    IR: 0,
+
     // 循迹片从到右
-    BLACK_AND_WHITE_SENSOR_1: 12,
-    BLACK_AND_WHITE_SENSOR_2: 13,
-    BLACK_AND_WHITE_SENSOR_3: 14,
-    BLACK_AND_WHITE_SENSOR_4: 15
-
-
-    // 机械臂舵机
-    // MANIPULATOR_SERVO: 0,
-
-    // Tank 底座旋转控制舵机
-    // TANK_SERVO: 1,
-
-    // Tank 底座步进电机脉冲输入信号
-    // TANK_STEPPING_MOTOR_CLK: 6,
-
-    // Tank 底座步进电机方向输入信号
-    // TANK_STEPPING_MOTOR_CW: 7,
+    BLACK_AND_WHITE_SENSOR_1: 14,
+    BLACK_AND_WHITE_SENSOR_2: 15,
+    BLACK_AND_WHITE_SENSOR_3: 16,
+    BLACK_AND_WHITE_SENSOR_4: 17
 
     // 尾部舵机或者减速电机: 12
     // 左超声波 Trig: 13

@@ -1,6 +1,7 @@
 require('yapcduino')({global: true});
 var pins = require('./pins');
 var whiteSensors = require('./white-sensors');
+var head = require('./head');
 
 var DEBUG = true;
 
@@ -65,12 +66,12 @@ Car.prototype.backward = function() {
 
 Car.prototype.turnLeft = function() {
     log('turn left');
-    this.go(true, true, 0.5, 1);
+    this.go(true, true, 0, 1);
 };
 
 Car.prototype.turnRight = function() {
     log('turn right');
-    this.go(true, true, 1, 0.5);
+    this.go(true, true, 1, 0);
 };
 
 Car.prototype.autoForward = function() {
@@ -102,22 +103,45 @@ Car.prototype.stopAutoForward = function() {
 };
 
 Car.prototype.turn180 = function() {
+    log('turn 180');
     this.stop();
     this.go(true, false, 2, 2, 245, 245);
 };
 
 Car.prototype.turnLeft90 = function() {
+    log('turn left 90');
     this.stop();
     this.go(false, true, 2, 2, 125, 125);
 };
 
 Car.prototype.turnRight90 = function() {
+    log('turn right 90');
     this.stop();
     this.go(true, false, 2, 2, 125, 125);
 };
 
+// 顺时针：rotate(true)
+// 就地旋转
+Car.prototype.rotate = function(clockwise, steps) {
+    var left = clockwise > 0;
+    var right = !left;
+    this.go(left, right, 2, 2, steps, steps);
+};
+
 // 就地摆正 (sync)
 Car.prototype.straighten = function() {
+    log('straighten');
+    var car = this;
+    car.stop();
+    var interval = setInterval(function() {
+        var dir = head.getBlackLineDirection();
+        if (dir != 0) {
+            var clockwise = dir > 0;
+            car.rotate(clockwise);
+        } else {
+            clearInterval(interval);
+        }
+    }, 20);
 };
 
 var car = new Car();
