@@ -120,15 +120,15 @@ Car.prototype.turnRight90 = function() {
     this.go(true, false, 2, 2, 125, 125);
 };
 
-// 顺时针：rotate(true)
-// 就地旋转
-Car.prototype.rotate = function(clockwise, steps) {
-    var left = clockwise > 0;
-    var right = !left;
-    this.go(left, right, 0.5, 0.5, steps, steps);
-};
+// // 顺时针：rotate(true)
+// // 就地旋转
+// Car.prototype.rotate = function(clockwise, steps) {
+//     var left = clockwise > 0;
+//     var right = !left;
+//     this.go(left, right, 0.1, 0.1, steps, steps);
+// };
 
-// 就地摆正 (sync)
+// // 就地摆正 (sync)
 // Car.prototype.straighten = function() {
 //     log('straighten');
 //     var car = this;
