@@ -20,21 +20,27 @@ var read = function() {
 // 前左，前右；后左，后右。
 var weights = [-1, 1, 1, -1];
 
-// 返回一个数字，如果为正数，表明右边是白色的，则应该向左
-// 如果为负数，则应该向右
-// 如果为 0，表明方向很正
-var getDirection = function() {
-    var data = read();
-    var sum = 0;
-    data.forEach(function(v, i) {
-        sum += weights[i] * v;
-    });
-    return sum;
+var equal = function(obj1, obj2) {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
 };
 
 // 返回一个数字，若黑线在车的右边则为正，否则为负
 var getBlackLineDirection = function() {
-    return getDirection() * -1;
+    var data = read();
+
+    if (equal(data, [1, 0, 1, 0])) {
+        return 2; // 车前后都在线的左边
+    }
+
+    if (equal(data, [0, 1, 0, 1])) {
+        return -2; // 车前后都在线的右边
+    }
+
+    var sum = 0;
+    data.forEach(function(v, i) {
+        sum += weights[i] * v;
+    });
+    return sum * -1;
 };
 
 var isOnVerticalLine = function() {
@@ -44,7 +50,7 @@ var isOnVerticalLine = function() {
 };
 
 module.exports = {
-    getDirection: getDirection,
+    read: read,
     getBlackLineDirection: getBlackLineDirection,
     isOnVerticalLine: isOnVerticalLine
 };
