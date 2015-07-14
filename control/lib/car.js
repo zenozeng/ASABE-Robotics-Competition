@@ -31,7 +31,7 @@ Car.prototype.stop = function() {
     rightMotor.write(0);
 };
 
-Car.prototype.go = function(leftIsForward, rightIsForward, leftSpeed, rightSpeed, leftSteps, rightSteps) {
+Car.prototype.go = function(leftIsForward, rightIsForward, leftSpeed, rightSpeed, leftSteps, rightSteps, sync) {
     // 设置方向
     var leftCW = leftIsForward ? HIGH : LOW; // 左轮向前为顺时针
     var rightCW = rightIsForward ? LOW : HIGH; // 右轮向前为逆时针
@@ -52,6 +52,11 @@ Car.prototype.go = function(leftIsForward, rightIsForward, leftSpeed, rightSpeed
             });
         }
     });
+    if (sync) {
+        motors.forEach(function(motor) {
+            motor.sync(); // wait all pwm thread finish its work
+        });
+    }
 };
 
 Car.prototype.forward = function(steps) {
@@ -102,6 +107,7 @@ Car.prototype.autoForward = function() {
     }, 20);
 };
 
+// Buggy! untested.
 Car.prototype.autoBackward = function() {
     log('auto backward');
     var car = this;
@@ -109,7 +115,6 @@ Car.prototype.autoBackward = function() {
     car.autoInterval = setInterval(function() {
 
         var dir = head.getBlackLineDirection();
-        dir *= -1;
         var speed = {
             "-1": [0.8, 1],
             "-2": [0.5, 1],
@@ -131,22 +136,39 @@ Car.prototype.stopAuto = function() {
     }
 };
 
-Car.prototype.turn180 = function() {
+var STEPS_FOR_90_DEG_SPEED_0_1 = 240;
+var STEPS_FOR_90_DEG_SPEED_1_2 = STEPS_FOR_90_DEG_SPEED_0_1 * 2;
+
+Car.prototype.turn180 = function(rightFirst) {
     log('turn 180');
     this.stop();
-    this.go(true, false, 2, 2, 245, 245);
+    var steps = STEPS_FOR_90_DEG_SPEED_1_2;
+    var sync = true;
+    if (rightFirst) {
+        this.go(true, true, 2, 1, steps, steps / 2, sync);
+        this.go(false, false, 1, 1, steps, steps, sync);
+        this.go(true, true, 2, 1, steps, steps / 2, sync);
+    } else {
+        this.go(true, true, 1, 2, steps / 2, steps, sync);
+        this.go(false, false, 1, 1, steps, steps, sync);
+        this.go(true, true, 1, 2, steps / 2, steps, sync);
+    }
 };
 
-Car.prototype.turnLeft90 = function() {
+// 左轮不动
+Car.prototype.turnLeft90Sync = function() {
     log('turn left 90');
     this.stop();
-    this.go(false, true, 2, 2, 125, 125);
+    var steps = STEPS_FOR_90_DEG_SPEED_0_1;
+    this.go(true, true, 0, 1, steps, steps, true);
 };
 
-Car.prototype.turnRight90 = function() {
+// 右轮不动
+Car.prototype.turnRight90Sync = function() {
     log('turn right 90');
     this.stop();
-    this.go(true, false, 2, 2, 125, 125);
+    var steps = STEPS_FOR_90_DEG_SPEED_0_1;
+    this.go(true, true, 1, 0, steps, steps, true);
 };
 
 // // 顺时针：rotate(true)
