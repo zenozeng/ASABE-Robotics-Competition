@@ -10,6 +10,8 @@ sensors.forEach(function(pin) {
     pinMode(pin, INPUT);
 });
 
+pinMode(pins.BLACK_AND_WHITE_SENSOR_5, INPUT);
+
 var read = function() {
     // result (from left to right) (eg, black, black, white, white: [0, 0, 1, 1])
     return sensors.map(function(pin) {
@@ -43,14 +45,22 @@ var getBlackLineDirection = function() {
     return sum * -1;
 };
 
-var isOnVerticalLine = function() {
-    return read().every(function(v) {
-        return v === 0;
-    });
+var isOnWhite = function() {
+    var front = [1, 2, 5];
+    var back = [3, 4];
+    var getSum = function(arr) {
+        var sum = 0;
+        arr.forEach(function(id) {
+            sum += digitalRead(pins["BLACK_AND_WHITE_SENSOR_"+id]);
+        });
+        return sum;
+    };
+    // 前面至少三个灭，后面至少一个灭
+    return getSum(front) < 1 && getSum(back) < 2;
 };
 
 module.exports = {
     read: read,
     getBlackLineDirection: getBlackLineDirection,
-    isOnVerticalLine: isOnVerticalLine
+    isOnWhite: isOnWhite
 };

@@ -4,3 +4,5 @@ var vision = require('./lib/vision');
 
 var car = require('./lib/car');
 
+var manipulator = require('./lib/manipulator');
+var end_effector = require('./lib/end-effector');

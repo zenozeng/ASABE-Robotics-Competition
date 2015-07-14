@@ -54,14 +54,14 @@ Car.prototype.go = function(leftIsForward, rightIsForward, leftSpeed, rightSpeed
     });
 };
 
-Car.prototype.forward = function() {
+Car.prototype.forward = function(steps) {
     log('forward');
-    this.go(true, true, 1, 1);
+    this.go(true, true, 1, 1, steps, steps);
 };
 
-Car.prototype.backward = function() {
+Car.prototype.backward = function(steps) {
     log('backward');
-    this.go(false, false, 1, 1);
+    this.go(false, false, 1, 1, steps, steps);
 };
 
 Car.prototype.turnLeft = function(speed) {
@@ -76,9 +76,15 @@ Car.prototype.turnRight = function(speed) {
     this.go(true, true, speed, speed * 0.5);
 };
 
+Car.prototype.auto = function(forward) {
+    forward ? this.autoForward() : this.autoBackward();
+};
+
 Car.prototype.autoForward = function() {
+    log('auto forward');
     var car = this;
-    car.autoForwardInterval = setInterval(function() {
+    car.stopAuto();
+    car.autoInterval = setInterval(function() {
 
         var dir = head.getBlackLineDirection();
         var speed = {
@@ -96,9 +102,32 @@ Car.prototype.autoForward = function() {
     }, 20);
 };
 
-Car.prototype.stopAutoForward = function() {
-    if (typeof this.autoForwardInterval !== "undefined") {
-        clearInterval(this.autoForwardInterval);
+Car.prototype.autoBackward = function() {
+    log('auto backward');
+    var car = this;
+    car.stopAuto();
+    car.autoInterval = setInterval(function() {
+
+        var dir = head.getBlackLineDirection();
+        dir *= -1;
+        var speed = {
+            "-1": [0.8, 1],
+            "-2": [0.5, 1],
+            "1": [1, 0.8],
+            "2": [1, 0.5]
+        };
+        if (dir != 0) {
+            car.go(false, false, speed[dir][0], speed[dir][1]);
+        } else {
+            car.backward();
+        }
+
+    }, 20);
+};
+
+Car.prototype.stopAuto = function() {
+    if (typeof this.autoInterval !== "undefined") {
+        clearInterval(this.autoInterval);
     }
 };
 

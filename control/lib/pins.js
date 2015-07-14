@@ -29,7 +29,8 @@ module.exports = {
     BLACK_AND_WHITE_SENSOR_1: 14, // 前左
     BLACK_AND_WHITE_SENSOR_2: 15, // 前右
     BLACK_AND_WHITE_SENSOR_3: 16, // 后左
-    BLACK_AND_WHITE_SENSOR_4: 17  // 后右
+    BLACK_AND_WHITE_SENSOR_4: 17, // 后右
+    BLACK_AND_WHITE_SENSOR_5: 13  // 前外左
 
     // 尾部舵机或者减速电机: 12
     // 左超声波 Trig: 13

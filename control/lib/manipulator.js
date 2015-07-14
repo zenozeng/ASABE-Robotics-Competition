@@ -5,6 +5,9 @@ var clk = pins.MANIPULATOR_STEPPING_MOTOR_CLK;
 var cw = pins.MANIPULATOR_STEPPING_MOTOR_CW;
 var motor = new SoftPWM(clk);
 
+pinMode(clk, OUTPUT);
+pinMode(cw, OUTPUT);
+
 function Manipulator() {
     this.position = 0;
 }
