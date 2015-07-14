@@ -3,7 +3,7 @@ var pins = require('./pins');
 var whiteSensors = require('./white-sensors');
 var head = require('./head');
 
-var DEBUG = true;
+var DEBUG = false;
 
 var log = function(message) {
     if (DEBUG) {
@@ -144,13 +144,14 @@ Car.prototype.turn180 = function(rightFirst) {
     this.stop();
     var steps = STEPS_FOR_90_DEG_SPEED_1_2;
     var sync = true;
+    var magicOffset = 10;
     if (rightFirst) {
         this.go(true, true, 2, 1, steps, steps / 2, sync);
-        this.go(false, false, 1, 1, steps, steps, sync);
+        this.go(false, false, 2, 2, steps - magicOffset, steps - magicOffset, sync);
         this.go(true, true, 2, 1, steps, steps / 2, sync);
     } else {
         this.go(true, true, 1, 2, steps / 2, steps, sync);
-        this.go(false, false, 1, 1, steps, steps, sync);
+        this.go(false, false, 2, 2, steps - magicOffset, steps - magicOffset, sync);
         this.go(true, true, 1, 2, steps / 2, steps, sync);
     }
 };

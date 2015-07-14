@@ -30,12 +30,18 @@ var equal = function(obj1, obj2) {
 var getBlackLineDirection = function() {
     var data = read();
 
-    if (equal(data, [1, 0, 1, 0])) {
-        return 2; // 车前后都在线的左边
+    if (equal(data, [1, 1, 1, 1])) {
+        return 0;
     }
 
-    if (equal(data, [0, 1, 0, 1])) {
-        return -2; // 车前后都在线的右边
+    // 车前后都在线的左边
+    if (data[0] * data[2] > 0) {
+        return 2;
+    }
+
+    // 车前后都在线的右边
+    if (data[1] * data[3] > 0) {
+        return -2;
     }
 
     var sum = 0;
@@ -56,6 +62,7 @@ var isOnWhite = function() {
         return sum;
     };
     // 前面至少三个灭，后面至少一个灭
+    console.log('is on white!');
     return getSum(front) < 1 && getSum(back) < 2;
 };
 
