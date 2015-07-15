@@ -52,7 +52,7 @@ app.get('/status', function(req, res) {
 });
 
 app.get('/frame.jpg', function(req, res) {
-    console.log('fetch /run/shm/frame.jpg');
+    // console.log('fetch /run/shm/frame.jpg');
     res.writeHead(200, { 'content-type': 'image/jpeg' });
     try {
         fs.createReadStream('/run/shm/frame.jpg').pipe(res);
