@@ -102,11 +102,12 @@ int main()
         Mat ROI_BW;
         // http://docs.opencv.org/doc/tutorials/imgproc/threshold/threshold.html
         // 1: Binary Inverted
-        threshold(ROI_L, ROI_BW, 128, 255, 1);
+        threshold(ROI_L, ROI_BW, 192, 255, 1);
 
         // removeSmallBlobs(ROI_BW, 1000);
 
         if (DEBUG) {
+            imshow("roi_l", ROI_L);
             imshow("roi_bw", ROI_BW);
         }
 
