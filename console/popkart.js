@@ -2,6 +2,8 @@ window.popkartMode = false;
 
 $(function() {
     var up, down, left, right;
+    var speed = 1;
+
 
     document.onkeydown = function(ev) {
         ev.preventDefault();
@@ -34,6 +36,10 @@ $(function() {
         if (code == 40) {
             down = false;
         }
+        // speed 1x - 3x
+        if (code >= 49 && code <= 51) {
+            speed = code - 48;
+        }
         if (!left && !right && !up && !down) {
             var cmd = ";car.stop();";
             $.ajax({
@@ -65,6 +71,8 @@ $(function() {
             if (right) {
                 args[2] += 1;
             }
+            args[2] *= speed;
+            args[3] *= speed;
             if (left || right || up || down) {
                 cmd = ";car.go(" + args.join(',') + ");";
                 $.ajax({

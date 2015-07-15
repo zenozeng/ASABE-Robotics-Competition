@@ -77,10 +77,9 @@ app.get('/status', function(req, res) {
 app.get('/frame.jpg', function(req, res) {
     // console.log('fetch /run/shm/frame.jpg');
     res.writeHead(200, { 'content-type': 'image/jpeg' });
-    try {
+    if (fs.existsSync('/run/shm/frame.jpg')) {
         fs.createReadStream('/run/shm/frame.jpg').pipe(res);
-    } catch (e) {
-        res.writeHead(404, { 'content-type': 'image/jpeg' });
+    } else {
         res.end();
     }
 });
