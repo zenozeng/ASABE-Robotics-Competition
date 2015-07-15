@@ -114,3 +114,31 @@ h1 .fa {
     width: 120px;
     height: 120px;
 }
+
+#control {
+    padding: 1em 0;
+}
+
+#control ul, #control li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#control li {
+    padding: .5em;
+    font-size: 24px;
+    font-weight: bold;
+    color: #aaa;
+    margin-right: .5em;
+    border-radius: 5px;
+    background: #eee;
+    transition: all 1s;
+}
+
+#control li:hover {
+    cursor: pointer;
+    background: #ccc;
+    color: #777;
+}
