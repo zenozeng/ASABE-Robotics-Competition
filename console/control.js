@@ -1,5 +1,5 @@
 $(function() {
-    ["start", "pause", "resume", "pause"].forEach(function(cmd) {
+    ["start", "pause", "resume", "stop"].forEach(function(cmd) {
         $("#ctrl-" + cmd).click(function() {
             $.post("/control/" + cmd);
         });
