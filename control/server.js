@@ -41,6 +41,8 @@ app.post('/control/resume', function(req, res) {
 app.post('/control/stop', function(req, res) {
     console.log('server.js: stop');
     if (car) {
+        // 注意 vision cpp 进程不会被杀死，但是它会被复用，所以不用担心
+        // 估计是 Node 的 module 缓存做的好事。
         car.kill('SIGHUP');
     }
     car = null;
