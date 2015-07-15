@@ -53,5 +53,14 @@ setInterval(function() {
 //
 /////////////////////////////////
 
-// car.turnLeft90Sync();
+car.turnLeft90Sync();
 car.autoForward();
+
+process.on('message', function(msg) {
+    if (msg.command == "pause") {
+        car.stopAuto();
+    }
+    if (msg.command == "resume") {
+        car.autoForward();
+    }
+});
