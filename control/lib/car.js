@@ -88,7 +88,6 @@ Car.prototype.auto = function(forward) {
 Car.prototype.autoForward = function() {
     log('auto forward');
     var car = this;
-    car.isAuto = true;
     car.stopAuto();
     car.autoInterval = setInterval(function() {
 
@@ -112,7 +111,6 @@ Car.prototype.autoForward = function() {
 Car.prototype.autoBackward = function() {
     log('auto backward');
     var car = this;
-    car.isAuto = true;
     car.stopAuto();
     car.autoInterval = setInterval(function() {
 
@@ -132,11 +130,15 @@ Car.prototype.autoBackward = function() {
     }, 20);
 };
 
+Car.prototype.isAuto = function() {
+    return typeof this.autoInterval !== "undefined";
+};
+
 Car.prototype.stopAuto = function() {
-    this.isAuto = false;
     if (typeof this.autoInterval !== "undefined") {
         clearInterval(this.autoInterval);
     }
+    this.autoInterval = undefined;
 };
 
 var STEPS_FOR_90_DEG_SPEED_0_1 = 240;

@@ -109,3 +109,8 @@ h1 .fa {
 .fa-circle-thin {
     color: #F08080;
 }
+
+#frame {
+    width: 120px;
+    height: 120px;
+}

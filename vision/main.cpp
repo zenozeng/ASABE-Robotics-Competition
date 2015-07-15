@@ -153,7 +153,6 @@ int main()
             int count = 0;
             int count_t = 0;
 
-            cout << ROI_BW.rows << "," << ROI_BW.cols << endl;
             for (int y = 0; y < ROI_BW.rows; y++) {
                 for (int x = 0; x < ROI_BW.cols; x++) {
                     if (ROI_BW.at<Vec3b>(y, x)[0] == 255) {
@@ -163,9 +162,6 @@ int main()
                 }
             }
 
-            cout << count << endl;
-            cout << count_t << endl;
-            cout << position << endl;
             position /= count;
             position /= ROI_BW.cols;
         }

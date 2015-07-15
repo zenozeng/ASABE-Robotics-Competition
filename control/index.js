@@ -13,7 +13,8 @@ var head = require('./lib/head');
 var rightFirst = false;
 setInterval(function() {
     if (head.isOnWhite()) {
-        if (car.isAuto) {
+        if (car.isAuto()) {
+            console.log('is on white and is auto!');
             car.stopAuto();
             car.turn180(rightFirst);
             rightFirst = !rightFirst;
@@ -30,7 +31,10 @@ setInterval(function() {
 
 setInterval(function() {
     if (tree.isTree()) { // if tree detected
-        if (car.isAuto) {
+        console.log(tree.getTree());
+        console.log({isTree: tree.isTree()});
+        if (car.isAuto()) {
+            console.log('isTree and isAuto');
             car.stopAuto();
             car.go(true, true, 1, 1, 100, 100, true); // sync forward 100 steps
             end_effector.open(); // sync open
@@ -38,7 +42,7 @@ setInterval(function() {
             end_effector.close(); // sync close
             manipulator.move(-1100); // sync move back
             end_effector.open(); // sync open
-            // todo: 传送带
+            car.autoForward();
         }
     }
 }, 20);
@@ -49,5 +53,5 @@ setInterval(function() {
 //
 /////////////////////////////////
 
-car.turnLeft90Sync();
+// car.turnLeft90Sync();
 car.autoForward();

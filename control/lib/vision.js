@@ -14,18 +14,21 @@ function Vision(options) {
     this.process.stdout.on('data', function(data) {
         var msg = data.toString();
         var obj = null;
-        try {
-            obj = JSON.parse(msg);
-            if (obj) {
-                v.exists = (obj.exists == "1");
-                v.color = obj.color == "null" ? null : obj.color;
-                v.hue = parseInt(obj.hue);
-                v.position = parseFloat(obj.position);
-                v.time = new Date();
+        msg.split('\n').forEach(function(msg) {
+            try {
+                obj = JSON.parse(msg);
+                if (obj) {
+                    v.exists = (obj.exists == "1");
+                    v.color = obj.color == "null" ? null : obj.color;
+                    v.hue = parseInt(obj.hue);
+                    v.position = parseFloat(obj.position);
+                    v.time = new Date();
+                }
+            } catch (e) {
+                console.warn('Ignore: ', e);
+                console.warn(msg);
             }
-        } catch (e) {
-            console.warn('Ignore: ', e);
-        }
+        });
     });
     this.process.stderr.on('data', function(data) {
         console.error(data.toString());

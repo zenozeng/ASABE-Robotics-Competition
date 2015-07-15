@@ -1,5 +1,4 @@
 var yapcduino = require('yapcduino')({global: true});
-var Servo = yapcduino.Servo;
 var pins = require('./pins');
 
 var pin = pins.END_EFFECTOR_SERVO;

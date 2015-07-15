@@ -62,7 +62,6 @@ var isOnWhite = function() {
         return sum;
     };
     // 前面至少三个灭，后面至少一个灭
-    console.log('is on white!');
     return getSum(front) < 1 && getSum(back) < 2;
 };
 

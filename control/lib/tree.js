@@ -1,5 +1,5 @@
-var vision = require('./lib/vision');
-var ir = require('./lib/ir');
+var vision = require('./vision');
+var ir = require('./ir');
 
 var isHighTree = function() {
     var v = ir.getVolt();
