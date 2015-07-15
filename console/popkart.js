@@ -34,6 +34,16 @@ $(function() {
         if (code == 40) {
             down = false;
         }
+        if (!left && !right && !up && !down) {
+            var cmd = ";car.stop();";
+            $.ajax({
+                type: "POST",
+                url: "/control/eval",
+                processData: false,
+                contentType: 'plain/text',
+                data: cmd
+            });
+        }
     };
     $('#popkart-mode').click(function() {
         $(this).toggleClass('open');
@@ -46,25 +56,25 @@ $(function() {
                 args = ["true", "true", 1, 1];
             } else if (down) {
                 args = ["false", "false", 1, 1];
-            }
-            if (up || down) {
-                if (left) {
-                    args[2] *= 2;
-                }
-                if (right) {
-                    args[3] *= 2;
-                }
-                cmd = ";car.go(" + args.join(',') + ");";
             } else {
-                cmd = ";car.stop();";
+                args = ["true", "true", 0, 0];
             }
-            $.ajax({
-                type: "POST",
-                url: "/control/eval",
-                processData: false,
-                contentType: 'plain/text',
-                data: cmd
-            });
+            if (left) {
+                args[3] += 1;
+            }
+            if (right) {
+                args[2] += 1;
+            }
+            if (left || right || up || down) {
+                cmd = ";car.go(" + args.join(',') + ");";
+                $.ajax({
+                    type: "POST",
+                    url: "/control/eval",
+                    processData: false,
+                    contentType: 'plain/text',
+                    data: cmd
+                });
+            }
         }
     }, 200);
 

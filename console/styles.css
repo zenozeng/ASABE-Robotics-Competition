@@ -142,3 +142,12 @@ h1 .fa {
     background: #ccc;
     color: #777;
 }
+
+li#popkart-mode {
+    font-size: 12px;
+}
+
+#popkart-mode.open {
+    background: #ccc;
+    color: #777;
+}
