@@ -4,21 +4,14 @@ var pins = require('./pins');
 
 var pin = pins.END_EFFECTOR_SERVO;
 
-pin = 5;
-
-var servo = new Servo(pin, {
-    minPWM: 1,
-    maxPWM: 200,
-    maxAngle: 180,
-    frequency: 390
-});
+pwmfreq_set(3, 126);
 
 module.exports = {
     open: function() {
-        servo.write(45);
-        servo.stop();
+        analogWrite(pin, 5);
+        analogWrite(pin, 0);
     },
     close: function() {
-        servo.write(90);
+        analogWrite(pin, 30);
     }
 };

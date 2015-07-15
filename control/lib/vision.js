@@ -20,6 +20,7 @@ function Vision(options) {
                 v.exists = (obj.exists == "1");
                 v.color = obj.color == "null" ? null : obj.color;
                 v.hue = parseInt(obj.hue);
+                v.position = parseFloat(obj.position);
                 v.time = new Date();
             }
         } catch (e) {
@@ -31,6 +32,10 @@ function Vision(options) {
     });
     return this;
 }
+
+Vision.prototype.isTree = function() {
+    return this.exists && this.position > 0.4 && this.position < 0.6;
+};
 
 Vision.prototype.log = function() {
     var v = this;

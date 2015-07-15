@@ -19,7 +19,7 @@ module.exports = {
     MANIPULATOR_STEPPING_MOTOR_CW: 8,
 
     // 夹持装置控制舵机
-    END_EFFECTOR_SERVO: 5,
+    END_EFFECTOR_SERVO: 3,
 
     // 红外线
     // 注意这个是 A0 口，不是 GPIO 0 口
