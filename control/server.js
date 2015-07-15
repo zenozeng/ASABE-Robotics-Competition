@@ -49,6 +49,27 @@ app.post('/control/stop', function(req, res) {
     res.send('I am happy.');
 });
 
+app.post('/control/eval', function(req, res) {
+    var car = require('./lib/car');
+    req.rawBody = '';
+    req.setEncoding('utf8');
+
+    req.on('data', function(chunk) {
+        req.rawBody += chunk;
+    });
+
+    req.on('end', function() {
+        console.log('/control/eval:', req.rawBody);
+        try {
+            eval(req.rawBody);
+        } catch(e) {
+            console.warn(e);
+        }
+        res.send('I am happy.');
+    });
+
+});
+
 app.get('/status', function(req, res) {
     res.send(JSON.stringify(status));
 });
