@@ -9,7 +9,8 @@
   "author": "Zeno Zeng",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.12.3",
+    "express": "^4.13.1",
+    "serve-static": "^1.10.0",
     "yapcduino": "latest"
   }
 }
