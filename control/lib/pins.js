@@ -23,7 +23,7 @@ module.exports = {
 
     // 红外线
     // 注意这个是 A0 口，不是 GPIO 0 口
-    IR: 0,
+    IR: 4,
 
     // 循迹片
     BLACK_AND_WHITE_SENSOR_1: 14, // 前左

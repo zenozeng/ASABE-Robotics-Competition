@@ -1,4 +1,4 @@
-var vision = require('./lib/vision');
+var tree = require('./lib/tree');
 var manipulator = require('./lib/manipulator');
 var end_effector = require('./lib/end-effector');
 var car = require('./lib/car');
@@ -29,7 +29,7 @@ setInterval(function() {
 ///////////////////////////////////////
 
 setInterval(function() {
-    if (vision.isTree()) { // if tree detected
+    if (tree.isTree()) { // if tree detected
         if (car.isAuto) {
             car.stopAuto();
             car.go(true, true, 1, 1, 100, 100, true); // sync forward 100 steps

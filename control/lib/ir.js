@@ -4,15 +4,12 @@ var pins = require('./pins');
 
 var adc = pins.IR;
 
-adc = 4;
-
-var getDistance = function() {
+var getVolt = function() {
     var val = analogRead(adc);
     var v = val * 3.3 / 4096;
     return v;
 };
 
-setInterval(function() {
-    var d = getDistance();
-    console.log(d);
-}, 20);
+module.exports = {
+    getVolt: getVolt
+};

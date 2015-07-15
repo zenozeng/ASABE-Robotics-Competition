@@ -37,16 +37,6 @@ Vision.prototype.isTree = function() {
     return this.exists && this.position > 0.4 && this.position < 0.6;
 };
 
-Vision.prototype.log = function() {
-    var v = this;
-    console.log(JSON.stringify({
-        exists: v.exists,
-        color: v.color,
-        hue: v.hue,
-        time: v.time
-    }));
-};
-
 var vision = new Vision({debug: true});
 
 process.on('exit', function(code) {
