@@ -88,6 +88,7 @@ Car.prototype.auto = function(forward) {
 Car.prototype.autoForward = function() {
     log('auto forward');
     var car = this;
+    car.isAuto = true;
     car.stopAuto();
     car.autoInterval = setInterval(function() {
 
@@ -111,6 +112,7 @@ Car.prototype.autoForward = function() {
 Car.prototype.autoBackward = function() {
     log('auto backward');
     var car = this;
+    car.isAuto = true;
     car.stopAuto();
     car.autoInterval = setInterval(function() {
 
@@ -131,6 +133,7 @@ Car.prototype.autoBackward = function() {
 };
 
 Car.prototype.stopAuto = function() {
+    this.isAuto = false;
     if (typeof this.autoInterval !== "undefined") {
         clearInterval(this.autoInterval);
     }

@@ -20,6 +20,7 @@ Manipulator.prototype.move = function(offsetSteps) {
         period: 1000,
         loops: Math.abs(offsetSteps)
     });
+    motor.sync();
 };
 
 // usage: moveTo(0)

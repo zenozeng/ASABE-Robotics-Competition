@@ -1,35 +1,51 @@
 var vision = require('./lib/vision');
-
-// // var Ultrasound = require('./lib/ultrasound');
-// // var ultrasound = new Ultrasound({pinEcho: 0, pinTrigger: 1});
-
-// var car = require('./lib/car');
-
-// var manipulator = require('./lib/manipulator');
-// var end_effector = require('./lib/end-effector');
-
+var manipulator = require('./lib/manipulator');
+var end_effector = require('./lib/end-effector');
 var car = require('./lib/car');
 var head = require('./lib/head');
-var forward = true;
-car.turnLeft90Sync();
-car.auto(forward);
-var checkInterval;
-var stopCheck = function() {
-    clearInterval(checkInterval);
-};
+
+////////////////////////////////
+//
+// 如果到了边界则进行旋转、变道等操作
+//
+////////////////////////////////
+
 var rightFirst = false;
-var check = function() {
-    checkInterval = setInterval(function() {
-        if (head.isOnWhite()) {
-            stopCheck();
+setInterval(function() {
+    if (head.isOnWhite()) {
+        if (car.isAuto) {
             car.stopAuto();
             car.turn180(rightFirst);
             rightFirst = !rightFirst;
-            car.auto(forward);
-            setTimeout(function() {
-                check();
-            }, 5000);
+            car.autoForward();
         }
-    }, 20);
-};
-check();
+    }
+}, 20);
+
+////////////////////////////////////////
+//
+// 如果发现树且在自动状态，则执行相关操作
+//
+///////////////////////////////////////
+
+setInterval(function() {
+    if (vision.isTree()) { // if tree detected
+        if (car.isAuto) {
+            car.stopAuto();
+            car.go(true, true, 1, 1, 100, 100, true); // sync forward 100 steps
+            end_effector.open(); // sync open
+            manipulator.move(1100); // sync move manipulator
+            end_effector.close(); // sync close
+            manipulator.move(-1100); // sync move back
+            end_effector.open(); // sync open
+            // todo: 传送带
+        }
+    }
+}, 20);
+
+
+car.turnLeft90Sync();
+car.autoForward();
+
+
+
