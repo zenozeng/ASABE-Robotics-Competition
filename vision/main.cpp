@@ -170,7 +170,7 @@ int main()
 
         Scalar grey(255 * 0.1, 255 * 0.1, 255 * 0.1);
 
-        imwrite("../console/frame.jpg", frame);
+        imwrite("/run/shm/frame.jpg", frame);
 
         if (DEBUG) {
             imshow("frame", frame);

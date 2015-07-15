@@ -25,8 +25,8 @@ function Vision(options) {
                     v.time = new Date();
                 }
             } catch (e) {
-                console.warn('Ignore: ', e);
-                console.warn(msg);
+                // console.warn('Ignore: ', e);
+                // console.warn(msg);
             }
         });
     });

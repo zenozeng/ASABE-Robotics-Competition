@@ -1,7 +1,7 @@
 $(function() {
     var canvas = $('#frame')[0];
     var ctx = canvas.getContext('2d');
-    var display = function() {
+    setInterval(function() {
         var image = new Image();
         image.src = "frame.jpg?_=" + Date.now();
         image.onload = function() {
@@ -14,11 +14,6 @@ $(function() {
                 canvas.height = h;
             }
             ctx.drawImage(image, 0, 0, w, h);
-            setTimeout(display, 500);
         };
-        image.onerror = function() {
-            display();
-        };
-    };
-    display();
+    }, 500);
 });

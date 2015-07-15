@@ -149,6 +149,7 @@ Car.prototype.turn180 = function(rightFirst) {
     this.stop();
     var steps = STEPS_FOR_90_DEG_SPEED_1_2;
     var sync = true;
+    this.go(true, true, 1, 1, 100, 100, sync);
     if (rightFirst) {
         this.go(true, true, 2, 1, steps, steps / 2, sync);
         this.go(false, false, 2, 2, steps, steps, sync);
@@ -158,6 +159,7 @@ Car.prototype.turn180 = function(rightFirst) {
         this.go(false, false, 2, 2, steps, steps, sync);
         this.go(true, true, 1, 2, steps / 2, steps, sync);
     }
+    this.go(true, true, 1, 1, 100, 100, sync);
 };
 
 // 左轮不动
