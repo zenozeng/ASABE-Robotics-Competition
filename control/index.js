@@ -12,6 +12,7 @@ var tasks = [
         var rightFirst = false;
         var blocks = 0;
         car.turn180(rightFirst, blocks);
+        car.resetSteps();
         car.autoForward();
     },
     function() {
@@ -19,6 +20,7 @@ var tasks = [
         var rightFirst = true;
         var blocks = 2;
         car.turn180(rightFirst, blocks);
+        car.resetSteps();
         car.autoForward();
     },
     function() {
@@ -26,6 +28,7 @@ var tasks = [
         var rightFirst = true;
         var blocks = 0;
         car.turn180(rightFirst, blocks);
+        car.resetSteps();
         car.autoForward();
     },
     function() {
@@ -33,6 +36,7 @@ var tasks = [
         var rightFirst = true;
         var blocks = 1;
         car.turn180(rightFirst, blocks);
+        car.resetSteps();
         car.autoForward();
     },
     function() {

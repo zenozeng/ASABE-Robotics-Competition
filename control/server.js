@@ -87,10 +87,20 @@ var HHMMSS = function(sec_num) {
 };
 
 app.get('/status', function(req, res) {
-    var data = tree.getTree();
-    delete data.time;
+    var car = require('./lib/car');
+    var data = {};
+
     data.uptime = (Date.now() - serverStartTimestamp) / 1000;
     data.uptime = HHMMSS(data.uptime);
+
+    data.tree = tree.getTree();
+    delete data.tree.time;
+
+    data.car = {
+        steps: car.getSteps(),
+        isAuto: car.isAuto()
+    };
+
     res.send(JSON.stringify(data));
 });
 

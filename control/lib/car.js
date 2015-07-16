@@ -23,7 +23,7 @@ var leftMotor = new SoftPWM(left.clk);
 var rightMotor = new SoftPWM(right.clk);
 
 function Car() {
-    this.distance = 0;
+    this.steps = 0;
 }
 
 Car.prototype.stop = function() {
@@ -61,6 +61,9 @@ Car.prototype.go = function(leftIsForward, rightIsForward, leftSpeed, rightSpeed
 
 Car.prototype.forward = function(steps) {
     log('forward');
+    if (steps) {
+        this.steps += steps;
+    }
     this.go(true, true, 1, 1, steps, steps);
 };
 
@@ -99,36 +102,30 @@ Car.prototype.autoForward = function() {
             "2": [1, 0.5]
         };
         if (dir != 0) {
+            car.steps += car.getCurrentSteps();
             car.go(true, true, speed[dir][0], speed[dir][1]);
         } else {
+            car.steps += car.getCurrentSteps();
             car.forward();
         }
 
     }, 20);
 };
 
-// Buggy! untested.
-Car.prototype.autoBackward = function() {
-    log('auto backward');
-    var car = this;
-    car.stopAuto();
-    car.autoInterval = setInterval(function() {
-
-        var dir = head.getBlackLineDirection();
-        var speed = {
-            "-1": [0.8, 1],
-            "-2": [0.5, 1],
-            "1": [1, 0.8],
-            "2": [1, 0.5]
-        };
-        if (dir != 0) {
-            car.go(false, false, speed[dir][0], speed[dir][1]);
-        } else {
-            car.backward();
-        }
-
-    }, 20);
+// Get current steps since last write
+Car.prototype.getCurrentSteps = function() {
+    return (leftMotor.getLoopCount() + rightMotor.getLoopCount()) / 2;
 };
+
+// steps for current forward task
+Car.prototype.getSteps = function() {
+    return this.steps + this.getCurrentSteps();
+};
+
+Car.prototype.resetSteps = function() {
+    this.steps = 0;
+};
+
 
 Car.prototype.isAuto = function() {
     return typeof this.autoInterval !== "undefined";
