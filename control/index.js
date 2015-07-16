@@ -65,23 +65,23 @@ setInterval(function() {
 //
 ///////////////////////////////////////
 
-// setInterval(function() {
-//     if (tree.isTree()) { // if tree detected
-//         console.log(tree.getTree());
-//         console.log({isTree: tree.isTree()});
-//         if (car.isAuto()) {
-//             console.log('isTree and isAuto');
-//             car.stopAuto();
-//             car.go(true, true, 1, 1, 100, 100, true); // sync forward 100 steps
-//             end_effector.open(); // sync open
-//             manipulator.move(1100); // sync move manipulator
-//             end_effector.close(); // sync close
-//             manipulator.move(-1100); // sync move back
-//             end_effector.open(); // sync open
-//             car.autoForward();
-//         }
-//     }
-// }, 20);
+setInterval(function() {
+    if (tree.isTree()) { // if tree detected
+        console.log(tree.getTree());
+        console.log({isTree: tree.isTree()});
+        if (car.isAuto()) {
+            console.log('isTree and isAuto');
+            car.stopAuto();
+            car.go(true, true, 1, 1, 100, 100, true); // sync forward 100 steps
+            end_effector.open(); // sync open
+            manipulator.move(1100); // sync move manipulator
+            end_effector.close(); // sync close
+            manipulator.move(-1100); // sync move back
+            end_effector.open(); // sync open
+            car.autoForward();
+        }
+    }
+}, 20);
 
 //////////////////////////////////
 //
