@@ -1,0 +1,1 @@
+- [OpenCV系列(四)：矩阵操作](http://blog.skyoung.org/2014/07/31/OpenCV%28IV%29-operations-on-arrays/)

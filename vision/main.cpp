@@ -108,12 +108,29 @@ int main()
             }
             hue = 1.0 * hueSum / count / 255 * 360;
 
-            if (hue > 35 && hue < 70) {
-                color = "Yellow";
-            } else if (hue > 70 && hue < 240) {
-                color = "Green";
-            } else {
+            // hue: 0 - 360
+            // Brown: 12
+            // Yellow (Sun Gloss Yellow): 46
+            // Green (Gloss Hosta Leaf): 78
+
+            int green = hue - 78;
+            int yellow = hue - 46;
+            int brown = hue - 12;
+
+            green = green > 180 ? 360 - green : green;
+            yellow = yellow > 180 ? 360 - yellow : yellow;
+            brown = brown > 180 ? 360 - brown : brown;
+
+            if (brown < yellow && brown < green) {
                 color = "Brown";
+            }
+
+            if (yellow < green && yellow < brown) {
+                color = "Yellow";
+            }
+
+            if (green < yellow && green < brown) {
+                color = "Green";
             }
         }
 
