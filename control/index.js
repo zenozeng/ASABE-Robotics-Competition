@@ -84,8 +84,10 @@ setInterval(function() {
             console.log('isTree and isAuto');
             var treeInfo = {
                 row: row,
-                col: leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex())
+                col: leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex()),
+                tree: tree.getTree()
             };
+            logs.push(treeInfo);
             car.stopAuto();
             car.go(true, true, 1, 1, 100, 100, true); // sync forward 100 steps
             end_effector.open(); // sync open

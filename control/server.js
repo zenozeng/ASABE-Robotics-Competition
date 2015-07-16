@@ -14,7 +14,6 @@ var tree = require('./lib/tree');
 
 console.log('[OK] Server ready.');
 
-
 var carLogs = [];
 
 var app = express();
