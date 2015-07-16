@@ -3,6 +3,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 using namespace std;
@@ -109,13 +110,13 @@ int main()
             hue = 1.0 * hueSum / count / 255 * 360;
 
             // hue: 0 - 360
-            // Brown: 12
+            // Brown: 30
             // Yellow (Sun Gloss Yellow): 46
             // Green (Gloss Hosta Leaf): 78
 
-            int green = hue - 78;
-            int yellow = hue - 46;
-            int brown = hue - 12;
+            int green = abs(hue - 78);
+            int yellow = abs(hue - 46);
+            int brown = abs(hue - 30);
 
             green = green > 180 ? 360 - green : green;
             yellow = yellow > 180 ? 360 - yellow : yellow;
@@ -173,6 +174,8 @@ int main()
         if (DEBUG) {
             imshow("frame", frame);
             imshow("ROI_BW", ROI_BW);
+            imshow("ROI_H", ROI_H);
+            imshow("ROI_S", ROI_S);
             imshow("ROI_L", ROI_L);
             waitKey(100);
         }
