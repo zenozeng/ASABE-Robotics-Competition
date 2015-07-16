@@ -95,43 +95,48 @@ int main()
         // 若树存在，判断其颜色类型
         string color = "null";
         double hue;
+        double saturation;
 
         if (exists) {
             int count = 0;
             int hueSum = 0;
+            int sSum = 0;
             for (int y = 0; y < ROI_BW.rows; y++) {
                 for (int x = 0; x < ROI_BW.cols; x++) {
                     if (ROI_BW.at<Vec3b>(y, x)[0] == 255) {
                         count++;
                         hueSum += ROI_H.at<Vec3b>(y, x)[0];
+                        sSum += ROI_S.at<Vec3b>(y, x)[0];
                     }
                 }
             }
             hue = 1.0 * hueSum / count / 255 * 360;
+            saturation = 1.0 * sSum / count;
 
             // hue: 0 - 360
-            // Brown: 30
-            // Yellow (Sun Gloss Yellow): 46
-            // Green (Gloss Hosta Leaf): 78
+            // Brown: (Gloss Leather Brown Spray Paint, HSL: 12, 19, 27)
+            // Yellow (Gloss Sun Yellow Spray Paint, HSL: 46, 91, 50)
+            // Green (Gloss Hosta Leaf Spray Paint, HSL: 78, 43, 27)
+
+            // 由于实际测试中我们的棕色木块色相可以接近三四十，会导致误判为黄色
+            // 所以我们结合饱和度信息
 
             int green = abs(hue - 78);
             int yellow = abs(hue - 46);
-            int brown = abs(hue - 30);
 
             green = green > 180 ? 360 - green : green;
             yellow = yellow > 180 ? 360 - yellow : yellow;
-            brown = brown > 180 ? 360 - brown : brown;
 
-            if (brown < yellow && brown < green) {
-                color = "Brown";
-            }
-
-            if (yellow < green && yellow < brown) {
-                color = "Yellow";
-            }
-
-            if (green < yellow && green < brown) {
+            if (green < yellow) {
                 color = "Green";
+            } else {
+                int d1 = (saturation - 19) * (saturation - 19) + (hue - 12) * (hue - 12);
+                int d2 = (saturation - 91) * (saturation - 91) + (hue - 46) * (hue - 46);
+                if (d1 < d2) {
+                    color = "Brown";
+                } else {
+                    color = "Yellow";
+                }
             }
         }
 
@@ -165,6 +170,7 @@ int main()
         cout << "\"color\": \"" << color << "\", ";
         cout << "\"stddev\": \"" << stddev << "\", ";
         cout << "\"hue\": \"" << (int) hue << "\", ";
+        cout << "\"saturation\": \"" << saturation << "\", ";
         cout << "\"position\": \"" << position << "\"";
         cout << "}" << endl;
         cout << flush;
