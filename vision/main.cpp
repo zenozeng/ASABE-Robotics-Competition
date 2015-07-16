@@ -71,135 +71,94 @@ int main()
         Mat ROI_H = h(roi_rect);
         Mat ROI_L = l(roi_rect);
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////
         //
-        // 判断树是否存在（亮度 K-Means, K=3）
+        // 判断树是否存在（整体方差 > magicValue）
         //
-        // double kmeans(InputArray data, int K, InputOutputArray bestLabels, TermCriteria criteria,
-        //               int attempts, int flags, OutputArray centers=noArray() )
-        //
-        // http://docs.opencv.org/modules/core/doc/clustering.html
-        // http://seiya-kumada.blogspot.jp/2013/03/k-means-clustering.html
-        //
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-
-        height = ROI_L.rows;
-        width = ROI_L.cols;
-
-        Mat labels;
-        Mat centers;
+        /////////////////////////////////////////
 
         Mat src = ROI_L;
+        Scalar mean_scalar;
+        Scalar stddev_scalar;
 
-        src.convertTo(src, CV_32F);
-        kmeans(src, 2, labels,
-               TermCriteria(CV_TERMCRIT_ITER|CV_TERMCRIT_EPS, 10, 0.001), 5,
-               KMEANS_PP_CENTERS, centers);
+        meanStdDev(src, mean_scalar, stddev_scalar);
+        double mean = mean_scalar.val[0];
+        double stddev = stddev_scalar.val[0];
 
-        Mat new_image( src.size(), src.type() );
+        bool exists = stddev > 25;
 
-        cout << src.size() << endl;
+        Mat ROI_BW;
+        threshold(src, ROI_BW, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+        bitwise_not(ROI_BW, ROI_BW);
 
-        for( int y = 0; y < src.rows; y++ )
-        {
-            for( int x = 0; x < src.cols; x++ )
-            {
-                cout << "p3" << endl << flush;
-                cout << labels.size() << endl;
-                int cluster_idx = labels.at<int>(y + x * src.rows, 0);
-                cout << "<" << cluster_idx << ">" << endl << flush;
-                cout << "p4" << endl << flush;
-                cout << x << "," << y << endl << flush;
-                cout << centers.at<float>(cluster_idx, 0) << endl << flush;
-                new_image.at<Vec3b>(y,x)[0] = centers.at<float>(cluster_idx, 0);
-                cout << "p5" << endl << flush;
-                // new_image.at<Vec3b>(y,x)[1] = centers.at<float>(cluster_idx, 1);
-                // new_image.at<Vec3b>(y,x)[2] = centers.at<float>(cluster_idx, 2);
+        // 若树存在，判断其颜色类型
+        string color = "null";
+        double hue;
+
+        if (exists) {
+            int count = 0;
+            int hueSum = 0;
+            for (int y = 0; y < ROI_BW.rows; y++) {
+                for (int x = 0; x < ROI_BW.cols; x++) {
+                    if (ROI_BW.at<Vec3b>(y, x)[0] == 255) {
+                        count++;
+                        hueSum += ROI_H.at<Vec3b>(y, x)[0];
+                    }
+                }
+            }
+            hue = 1.0 * hueSum / count / 255 * 360;
+
+            if (hue > 35 && hue < 70) {
+                color = "Yellow";
+            } else if (hue > 70 && hue < 240) {
+                color = "Green";
+            } else {
+                color = "Brown";
             }
         }
 
-        Mat ROI_BW = new_image;
+        // 获取树像素的重心位置
+        double position = 0;
+        if (exists) {
+            int count = 0;
+            int count_t = 0;
 
-        if (DEBUG) {
-            cout << "debug" << endl;
-            imshow("tmp", ROI_BW);
-            imshow("frame", frame);
-            // imshow("roi_l", ROI_L);
-            waitKey(100);
+            for (int y = 0; y < ROI_BW.rows; y++) {
+                for (int x = 0; x < ROI_BW.cols; x++) {
+                    if (ROI_BW.at<Vec3b>(y, x)[0] == 255) {
+                        position += x;
+                        count++;
+                    }
+                }
+            }
+
+            position /= count;
+            position /= ROI_BW.cols;
         }
 
+        ////////////////////////////
+        //
+        // Output JSON & image
+        //
+        ////////////////////////////
 
-        // double rate = sum(ROI_BW)[0] / (ROI_BW.rows * ROI_BW.cols * 255);
+        cout << "{";
+        cout << "\"exists\": \"" << exists << "\", ";
+        cout << "\"color\": \"" << color << "\", ";
+        cout << "\"stddev\": \"" << stddev << "\", ";
+        cout << "\"hue\": \"" << (int) hue << "\", ";
+        cout << "\"position\": \"" << position << "\"";
+        cout << "}" << endl;
+        cout << flush;
 
-        // if (DEBUG) {
-        //     cout << "rate: ";
-        //     cout << rate << endl;
-        // }
+        imwrite("/run/shm/frame.jpg", frame);
 
-        // bool exists = rate > 0.15;
-
-        // // 若树存在，判断其颜色类型
-        // string color = "null";
-        // double hue;
-
-        // if (exists) {
-        //     int count = 0;
-        //     int hueSum = 0;
-        //     for (int y = 0; y < ROI_BW.rows; y++) {
-        //         for (int x = 0; x < ROI_BW.cols; x++) {
-        //             if (ROI_BW.at<Vec3b>(y, x)[0] == 255) {
-        //                 count++;
-        //                 hueSum += ROI_H.at<Vec3b>(y, x)[0];
-        //             }
-        //         }
-        //     }
-        //     hue = 1.0 * hueSum / count / 255 * 360;
-
-        //     if (hue > 35 && hue < 70) {
-        //         color = "Yellow";
-        //     } else if (hue > 70 && hue < 240) {
-        //         color = "Green";
-        //     } else {
-        //         color = "Brown";
-        //     }
-        // }
-
-        // // 获取树像素的重心位置
-        // double position = 0;
-        // if (exists) {
-        //     int count = 0;
-        //     int count_t = 0;
-
-        //     for (int y = 0; y < ROI_BW.rows; y++) {
-        //         for (int x = 0; x < ROI_BW.cols; x++) {
-        //             if (ROI_BW.at<Vec3b>(y, x)[0] == 255) {
-        //                 position += x;
-        //                 count++;
-        //             }
-        //         }
-        //     }
-
-        //     position /= count;
-        //     position /= ROI_BW.cols;
-        // }
-
-        // // output json
-        // cout << "{";
-        // cout << "\"exists\": \"" << exists << "\", ";
-        // cout << "\"color\": \"" << color << "\", ";
-        // cout << "\"hue\": \"" << (int) hue << "\", ";
-        // cout << "\"position\": \"" << position << "\"";
-        // cout << "}" << endl;
-        // cout << flush;
-
-        // Scalar grey(255 * 0.1, 255 * 0.1, 255 * 0.1);
-
-        // imwrite("/run/shm/frame.jpg", frame);
-
-        // if (DEBUG) {
-        //     imshow("frame", frame);
-        //     waitKey(100);
-        // }
+        if (DEBUG) {
+            imshow("frame", frame);
+            imshow("ROI_BW", ROI_BW);
+            imshow("ROI_L", ROI_L);
+            waitKey(100);
+        }
     }
 
     return 0;
