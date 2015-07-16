@@ -14,6 +14,7 @@ module.exports = {
         return {
             exists: vision.exists,
             color: vision.color,
+            stddev: vision.stddev,
             hue: vision.hue,
             time: vision.time,
             position: vision.position,

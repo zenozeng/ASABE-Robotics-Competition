@@ -22,6 +22,7 @@ function Vision(options) {
                     v.color = obj.color == "null" ? null : obj.color;
                     v.hue = parseInt(obj.hue);
                     v.position = parseFloat(obj.position);
+                    v.stddev = parseFloat(obj.stddev);
                     v.time = new Date();
                 }
             } catch (e) {

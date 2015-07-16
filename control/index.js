@@ -4,24 +4,60 @@ var end_effector = require('./lib/end-effector');
 var car = require('./lib/car');
 var head = require('./lib/head');
 
+var row = 0; // row 从 1 到 5
+
+var tasks = [
+    function() {
+        row = 1; // 接下来机械臂指向 row#1
+        var rightFirst = false;
+        var blocks = 0;
+        car.turn180(rightFirst, blocks);
+        car.autoForward();
+    },
+    function() {
+        row = 4;
+        var rightFirst = true;
+        var blocks = 2;
+        car.turn180(rightFirst, blocks);
+        car.autoForward();
+    },
+    function() {
+        row = 3;
+        var rightFirst = true;
+        var blocks = 0;
+        car.turn180(rightFirst, blocks);
+        car.autoForward();
+    },
+    function() {
+        row = 5;
+        var rightFirst = true;
+        var blocks = 1;
+        car.turn180(rightFirst, blocks);
+        car.autoForward();
+    },
+    function() {
+        car.goBack(); // Sync go back
+        // todo: 下货
+    }
+];
+
 ////////////////////////////////
 //
 // 如果到了边界则进行旋转、变道等操作
 //
 ////////////////////////////////
 
-// var rightFirst = false;
-// setInterval(function() {
-//     if (head.isOnWhite()) {
-//         if (car.isAuto()) {
-//             console.log('is on white and is auto!');
-//             car.stopAuto();
-//             car.turn180(rightFirst);
-//             rightFirst = !rightFirst;
-//             car.autoForward();
-//         }
-//     }
-// }, 20);
+var rightFirst = false;
+setInterval(function() {
+    if (head.isOnWhite()) {
+        if (car.isAuto()) {
+            var task = tasks.shift();
+            if (task) {
+                task();
+            }
+        }
+    }
+}, 20);
 
 ////////////////////////////////////////
 //
@@ -54,7 +90,14 @@ var head = require('./lib/head');
 /////////////////////////////////
 
 car.turnLeft90Sync();
+row = 2; // 一开始机械臂指向 row#2
 car.autoForward();
+
+//////////////////////////////////
+//
+// 与 Server 通信
+//
+/////////////////////////////////
 
 process.on('message', function(msg) {
     console.log('index.js: Command Received -- ', msg);

@@ -143,8 +143,9 @@ Car.prototype.stopAuto = function() {
 
 var STEPS_FOR_90_DEG_SPEED_0_1 = 240;
 var STEPS_FOR_90_DEG_SPEED_1_2 = STEPS_FOR_90_DEG_SPEED_0_1 * 2;
+var STEPS_FOR_A_BLOCK = 360; // TODO
 
-Car.prototype.turn180 = function(rightFirst) {
+Car.prototype.turn180 = function(rightFirst, offsetBlocks) {
     log('turn 180');
     this.stop();
     var steps = STEPS_FOR_90_DEG_SPEED_1_2;
@@ -153,10 +154,18 @@ Car.prototype.turn180 = function(rightFirst) {
     if (rightFirst) {
         this.go(true, true, 2, 1, steps, steps / 2, sync);
         this.go(false, false, 2, 2, steps, steps, sync);
+        this.go(false, false, 1, 1,
+                STEPS_FOR_A_BLOCK * offsetBlocks,
+                STEPS_FOR_A_BLOCK * offsetBlocks,
+                sync);
         this.go(true, true, 2, 1, steps, steps / 2, sync);
     } else {
         this.go(true, true, 1, 2, steps / 2, steps, sync);
         this.go(false, false, 2, 2, steps, steps, sync);
+        this.go(false, false, 1, 1,
+                STEPS_FOR_A_BLOCK * offsetBlocks,
+                STEPS_FOR_A_BLOCK * offsetBlocks,
+                sync);
         this.go(true, true, 1, 2, steps / 2, steps, sync);
     }
     this.go(true, true, 1, 1, 100, 100, sync);
