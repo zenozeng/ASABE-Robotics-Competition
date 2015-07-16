@@ -7,6 +7,8 @@ var head = require('./lib/head');
 var row = 0; // row 从 1 到 5
 var leftToRight = false;
 
+var logs = [];
+
 var tasks = [
     function() {
         row = 1; // 接下来机械臂指向 row#1
@@ -114,6 +116,9 @@ car.autoForward();
 
 process.on('message', function(msg) {
     console.log('index.js: Command Received -- ', msg);
+    if (msg.command == "status") {
+        process.send({logs: logs});
+    }
     if (msg.command == "pause") {
         console.log('index.js: Command Pause.');
         if (car.isAuto()) {

@@ -7,11 +7,15 @@ var fs = require('fs');
 
 var car = null;
 var serverStartTimestamp = Date.now();
+var processStartTimestamp = null;
 
 // this will also lunch vision (note: moudle will be cached, so don't worry)
 var tree = require('./lib/tree');
 
 console.log('[OK] Server ready.');
+
+
+var carLogs = [];
 
 var app = express();
 
@@ -21,6 +25,12 @@ app.post('/control/start', function (req, res) {
         return;
     }
     car = cp.fork(__dirname + '/index.js');
+    car.on('message', function(msg) {
+        if (msg.logs) {
+            carLogs = msg.logs;
+        }
+    });
+    processStartTimestamp = Date.now();
     res.send('I am happy.');
 });
 
@@ -48,6 +58,7 @@ app.post('/control/stop', function(req, res) {
         car.kill('SIGHUP');
     }
     car = null;
+    processStartTimestamp = null;
     res.send('I am happy.');
 });
 
@@ -86,12 +97,20 @@ var HHMMSS = function(sec_num) {
     return time;
 };
 
+app.get('/logs', function(req, res) {
+    res.send(JSON.stringify(carLogs));
+});
+
 app.get('/status', function(req, res) {
     var car = require('./lib/car');
-    var data = {};
-
-    data.uptime = (Date.now() - serverStartTimestamp) / 1000;
-    data.uptime = HHMMSS(data.uptime);
+    var data = {
+        server: {
+            uptime: HHMMSS((Date.now() - serverStartTimestamp) / 1000)
+        },
+        process: {
+            uptime: processStartTimestamp ? HHMMSS((Date.now() - processStartTimestamp) / 1000) : null
+        }
+    };
 
     data.tree = tree.getTree();
     delete data.tree.time;
