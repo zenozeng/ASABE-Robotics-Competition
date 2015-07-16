@@ -23,6 +23,7 @@ hr {
     border: none;
     border-bottom: 3px solid #ddd;
     margin: 16px 0;
+    clear: both;
 }
 
 h1 {
@@ -150,4 +151,23 @@ li#popkart-mode {
 #popkart-mode.open {
     background: #ccc;
     color: #777;
+}
+
+#frame {
+    float: left;
+}
+
+#status {
+    padding: 0;
+    margin: 0;
+    margin-left: 2em;
+    color: #777;
+    float: left;
+    font-size: 16px;
+}
+
+#current::after {
+    clear: both;
+    display: block;
+    content: '';
 }

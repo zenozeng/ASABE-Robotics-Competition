@@ -1,10 +1,17 @@
+console.log('[OK] Server started. Service will be ready in a few seconds.');
+
 var express = require('express');
 var serveStatic = require('serve-static');
 var cp = require('child_process');
 var fs = require('fs');
 
 var car = null;
-var status = {};
+var serverStartTimestamp = Date.now();
+
+// this will also lunch vision (note: moudle will be cached, so don't worry)
+var tree = require('./lib/tree');
+
+console.log('[OK] Server ready.');
 
 var app = express();
 
@@ -14,11 +21,6 @@ app.post('/control/start', function (req, res) {
         return;
     }
     car = cp.fork(__dirname + '/index.js');
-    car.on('message', function(msg) {
-        Object.keys(msg).forEach(function(k) {
-            status[k] = msg[k];
-        });
-    });
     res.send('I am happy.');
 });
 
@@ -70,8 +72,26 @@ app.post('/control/eval', function(req, res) {
 
 });
 
+// from: http://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
+var HHMMSS = function(sec_num) {
+    sec_num = parseInt(sec_num, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time  = hours+':'+minutes+':'+seconds;
+    return time;
+};
+
 app.get('/status', function(req, res) {
-    res.send(JSON.stringify(status));
+    var data = tree.getTree();
+    delete data.time;
+    data.uptime = (Date.now() - serverStartTimestamp) / 1000;
+    data.uptime = HHMMSS(data.uptime);
+    res.send(JSON.stringify(data));
 });
 
 app.get('/frame.jpg', function(req, res) {

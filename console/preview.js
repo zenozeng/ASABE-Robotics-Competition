@@ -1,7 +1,9 @@
 $(function() {
     var canvas = $('#frame')[0];
     var ctx = canvas.getContext('2d');
+    var $status = $('#status');
     setInterval(function() {
+        // update image
         var image = new Image();
         image.src = "frame.jpg?_=" + Date.now();
         image.onload = function() {
@@ -15,5 +17,14 @@ $(function() {
             }
             ctx.drawImage(image, 0, 0, w, h);
         };
+        // update info
+        $.get('/status', function(data) {
+            try {
+                data = JSON.parse(data);
+                data = JSON.stringify(data, null, 4);
+            } finally {
+                $status.html(data);
+            }
+        });
     }, 500);
 });

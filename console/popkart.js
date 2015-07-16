@@ -6,6 +6,9 @@ $(function() {
 
 
     document.onkeydown = function(ev) {
+        if (!window.popkartMode) {
+            return;
+        }
         ev.preventDefault();
         var code = ev.keyCode;
         if (code == 37) {
@@ -22,6 +25,9 @@ $(function() {
         }
     };
     document.onkeyup = function(ev) {
+        if (!window.popkartMode) {
+            return;
+        }
         ev.preventDefault();
         var code = ev.keyCode;
         if (code == 37) {
