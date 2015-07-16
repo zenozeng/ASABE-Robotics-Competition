@@ -3,6 +3,11 @@ var pins = require('./pins');
 var whiteSensors = require('./white-sensors');
 var head = require('./head');
 
+var STEPS_FOR_90_DEG_SPEED_0_1 = 240;
+var STEPS_FOR_90_DEG_SPEED_1_2 = STEPS_FOR_90_DEG_SPEED_0_1 * 2;
+var STEPS_FOR_A_BLOCK = 360; // TODO
+var STEPS_FOR_A_TREE_BLOCK = 360; // TODO
+
 var DEBUG = false;
 
 var log = function(message) {
@@ -122,10 +127,15 @@ Car.prototype.getSteps = function() {
     return this.steps + this.getCurrentSteps();
 };
 
+// Tree index for current position of current forward task
+// Index starts from 1
+Car.prototype.getTreeIndex = function() {
+    return parseInt(this.getSteps() / STEPS_FOR_A_TREE_BLOCK) + 1;
+};
+
 Car.prototype.resetSteps = function() {
     this.steps = 0;
 };
-
 
 Car.prototype.isAuto = function() {
     return typeof this.autoInterval !== "undefined";
@@ -137,10 +147,6 @@ Car.prototype.stopAuto = function() {
     }
     this.autoInterval = undefined;
 };
-
-var STEPS_FOR_90_DEG_SPEED_0_1 = 240;
-var STEPS_FOR_90_DEG_SPEED_1_2 = STEPS_FOR_90_DEG_SPEED_0_1 * 2;
-var STEPS_FOR_A_BLOCK = 360; // TODO
 
 Car.prototype.turn180 = function(rightFirst, offsetBlocks) {
     log('turn 180');
