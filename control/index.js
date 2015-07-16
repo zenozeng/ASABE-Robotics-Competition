@@ -5,6 +5,7 @@ var car = require('./lib/car');
 var head = require('./lib/head');
 
 var row = 0; // row 从 1 到 5
+var leftToRight = false;
 
 var tasks = [
     function() {
@@ -13,6 +14,7 @@ var tasks = [
         var blocks = 0;
         car.turn180(rightFirst, blocks);
         car.resetSteps();
+        leftToRight = true;
         car.autoForward();
     },
     function() {
@@ -21,6 +23,7 @@ var tasks = [
         var blocks = 2;
         car.turn180(rightFirst, blocks);
         car.resetSteps();
+        leftToRight = false;
         car.autoForward();
     },
     function() {
@@ -29,6 +32,7 @@ var tasks = [
         var blocks = 0;
         car.turn180(rightFirst, blocks);
         car.resetSteps();
+        leftToRight = true;
         car.autoForward();
     },
     function() {
@@ -37,6 +41,7 @@ var tasks = [
         var blocks = 1;
         car.turn180(rightFirst, blocks);
         car.resetSteps();
+        leftToRight = false;
         car.autoForward();
     },
     function() {
@@ -75,6 +80,10 @@ setInterval(function() {
         console.log({isTree: tree.isTree()});
         if (car.isAuto()) {
             console.log('isTree and isAuto');
+            var treeInfo = {
+                row: row,
+                col: leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex())
+            };
             car.stopAuto();
             car.go(true, true, 1, 1, 100, 100, true); // sync forward 100 steps
             end_effector.open(); // sync open

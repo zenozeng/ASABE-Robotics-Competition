@@ -128,7 +128,7 @@ Car.prototype.getSteps = function() {
 };
 
 // Tree index for current position of current forward task
-// Index starts from 1
+// Note: Index starts from 1
 Car.prototype.getTreeIndex = function() {
     return parseInt(this.getSteps() / STEPS_FOR_A_TREE_BLOCK) + 1;
 };
