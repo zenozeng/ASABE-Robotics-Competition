@@ -4,6 +4,8 @@ var end_effector = require('./lib/end-effector');
 var car = require('./lib/car');
 var head = require('./lib/head');
 
+var vision = require('./lib/vision');
+
 var row = 0; // row 从 1 到 5
 var leftToRight = false;
 
@@ -62,14 +64,13 @@ var tasks = [
 //
 ////////////////////////////////
 
-var lastRowDetectedTime = 0;
+var lastRowDetectedTime = Date.now();
 
 var rightFirst = false;
 setInterval(function() {
     if (head.isOnWhite()) {
 
         if ((Date.now() - lastRowDetectedTime) < 10 * 1000) {
-            // accept 起始区域的黑线
             // ignore first black line、turn 180 after black line
             return;
         }
@@ -93,9 +94,12 @@ setInterval(function() {
 ///////////////////////////////////////
 
 setInterval(function() {
+    console.log({
+        isTree: tree.isTree(),
+        exists: vision.exists,
+        position: vision.position
+    });
     if (tree.isTree()) { // if tree detected
-        console.log(tree.getTree());
-        console.log({isTree: tree.isTree()});
         if (car.isAuto()) {
             console.log('isTree and isAuto');
             var treeInfo = {
@@ -105,7 +109,7 @@ setInterval(function() {
             };
             logs.push(treeInfo);
             car.stopAuto();
-            car.go(true, true, 1, 1, 100, 100, true); // sync forward 100 steps
+            car.go(true, true, 1, 1, 1600, 1600, true); // sync forward 100 steps
             end_effector.open(); // sync open
             manipulator.move(1100); // sync move manipulator
             end_effector.close(); // sync close
@@ -125,3 +129,39 @@ setInterval(function() {
 row = 2;
 car.turnLeft90Sync();
 car.autoForward();
+
+//////////////////////////////////
+//
+// 与 Server 通信
+//
+/////////////////////////////////
+
+// sync status
+setInterval(function() {
+    var data = {};
+    data.tree = tree.getTree();
+    delete data.tree.time;
+    data.car = {
+        steps: car.getSteps(),
+        currentStep: car.getCurrentSteps(),
+        isAuto: car.isAuto()
+    };
+    process.send({
+        status: data
+    });
+}, 100);
+
+process.on('message', function(msg) {
+    console.log('index.js: Command Received -- ', msg);
+    if (msg.command == "pause") {
+        console.log('index.js: Command Pause.');
+        if (car.isAuto()) {
+            car.stopAuto();
+            car.stop();
+        }
+    }
+    if (msg.command == "resume") {
+        console.log('index.js: Command Resume.');
+        car.autoForward();
+    }
+});

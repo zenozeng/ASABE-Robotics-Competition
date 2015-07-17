@@ -39,7 +39,9 @@ function Vision(options) {
 }
 
 Vision.prototype.isTree = function() {
-    return this.exists && this.position > 0.4 && this.position < 0.6;
+    var isTree = (this.exists) && (this.position > 0.4) && (this.position < 0.6);
+    console.log(isTree);
+    return isTree;
 };
 
 var vision = new Vision({debug: true});

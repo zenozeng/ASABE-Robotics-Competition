@@ -10,11 +10,13 @@ var serverStartTimestamp = Date.now();
 var processStartTimestamp = null;
 
 // this will also lunch vision (note: moudle will be cached, so don't worry)
-var tree = require('./lib/tree');
+
+// var tree = require('./lib/tree');
 
 console.log('[OK] Server ready.');
 
 var carLogs = [];
+var carStatus = {};
 
 var app = express();
 
@@ -28,6 +30,9 @@ app.post('/control/start', function (req, res) {
         if (msg.logs) {
             carLogs = msg.logs;
         }
+        if (msg.status) {
+            carStatus = msg.status;
+        }
     });
     processStartTimestamp = Date.now();
     res.send('I am happy.');
@@ -35,16 +40,17 @@ app.post('/control/start', function (req, res) {
 
 app.post('/control/pause', function(req, res) {
     console.log('server.js: pause');
-    var car = require('./lib/car');
-    car.stopAuto();
-    car.stop();
+    if (car) {
+        car.send({command: 'pause'});
+    }
     res.send('I am happy.');
 });
 
 app.post('/control/resume', function(req, res) {
     console.log('server.js: resume');
-    var car = require('./lib/car');
-    car.autoForward();
+    if (car) {
+        car.send({command: 'resume'});
+    }
     res.send('I am happy.');
 });
 
@@ -54,6 +60,8 @@ app.post('/control/stop', function(req, res) {
         // 注意 vision cpp 进程不会被杀死，但是它会被复用，所以不用担心
         // 估计是 Node 的 module 缓存做的好事。
         car.kill('SIGHUP');
+        console.log('Index.js killed, try to pkill vision');
+        cp.exec('sudo pkill vision');
     }
     car = null;
     processStartTimestamp = null;
@@ -100,25 +108,16 @@ app.get('/logs', function(req, res) {
 });
 
 app.get('/status', function(req, res) {
-    var car = require('./lib/car');
-    var data = {
-        server: {
-            uptime: HHMMSS((Date.now() - serverStartTimestamp) / 1000)
-        },
-        process: {
-            uptime: processStartTimestamp ? HHMMSS((Date.now() - processStartTimestamp) / 1000) : null
-        }
+    var status = JSON.parse(JSON.stringify(carStatus));
+
+    status.server = {
+        uptime: HHMMSS((Date.now() - serverStartTimestamp) / 1000)
+    };
+    status.process = {
+        uptime: processStartTimestamp ? HHMMSS((Date.now() - processStartTimestamp) / 1000) : null
     };
 
-    data.tree = tree.getTree();
-    delete data.tree.time;
-
-    data.car = {
-        steps: car.getSteps(),
-        isAuto: car.isAuto()
-    };
-
-    res.send(JSON.stringify(data));
+    res.send(JSON.stringify(status));
 });
 
 app.get('/frame.jpg', function(req, res) {

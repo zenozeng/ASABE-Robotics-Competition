@@ -6,7 +6,7 @@ var head = require('./head');
 var STEPS_FOR_90_DEG_SPEED_0_1 = 240 * 16;
 var STEPS_FOR_90_DEG_SPEED_1_2 = STEPS_FOR_90_DEG_SPEED_0_1 * 2;
 var STEPS_FOR_A_BLOCK = 7750;
-var STEPS_FOR_A_TREE_BLOCK = 360 * 16; // TODO
+var STEPS_FOR_A_TREE_BLOCK = STEPS_FOR_A_BLOCK * 3 / 5;
 
 var DEBUG = false;
 
@@ -112,7 +112,6 @@ Car.prototype.autoForward = function() {
             // "1": [1, 0.5],
             // "2": [1, 0.2]
         };
-        console.log({dir: dir, isOnWhite: isOnWhite});
         if (dir != 0 && !isOnWhite) {
             car.steps += car.getCurrentSteps();
             car.go(true, true, speed[dir][0], speed[dir][1]);
