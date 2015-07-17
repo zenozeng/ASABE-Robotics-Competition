@@ -1,5 +1,5 @@
 var vision = require('./vision');
-var ir = require('./ir');
+var pins = require('./pins');
 
 var isHighTree = function() {
     var v = ir.getVolt();
@@ -18,7 +18,7 @@ module.exports = {
             hue: vision.hue,
             time: vision.time,
             position: vision.position,
-            height: isHighTree()
+            isHigh: digitalRead(pins.IR) == 0
         };
     }
 };

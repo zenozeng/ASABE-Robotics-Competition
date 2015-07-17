@@ -51,6 +51,7 @@ var getBlackLineDirection = function() {
     return sum * -1;
 };
 
+// 是否走在黑横线上
 var isOnWhite = function() {
     var front = [1, 2, 5];
     var back = [3, 4];

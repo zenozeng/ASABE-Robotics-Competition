@@ -13,12 +13,21 @@ console.log('Car process started.');
 
 var tasks = [
     function() {
+        console.log('task: from start to Black Row #1');
+        row = 2;
+        car.turnLeft90Sync();
+        console.log('task: autoForward Black Row #1');
+        car.autoForward();
+    },
+    function() {
+        console.log('task: turn180 (leftFirst), block = 0');
         row = 1; // 接下来机械臂指向 row#1
         var rightFirst = false;
         var blocks = 0;
         car.turn180(rightFirst, blocks);
         car.resetSteps();
         leftToRight = true;
+        console.log('task: autoForward Black Row #1');
         car.autoForward();
     },
     function() {
@@ -60,17 +69,20 @@ var tasks = [
 //
 ////////////////////////////////
 
-var lastRowDetectedTime = Date.now();
+var lastRowDetectedTime = 0;
 
 var rightFirst = false;
 setInterval(function() {
-    if ((Date.now() - lastRowDetectedTime) < 10 * 1000) {
-        return; // ignore first black line、turn 180 after black line
-    }
-
-    lastRowDetectedTime = Date.now();
-
     if (head.isOnWhite()) {
+
+        if ((Date.now() - lastRowDetectedTime) < 10 * 1000) {
+            // accept 起始区域的黑线
+            // ignore first black line、turn 180 after black line
+            return;
+        }
+
+        lastRowDetectedTime = Date.now();
+
         console.log('isOnwhite！');
         if (car.isAuto()) {
             var task = tasks.shift();
@@ -117,30 +129,4 @@ setInterval(function() {
 //
 /////////////////////////////////
 
-car.turnLeft90Sync();
-row = 2; // 一开始机械臂指向 row#2
 car.autoForward();
-
-//////////////////////////////////
-//
-// 与 Server 通信
-//
-/////////////////////////////////
-
-process.on('message', function(msg) {
-    console.log('index.js: Command Received -- ', msg);
-    if (msg.command == "status") {
-        process.send({logs: logs});
-    }
-    if (msg.command == "pause") {
-        console.log('index.js: Command Pause.');
-        if (car.isAuto()) {
-            car.stopAuto();
-            car.stop();
-        }
-    }
-    if (msg.command == "resume") {
-        console.log('index.js: Command Resume.');
-        car.autoForward();
-    }
-});
