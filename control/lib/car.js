@@ -31,6 +31,7 @@ function Car() {
     this.steps = 0;
 }
 
+// TODO: update steps count
 Car.prototype.stop = function() {
     leftMotor.write(0);
     rightMotor.write(0);
@@ -66,11 +67,9 @@ Car.prototype.go = function(leftIsForward, rightIsForward, leftSpeed, rightSpeed
 
 Car.prototype.forward = function(steps) {
     log('forward');
-    if (steps) {
-        this.steps += steps;
-    }
     this.go(true, true, 1, 1, steps, steps);
 };
+
 
 Car.prototype.backward = function(steps) {
     log('backward');
@@ -93,33 +92,42 @@ Car.prototype.auto = function(forward) {
     forward ? this.autoForward() : this.autoBackward();
 };
 
+Car.prototype._autoForward = function() {
+    var dir = head.getBlackLineDirection();
+    var isOnWhite = head.isOnWhite();
+    var speed = {
+        "-1": [0.8, 1],
+        "-2": [0.5, 1],
+        "1": [1, 0.8],
+        "2": [1, 0.5]
+    };
+    if (dir != 0 && !isOnWhite) {
+        car.steps += car.getCurrentSteps();
+        car.go(true, true, speed[dir][0], speed[dir][1]);
+    } else {
+        car.steps += car.getCurrentSteps();
+        car.forward();
+    }
+};
+
+Car.prototype.autoForwardSync = function(steps) {
+    var targetSteps = this.getSteps() + steps;
+    console.log('Auto Forward Sync: ', steps, 'steps.');
+    while (this.getSteps() < targetSteps) {
+        this._autoForward();
+        delayMicroseconds(20000);
+    }
+    this.stop();
+    console.log('Auto Forward Sync done.');
+};
+
 Car.prototype.autoForward = function() {
     console.log('Car: autoForward()');
     var car = this;
     car.stopAuto();
     car.forward();
     car.autoInterval = setInterval(function() {
-
-        var dir = head.getBlackLineDirection();
-        var isOnWhite = head.isOnWhite();
-        var speed = {
-            "-1": [0.8, 1],
-            "-2": [0.5, 1],
-            "1": [1, 0.8],
-            "2": [1, 0.5]
-            // "-1": [0.5, 1],
-            // "-2": [0.2, 1],
-            // "1": [1, 0.5],
-            // "2": [1, 0.2]
-        };
-        if (dir != 0 && !isOnWhite) {
-            car.steps += car.getCurrentSteps();
-            car.go(true, true, speed[dir][0], speed[dir][1]);
-        } else {
-            car.steps += car.getCurrentSteps();
-            car.forward();
-        }
-
+        car._autoForward();
     }, 20);
 };
 
