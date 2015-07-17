@@ -3,10 +3,10 @@ var pins = require('./pins');
 var whiteSensors = require('./white-sensors');
 var head = require('./head');
 
-var STEPS_FOR_90_DEG_SPEED_0_1 = 240;
+var STEPS_FOR_90_DEG_SPEED_0_1 = 240 * 16;
 var STEPS_FOR_90_DEG_SPEED_1_2 = STEPS_FOR_90_DEG_SPEED_0_1 * 2;
-var STEPS_FOR_A_BLOCK = 360; // TODO
-var STEPS_FOR_A_TREE_BLOCK = 360; // TODO
+var STEPS_FOR_A_BLOCK = 360 * 16; // TODO
+var STEPS_FOR_A_TREE_BLOCK = 360 * 16; // TODO
 
 var DEBUG = false;
 
@@ -44,7 +44,7 @@ Car.prototype.go = function(leftIsForward, rightIsForward, leftSpeed, rightSpeed
     digitalWrite(right.cw, rightCW);
 
     // 设置速度
-    var period = 10000;
+    var period = 10000 / 16;
     var motors = [leftMotor, rightMotor];
     var loops = [leftSteps, rightSteps];
     [leftSpeed, rightSpeed].forEach(function(speed, index) {
