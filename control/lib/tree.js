@@ -16,6 +16,7 @@ module.exports = {
             color: vision.color,
             stddev: vision.stddev,
             hue: vision.hue,
+            saturation: vision.saturation,
             time: vision.time,
             position: vision.position,
             isHigh: digitalRead(pins.IR) == 0

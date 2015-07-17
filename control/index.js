@@ -13,13 +13,6 @@ console.log('Car process started.');
 
 var tasks = [
     function() {
-        console.log('task: from start to Black Row #1');
-        row = 2;
-        car.turnLeft90Sync();
-        console.log('task: autoForward Black Row #1');
-        car.autoForward();
-    },
-    function() {
         console.log('task: turn180 (leftFirst), block = 0');
         row = 1; // 接下来机械臂指向 row#1
         var rightFirst = false;
@@ -129,4 +122,6 @@ setInterval(function() {
 //
 /////////////////////////////////
 
+row = 2;
+car.turnLeft90Sync();
 car.autoForward();

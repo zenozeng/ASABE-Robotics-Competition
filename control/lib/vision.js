@@ -20,7 +20,8 @@ function Vision(options) {
                 if (obj) {
                     v.exists = (obj.exists == "1");
                     v.color = obj.color == "null" ? null : obj.color;
-                    v.hue = parseInt(obj.hue);
+                    v.hue = parseFloat(obj.hue);
+                    v.saturation = parseFloat(obj.saturation);
                     v.position = parseFloat(obj.position);
                     v.stddev = parseFloat(obj.stddev);
                     v.time = new Date();

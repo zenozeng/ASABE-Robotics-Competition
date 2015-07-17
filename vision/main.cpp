@@ -169,7 +169,7 @@ int main()
         cout << "\"exists\": \"" << exists << "\", ";
         cout << "\"color\": \"" << color << "\", ";
         cout << "\"stddev\": \"" << stddev << "\", ";
-        cout << "\"hue\": \"" << (int) hue << "\", ";
+        cout << "\"hue\": \"" << hue << "\", ";
         cout << "\"saturation\": \"" << saturation << "\", ";
         cout << "\"position\": \"" << position << "\"";
         cout << "}" << endl;

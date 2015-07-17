@@ -179,6 +179,15 @@ Car.prototype.turn180 = function(rightFirst, offsetBlocks) {
     }
 };
 
+Car.prototype.goBack = function() {
+    // 先左转
+    var steps = STEPS_FOR_90_DEG_SPEED_1_2;
+    this.go(true, true, 1, 2, steps / 2, steps, true);
+    // 再向前走 3 个 block
+    steps = STEPS_FOR_A_BLOCK * 3;
+    this.go(true, true, 1, 1, steps, steps, true);
+};
+
 // 左轮不动
 Car.prototype.turnLeft90Sync = function() {
     log('turn left 90');
