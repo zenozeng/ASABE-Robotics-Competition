@@ -35,17 +35,16 @@ app.post('/control/start', function (req, res) {
 
 app.post('/control/pause', function(req, res) {
     console.log('server.js: pause');
-    if (car) {
-        car.send({command: 'pause'});
-    }
+    var car = require('./lib/car');
+    car.stopAuto();
+    car.stop();
     res.send('I am happy.');
 });
 
 app.post('/control/resume', function(req, res) {
     console.log('server.js: resume');
-    if (car) {
-        car.send({command: 'resume'});
-    }
+    var car = require('./lib/car');
+    car.autoForward();
     res.send('I am happy.');
 });
 

@@ -9,6 +9,8 @@ var leftToRight = false;
 
 var logs = [];
 
+console.log('Car process started.');
+
 var tasks = [
     function() {
         row = 1; // 接下来机械臂指向 row#1
@@ -58,9 +60,18 @@ var tasks = [
 //
 ////////////////////////////////
 
+var lastRowDetectedTime = Date.now();
+
 var rightFirst = false;
 setInterval(function() {
+    if ((Date.now() - lastRowDetectedTime) < 10 * 1000) {
+        return; // ignore first black line、turn 180 after black line
+    }
+
+    lastRowDetectedTime = Date.now();
+
     if (head.isOnWhite()) {
+        console.log('isOnwhite！');
         if (car.isAuto()) {
             var task = tasks.shift();
             if (task) {

@@ -101,10 +101,14 @@ Car.prototype.autoForward = function() {
 
         var dir = head.getBlackLineDirection();
         var speed = {
-            "-1": [0.8, 1],
-            "-2": [0.5, 1],
-            "1": [1, 0.8],
-            "2": [1, 0.5]
+            // "-1": [0.8, 1],
+            // "-2": [0.5, 1],
+            // "1": [1, 0.8],
+            // "2": [1, 0.5]
+            "-1": [0.5, 1],
+            "-2": [0, 1],
+            "1": [1, 0.5],
+            "2": [1, 0]
         };
         if (dir != 0) {
             car.steps += car.getCurrentSteps();
