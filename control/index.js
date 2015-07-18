@@ -95,9 +95,9 @@ setInterval(function() {
 ///////////////////////////////////////
 
 setInterval(function() {
-    if (tree.isTree()) { // if tree detected
+    if (tree.shouldStop()) { // if tree detected and should stop
         if (car.isAuto()) {
-            console.log('isTree and isAuto');
+            console.log('tree.shouldStop() and isAuto');
             var treeInfo = {
                 row: row,
                 col: leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex()),
@@ -105,13 +105,20 @@ setInterval(function() {
             };
             console.log(treeInfo);
             logs.push(treeInfo);
+            // 暂停
             car.stopAuto();
-            car.autoForwardSync(1500);
+            car.stop();
+            // 运行到树对准传送带
+            car.autoForwardSync(1600);
+            // 对准小木块
             end_effector.open(); // sync open
             manipulator.move(1100); // sync move manipulator
             end_effector.close(); // sync close
             manipulator.move(-1100); // sync move back
             end_effector.open(); // sync open
+            // 往前开一小段避免树被再次判断到
+            car.autoForwardSync(3000);
+            // 恢复自动运行
             car.autoForward();
         }
     }
