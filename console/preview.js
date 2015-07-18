@@ -16,6 +16,11 @@ $(function() {
                 canvas.height = h;
             }
             ctx.drawImage(image, 0, 0, w, h);
+            ctx.moveTo(0, h * 0.75);
+            ctx.lineTo(w, h * 0.75);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "red";
+            ctx.stroke();
         };
         // update info
         $.get('/status', function(data) {
