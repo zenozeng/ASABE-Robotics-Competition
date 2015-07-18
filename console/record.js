@@ -12,6 +12,7 @@ $(function() {
                 $a.attr('download', count);
                 $('body').append($a);
                 $a[0].click();
+                $a.remove();
             }, 500);
         } else {
             clearInterval(interval);
