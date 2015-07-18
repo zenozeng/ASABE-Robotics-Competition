@@ -1,17 +1,4 @@
 /**
- * Fetch Log
- * @returns {Promise} Logs (JSON Object)
- */
-var fetchLogs = function() {
-    return new Promise(function(resolve, reject) {
-        // $.get('log.json', function(data) {
-        $.get('/logs?_=' + Date.now(), function(data) {
-            resolve(data);
-        });
-    });
-};
-
-/**
  * Write a log to current page
  *
  */
@@ -72,14 +59,29 @@ var drawLog = function(log) {
 /**
  * Main Logic
  */
-setInterval(function() {
-    fetchLogs().then(function(logs) {
-        treeCount = 0; // reset count
-        $('#canvas i').remove();
-        $('#logs').html('');
-        logs.forEach(function(log) {
-            writeLog(log);
-            drawLog(log);
+(function() {
+    var logsPending = false;
+    setInterval(function() {
+        if (logsPending) {
+            return;
+        }
+
+        // var url = '/logs';
+        var url = 'log.json';
+
+        $.get(url + '?_=' + Date.now(), function(logs) {
+            logsPending = false;
+
+            treeCount = 0; // reset count
+            $('#canvas i').remove();
+            $('#logs').html('');
+            logs.forEach(function(log) {
+                writeLog(log);
+                drawLog(log);
+            });
+        }).fail(function() {
+            logsPending = false;
         });
-    });
-}, 500);
+
+    }, 500);
+})();
