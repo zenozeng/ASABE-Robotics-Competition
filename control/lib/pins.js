@@ -22,10 +22,8 @@ module.exports = {
     END_EFFECTOR_SERVO: 3,
 
     // 红外线
-    IR: 5, // digital#5
-
-    // 注意这个是 A0 口，不是 GPIO 0 口
-    // IR: 4,
+    IR_HIGH_TREE: 5,
+    IR_TREE: 12,
 
     // 循迹片
     BLACK_AND_WHITE_SENSOR_1: 14, // 前左

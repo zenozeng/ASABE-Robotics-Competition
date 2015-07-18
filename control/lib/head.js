@@ -52,22 +52,37 @@ var getBlackLineDirection = function() {
 };
 
 // 是否走在黑横线上
-var isOnWhite = function() {
+var getSum = function(arr) {
+    var sum = 0;
+    arr.forEach(function(id) {
+        sum += digitalRead(pins["BLACK_AND_WHITE_SENSOR_"+id]);
+    });
+    return sum;
+};
+
+var getAll = function() {
+    return [1, 2, 3, 4, 5].map(function(id) {
+        return digitalRead(pins["BLACK_AND_WHITE_SENSOR_"+id]);
+    });
+};
+
+var isCrossing = function() {
     var front = [1, 2, 5];
     var back = [3, 4];
-    var getSum = function(arr) {
-        var sum = 0;
-        arr.forEach(function(id) {
-            sum += digitalRead(pins["BLACK_AND_WHITE_SENSOR_"+id]);
-        });
-        return sum;
-    };
     // 前面至少三个灭，后面至少一个灭
-    return getSum(front) < 1 && getSum(back) < 2;
+    return (getSum(front) === 0) && (getSum(back) < 2);
 };
 
 module.exports = {
     read: read,
     getBlackLineDirection: getBlackLineDirection,
-    isOnWhite: isOnWhite
+    getAll: getAll,
+    isCrossing: isCrossing,
+    // 如果前后各有至少一灯在黑线上，那么我们认为我们在沿着黑线上走
+    isOnBlackLine: function() {
+        var front = [1, 2];
+        var back = [3, 4];
+        // 前面至少1个灭，后面至少1个灭
+        return (getSum(front) < 2) && (getSum(back) < 2) && (!isCrossing());
+    }
 };

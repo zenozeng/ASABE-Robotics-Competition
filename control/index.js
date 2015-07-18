@@ -68,7 +68,7 @@ var lastRowDetectedTime = Date.now();
 
 var rightFirst = false;
 setInterval(function() {
-    if (head.isOnWhite()) {
+    if (head.isCrossing()) {
 
         if ((Date.now() - lastRowDetectedTime) < 10 * 1000) {
             // ignore first black line、turn 180 after black line
@@ -77,7 +77,8 @@ setInterval(function() {
 
         lastRowDetectedTime = Date.now();
 
-        console.log('isOnwhite！');
+        console.log('isCrossing！');
+
         if (car.isAuto()) {
             var task = tasks.shift();
             if (task) {
@@ -105,7 +106,7 @@ setInterval(function() {
             console.log(treeInfo);
             logs.push(treeInfo);
             car.stopAuto();
-            car.autoForwardSync(1600);
+            car.autoForwardSync(1500);
             end_effector.open(); // sync open
             manipulator.move(1100); // sync move manipulator
             end_effector.close(); // sync close
@@ -123,7 +124,7 @@ setInterval(function() {
 /////////////////////////////////
 
 row = 2;
-car.turnLeft90Sync();
+// car.turnLeft90Sync();
 car.autoForward();
 
 //////////////////////////////////
@@ -140,9 +141,10 @@ setInterval(function() {
     data.car = {
         steps: car.getSteps(),
         currentStep: car.getCurrentSteps(),
-        isAuto: car.isAuto()
+        isOnBlackLine: head.isOnBlackLine()
     };
     process.send({
+        logs: logs,
         status: data
     });
 }, 100);
