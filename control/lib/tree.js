@@ -3,6 +3,7 @@ var pins = require('./pins');
 var head = require('./head');
 
 var getTree = function() {
+    var isHigh = digitalRead(pins.IR_HIGH_TREE) == 0;
     return {
         exists: digitalRead(pins.IR_TREE) == 0,
         color: vision.color,
@@ -11,7 +12,8 @@ var getTree = function() {
         saturation: vision.saturation,
         time: vision.time,
         position: vision.position,
-        isHigh: digitalRead(pins.IR_HIGH_TREE) == 0
+        isHigh: isHigh,
+        height: isHigh ? "high" : "low"
     };
 };
 

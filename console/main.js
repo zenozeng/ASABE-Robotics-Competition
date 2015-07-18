@@ -4,8 +4,8 @@
  */
 var fetchLogs = function() {
     return new Promise(function(resolve, reject) {
-        $.get('log.json', function(data) {
-        // $.get('/logs?_=' + Date.now(), function(data) {
+        // $.get('log.json', function(data) {
+        $.get('/logs?_=' + Date.now(), function(data) {
             resolve(data);
         });
     });
@@ -17,11 +17,10 @@ var fetchLogs = function() {
  */
 var writeLog = function(log) {
     if (log.tree) {
-        if (log.tree.empty) {
-            log.message = '<i class="fa fa-circle-thin"></i>' + 'Empty ';
-        } else {
-            log.message = '<i class="fa fa-tree ' + log.tree.height+ ' ' + log.tree.color + '"></i>';
-        }
+        // if (log.tree.empty) {
+        //     log.message = '<i class="fa fa-circle-thin"></i>' + 'Empty ';
+        // } else {
+        log.message = '<i class="fa fa-tree ' + log.tree.height+ ' ' + log.tree.color + '"></i>';
         log.message += 'Tree detected: ' + JSON.stringify(log.tree);
     }
     $('#logs').prepend('<p class="message">' + log.message + '</p>');
@@ -46,8 +45,8 @@ var drawLog = function(log) {
     // update canvas
     var left = 74;
     var top = 280;
-    left += (log.tree.x - 1) * 39;
-    top -= (log.tree.y - 1) * 67;
+    left += (log.tree.col - 1) * 39;
+    top -= (log.tree.row - 1) * 67;
     var size = log.tree.height === "high" ? 36 : 18;
     left -= size / 2;
     top -= size / 2;
@@ -83,4 +82,4 @@ setInterval(function() {
             drawLog(log);
         });
     });
-}, 1000);
+}, 500);

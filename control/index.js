@@ -94,17 +94,33 @@ setInterval(function() {
 //
 ///////////////////////////////////////
 
+var collectedTypes = [];
+
 setInterval(function() {
-    if (tree.shouldStop()) { // if tree detected and should stop
+    if (tree.shouldStop()) { // if tree detected and tree is in center
         if (car.isAuto()) {
+
             console.log('tree.shouldStop() and isAuto');
-            var treeInfo = {
-                row: row,
-                col: leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex()),
-                tree: tree.getTree()
-            };
+
+            // log tree
+            var treeInfo = tree.getTree();
+            treeInfo.row = row;
+            treeInfo.col = leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex());
+            logs.push({tree: treeInfo});
             console.log(treeInfo);
-            logs.push(treeInfo);
+
+            // log types
+            var type = JSON.stringify({
+                color: treeInfo.color,
+                height: treeInfo.height
+            });
+
+            if (collectedTypes.indexOf(type) > -1) {
+                return; // already collected before
+            }
+
+            collectedTypes.push(type);
+
             // 暂停
             car.stopAuto();
             car.stop();
