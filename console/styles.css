@@ -4,7 +4,7 @@ html, body, h1 {
 }
 
 body {
-    width: 600px;
+    width: 700px;
     margin: 50px auto;
     font-family: "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
 }
@@ -144,11 +144,11 @@ h1 .fa {
     color: #777;
 }
 
-li#popkart-mode, li#ctrl-pause, li#ctrl-resume {
+li#popkart-mode, li#ctrl-pause, li#ctrl-resume, li#record-mode {
     font-size: 12px;
 }
 
-#popkart-mode.open {
+#popkart-mode.open, #record-mode.open {
     background: #ccc;
     color: #777;
 }
