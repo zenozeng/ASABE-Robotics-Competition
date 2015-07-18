@@ -31,8 +31,8 @@ function Car() {
     this.steps = 0;
 }
 
-// TODO: update steps count
 Car.prototype.stop = function() {
+    this.steps += this.getCurrentSteps();
     leftMotor.write(0);
     rightMotor.write(0);
 };
@@ -111,8 +111,8 @@ Car.prototype._autoForward = function() {
 };
 
 Car.prototype.autoForwardSync = function(steps) {
-    var targetSteps = this.getSteps() + steps;
     console.log('Auto Forward Sync: ', steps, 'steps.');
+    var targetSteps = this.getSteps() + steps;
     while (this.getSteps() < targetSteps) {
         this._autoForward();
         delayMicroseconds(20000);
@@ -133,7 +133,13 @@ Car.prototype.autoForward = function() {
 
 // Get current steps since last write
 Car.prototype.getCurrentSteps = function() {
-    return (leftMotor.getLoopCount() + rightMotor.getLoopCount()) / 2;
+    var loops = [leftMotor.getLoopCount(), rightMotor.getLoopCount()].map(function(loops) {
+        if (loops > 10 * 10000 * 10000) {
+            return 0;
+        }
+        return Math.max(loops, 0);
+    });
+    return (loops[0] + loops[1]) / 2;
 };
 
 // steps for current forward task
