@@ -209,21 +209,6 @@ Car.prototype.goBack = function() {
     car.go(true, true, 1, 1, steps, steps, true);
 };
 
-Car.prototype.newTurn = function(rightFirst) {
-    // 先出来一点
-    car.go(true, true, 1, 1, steps * 0.85, steps * 0.85, true);
-    if (rightFirst) {
-        var steps = STEPS_FOR_90_DEG_SPEED_0_1;
-        car.go(true, true, 1, 0, steps / 3, 0, true);
-        car.go(true, false, 1, 1, steps / 3, steps / 3, true);
-    } else {
-        // 左轮不动，转出 30°
-        car.go(true, true, 0, 1, 0, steps / 3, true);
-        // 左右轮齐动，再转 60°
-        car.go(false, true, 1, 1, steps / 3, steps / 3, true);
-    }
-};
-
 // 左轮不动
 Car.prototype.turnLeft90Sync = function() {
     log('turn left 90');
