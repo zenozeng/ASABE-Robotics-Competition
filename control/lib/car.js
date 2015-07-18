@@ -170,35 +170,58 @@ Car.prototype.stopAuto = function() {
 
 Car.prototype.turn180 = function(rightFirst, offsetBlocks) {
     log('turn 180');
+    var steps = STEPS_FOR_90_DEG_SPEED_0_1;
     this.stop();
-    var steps = STEPS_FOR_90_DEG_SPEED_1_2;
-    var sync = true;
+    // 先出来一点
+    car.go(true, true, 1, 1, steps * 0.85, steps * 0.85, true);
     if (rightFirst) {
-        this.go(true, true, 2, 1, steps, steps / 2, sync);
-        this.go(false, false, 2, 2, steps, steps, sync);
-        this.go(false, false, 1, 1,
-                STEPS_FOR_A_BLOCK * offsetBlocks + 1, // because 0 will be ignored and will go forever, so use >= 1
-                STEPS_FOR_A_BLOCK * offsetBlocks + 1,
-                sync);
-        this.go(true, true, 2, 1, steps, steps / 2, sync);
+        // 右轮不动，向右转出 30°
+        car.go(true, true, 1, 0, steps / 3, 0, true);
+        // 左右轮齐动，向右 60°
+        car.go(true, false, 1, 1, steps / 3, steps / 3, true);
     } else {
-        this.go(true, true, 1, 2, steps / 2, steps, sync);
-        this.go(false, false, 2, 2, steps, steps, sync);
-        this.go(false, false, 1, 1,
-                STEPS_FOR_A_BLOCK * offsetBlocks + 1,
-                STEPS_FOR_A_BLOCK * offsetBlocks + 1,
-                sync);
-        this.go(true, true, 1, 2, steps / 2, steps, sync);
+        // 左轮不动，向左转出 30°
+        car.go(true, true, 0, 1, 0, steps / 3, true);
+        // 左右轮齐动，再转 60°
+        car.go(false, true, 1, 1, steps / 3, steps / 3, true);
+    }
+    this.go(false, false, 1, 1, steps, steps, true);
+    this.go(false, false, 1, 1,
+            STEPS_FOR_A_BLOCK * offsetBlocks + 1, // because 0 will be ignored and will go forever, so use >= 1
+            STEPS_FOR_A_BLOCK * offsetBlocks + 1,
+            true);
+    if (rightFirst) {
+        this.go(true, true, 2, 1, steps * 2, steps, true);
+    } else {
+        this.go(true, true, 1, 2, steps, steps * 2, true);
     }
 };
 
 Car.prototype.goBack = function() {
-    // 先左转
-    var steps = STEPS_FOR_90_DEG_SPEED_1_2;
-    this.go(true, true, 1, 2, steps / 2, steps, true);
+    var car = this;
+    var steps = STEPS_FOR_90_DEG_SPEED_0_1;
+    // 左轮不动，转出 30°
+    car.go(true, true, 0, 1, 0, steps / 3, true);
+    // 左右轮齐动，再转 60°
+    car.go(false, true, 1, 1, steps / 3, steps / 3, true);
     // 再向前走 3 个 block
     steps = STEPS_FOR_A_BLOCK * 3;
-    this.go(true, true, 1, 1, steps, steps, true);
+    car.go(true, true, 1, 1, steps, steps, true);
+};
+
+Car.prototype.newTurn = function(rightFirst) {
+    // 先出来一点
+    car.go(true, true, 1, 1, steps * 0.85, steps * 0.85, true);
+    if (rightFirst) {
+        var steps = STEPS_FOR_90_DEG_SPEED_0_1;
+        car.go(true, true, 1, 0, steps / 3, 0, true);
+        car.go(true, false, 1, 1, steps / 3, steps / 3, true);
+    } else {
+        // 左轮不动，转出 30°
+        car.go(true, true, 0, 1, 0, steps / 3, true);
+        // 左右轮齐动，再转 60°
+        car.go(false, true, 1, 1, steps / 3, steps / 3, true);
+    }
 };
 
 // 左轮不动
