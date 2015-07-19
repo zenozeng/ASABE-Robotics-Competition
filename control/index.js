@@ -19,6 +19,7 @@ console.log('Car process started.');
 var log = function(msg) {
     logs.push({message: msg});
     console.log(msg);
+    syncLog();
 };
 
 var tasks = [
@@ -162,7 +163,7 @@ setInterval(function() {
 /////////////////////////////////
 
 // sync status
-setInterval(function() {
+function syncLog() {
     var data = {};
     data.tree = tree.getTree();
     delete data.tree.time;
@@ -175,6 +176,9 @@ setInterval(function() {
         logs: logs,
         status: data
     });
+};
+setInterval(function() {
+    syncLog();
 }, 100);
 
 process.on('message', function(msg) {
@@ -206,6 +210,9 @@ process.on('message', function(msg) {
         log('Unit test: end effector close (again)');
         end_effector.close();
 
+        log('Unit test: end effector stop)');
+        end_effector.stop();
+
         log('Unit test: belt load');
         belt.load();
         delayMicroseconds(1 * 1000 * 1000);
@@ -216,6 +223,8 @@ process.on('message', function(msg) {
         log('Unit test: manipulator');
         manipulator.move(1000);
         manipulator.move(-1000);
+
+        log('Unit test: all tests finished');
     }
     if (msg.command == "go") {
         console.log('index.js: Command Go.');

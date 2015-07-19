@@ -72,7 +72,7 @@ var drawLog = function(log) {
         }
 
         var url = '/logs';
-        url = 'logs2.json';
+        // url = 'logs2.json';
 
         $.get(url + '?_=' + Date.now(), function(logs) {
             try {
@@ -84,14 +84,16 @@ var drawLog = function(log) {
                 $('#canvas i').remove();
                 $('#logs').html('');
                 logs.forEach(function(log) {
-                    writeLog({
-                        tree: {
+                    var newlog = {message: log.message};
+                    if (log.tree) {
+                        newlog.tree = {
                             col: log.tree.col,
                             row: log.tree.row,
                             height: log.tree.height,
                             color: log.tree.color
-                        }
-                    });
+                        };
+                    }
+                    writeLog(newlog);
                     drawLog(log);
                 });
             } finally {

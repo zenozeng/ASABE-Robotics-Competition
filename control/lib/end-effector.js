@@ -21,5 +21,8 @@ module.exports = {
     close: function() {
         analogWrite(pin, 30);
         delayMicroseconds(500 * 1000);
+    },
+    stop: function() {
+        analogWrite(pin, 0);
     }
 };
