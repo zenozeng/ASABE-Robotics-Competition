@@ -66,8 +66,8 @@ var drawLog = function(log) {
             return;
         }
 
-        // var url = '/logs';
-        var url = 'log.json';
+        var url = '/logs';
+        // var url = 'log.json';
 
         $.get(url + '?_=' + Date.now(), function(logs) {
             logsPending = false;

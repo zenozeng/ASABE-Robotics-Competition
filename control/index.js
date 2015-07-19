@@ -142,16 +142,6 @@ setInterval(function() {
 
 //////////////////////////////////
 //
-// 启动进程
-//
-/////////////////////////////////
-
-row = 2;
-// car.turnLeft90Sync();
-car.autoForward();
-
-//////////////////////////////////
-//
 // 与 Server 通信
 //
 /////////////////////////////////
@@ -174,6 +164,12 @@ setInterval(function() {
 
 process.on('message', function(msg) {
     console.log('index.js: Command Received -- ', msg);
+    if (msg.command == "go") {
+        console.log('index.js: Command Go.');
+        row = 2;
+        car.turnLeft90Sync();
+        car.autoForward();
+    }
     if (msg.command == "pause") {
         console.log('index.js: Command Pause.');
         if (car.isAuto()) {

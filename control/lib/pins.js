@@ -22,17 +22,18 @@ module.exports = {
     END_EFFECTOR_SERVO: 3,
 
     // 红外线
-    IR_HIGH_TREE: 5,
-    IR_TREE: 12,
+    IR_TREE: 6,
+    IR_HIGH_TREE: 15,
 
     // 循迹片
-    BLACK_AND_WHITE_SENSOR_1: 14, // 前左
-    BLACK_AND_WHITE_SENSOR_2: 15, // 前右
-    BLACK_AND_WHITE_SENSOR_3: 16, // 后左
-    BLACK_AND_WHITE_SENSOR_4: 17, // 后右
-    BLACK_AND_WHITE_SENSOR_5: 13  // 前外左
+    BLACK_AND_WHITE_SENSOR_1: 9, // 前左
+    BLACK_AND_WHITE_SENSOR_2: 10, // 前右
+    BLACK_AND_WHITE_SENSOR_3: 11, // 后左
+    BLACK_AND_WHITE_SENSOR_4: 12, // 后右
+    BLACK_AND_WHITE_SENSOR_5: 13,  // 前外左
+    BLACK_AND_WHITE_SENSOR_6: 14,  // 前外右
 
-    // 尾部舵机或者减速电机: 12
-    // 左超声波 Trig: 13
-    // 左超声波 Echo: 14
+    // 传送带舵机
+    BELT_SERVO: 5
+
 };
