@@ -86,16 +86,52 @@ int main()
         double mean = mean_scalar.val[0];
         double stddev = stddev_scalar.val[0];
 
-        bool exists = stddev > 25;
+        // bool exists = stddev > 25;
+        bool exists = true;
+
+        Mat ROI_L_BW;
+        threshold(ROI_L, ROI_L_BW, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU); // OTSU
+        // 反色
+        bitwise_not(ROI_L_BW, ROI_L_BW);
+
+        Mat ROI_H_BW;
+        threshold(ROI_H, ROI_H_BW, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU); // OTSU
+        bitwise_not(ROI_H_BW, ROI_H_BW);
 
         Mat ROI_BW;
-        threshold(src, ROI_BW, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-        bitwise_not(ROI_BW, ROI_BW);
+        bitwise_and(ROI_L_BW, ROI_H_BW, ROI_BW);
 
+        imshow("ROI_H_BW", ROI_H_BW);
+        imshow("ROI_L_BW", ROI_L_BW);
+
+
+        ///////////////////////////////////
+        //
         // 若树存在，判断其颜色类型
+        //
+        ///////////////////////////////////
+
         string color = "null";
         double hue;
         double saturation;
+
+        // 将 hue 整体右移 120，（240 -> 360, 0 -> 120），
+        // 这样红色会连接在一起
+        Mat ROI_H2 = ROI_H.clone();
+        for (int y = 0; y < ROI_H2.rows; y++) {
+            for (int x = 0; x < ROI_H2.cols; x++) {
+                if (ROI_BW.at<uchar>(y, x) == 255) {
+                    int hue = ROI_H2.at<uchar>(y, x);
+                    hue += 255 / 3;
+                    if (hue > 255) {
+                        hue -= 255;
+                    }
+                    ROI_H2.at<uchar>(y, x) = hue;
+                } else {
+                    ROI_H2.at<uchar>(y, x) = 255;
+                }
+            }
+        }
 
         if (exists) {
             int count = 0;
@@ -168,7 +204,7 @@ int main()
         cout << "{";
         cout << "\"exists\": \"" << exists << "\", ";
         cout << "\"color\": \"" << color << "\", ";
-        cout << "\"stddev\": \"" << stddev << "\", ";
+        // cout << "\"stddev\": \"" << stddev << "\", ";
         cout << "\"hue\": \"" << hue << "\", ";
         cout << "\"saturation\": \"" << saturation << "\", ";
         cout << "\"position\": \"" << position << "\"";
@@ -181,6 +217,7 @@ int main()
             imshow("frame", frame);
             imshow("ROI_BW", ROI_BW);
             imshow("ROI_H", ROI_H);
+            imshow("ROI_H2", ROI_H2);
             imshow("ROI_S", ROI_S);
             imshow("ROI_L", ROI_L);
             waitKey(100);
