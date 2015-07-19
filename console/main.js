@@ -25,6 +25,10 @@ var drawLog = function(log) {
         return;
     }
 
+    if (log.tree.row < 1) {
+        return; // it's for debug
+    }
+
     // update tree count
     treeCount++;
     var progress = parseInt(treeCount / 25 * 100) + '%';
