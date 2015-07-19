@@ -3,6 +3,9 @@ var manipulator = require('./lib/manipulator');
 var end_effector = require('./lib/end-effector');
 var car = require('./lib/car');
 var head = require('./lib/head');
+var belt = require('./lib/belt');
+
+require('yapcduino')({global: true});
 
 var vision = require('./lib/vision');
 
@@ -13,43 +16,54 @@ var logs = [];
 
 console.log('Car process started.');
 
+var log = function(msg) {
+    logs.push({message: msg});
+    console.log(msg);
+};
+
 var tasks = [
     function() {
-        console.log('task: turn180 (leftFirst), block = 0');
+        log('Car: turn180 (leftFirst), block = 0');
         row = 1; // 接下来机械臂指向 row#1
         var rightFirst = false;
         var blocks = 0;
         car.turn180(rightFirst, blocks);
         car.resetSteps();
         leftToRight = true;
-        console.log('task: autoForward Black Row #1');
+        log('Car: auto forward mode (row#1).');
         car.autoForward();
     },
     function() {
         row = 4;
         var rightFirst = true;
         var blocks = 2;
+        log('Car: turn180 (right first), block = 2');
         car.turn180(rightFirst, blocks);
         car.resetSteps();
         leftToRight = false;
+        log('Car: auto forward mode (row#4).');
         car.autoForward();
     },
     function() {
         row = 3;
         var rightFirst = true;
         var blocks = 0;
+        log('Car: turn180 (right first), block = 0');
         car.turn180(rightFirst, blocks);
         car.resetSteps();
         leftToRight = true;
+        log('Car: auto forward mode (row#3).');
         car.autoForward();
     },
     function() {
         row = 5;
         var rightFirst = true;
         var blocks = 1;
+        log('Car: turn180 (right first), block = 2');
         car.turn180(rightFirst, blocks);
         car.resetSteps();
         leftToRight = false;
+        log('Car: auto forward mode (row#5).');
         car.autoForward();
     },
     function() {
@@ -165,10 +179,50 @@ setInterval(function() {
 
 process.on('message', function(msg) {
     console.log('index.js: Command Received -- ', msg);
+    if (msg.command == "test") {
+        log('Unit tests started.');
+
+        log('Unit test: go(1, 1)');
+        car.go(true, true, 1, 1, 1000, 1000, true);
+
+        log('Unit test: go(1, 0)');
+        car.go(true, true, 1, 0, 1000, 0, true);
+
+        log('Unit test: go(0, 1)');
+        car.go(true, true, 0, 1, 0, 1000, true);
+
+        log('Unit test: go(1, 1) (backward)');
+        car.go(false, false, 1, 1, 1000, 1000, true);
+
+        log('Unit test: end effector open');
+        end_effector.open();
+
+        log('Unit test: end effector close');
+        end_effector.close();
+
+        log('Unit test: end effector slow open');
+        end_effector.slowOpen();
+
+        log('Unit test: end effector close (again)');
+        end_effector.close();
+
+        log('Unit test: belt load');
+        belt.load();
+        delayMicroseconds(1 * 1000 * 1000);
+
+        log('Unit test: belt stop');
+        belt.stop();
+
+        log('Unit test: manipulator');
+        manipulator.move(1000);
+        manipulator.move(-1000);
+    }
     if (msg.command == "go") {
         console.log('index.js: Command Go.');
-        row = 2;
+        log('Car: turn left 90deg now.');
         car.turnLeft90Sync();
+        log('Car: auto forward mode (row#2).');
+        row = 2;
         car.autoForward();
     }
     if (msg.command == "pause") {

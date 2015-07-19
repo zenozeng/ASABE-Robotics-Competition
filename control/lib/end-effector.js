@@ -13,7 +13,7 @@ module.exports = {
     slowOpen: function() {
         for (var i = 30; i > 15; i--) {
             analogWrite(pin, i);
-            delayMicroseonds(200 * 1000);
+            delayMicroseconds(200 * 1000);
         }
         analogWrite(pin, 5);
         analogWrite(pin, 0);
