@@ -106,6 +106,7 @@ setInterval(function() {
             var treeInfo = tree.getTree();
             treeInfo.row = row;
             treeInfo.col = leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex());
+            treeInfo.color = treeInfo.color.toLowerCase();
             logs.push({tree: treeInfo});
             console.log(treeInfo);
 

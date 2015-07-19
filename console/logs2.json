@@ -1,0 +1,32 @@
+[
+    {
+        "tree": {
+            "col": 5,
+            "row": 0,
+            "height": "low",
+            "isHigh": false,
+            "position": 0.509291,
+            "time": "2010-01-01T03:11:49.488Z",
+            "saturation": 54.9093,
+            "hue": 150.08,
+            "stddev": null,
+            "color": "yellow",
+            "exists": true
+        }
+    },
+    {
+        "tree": {
+            "col": 4,
+            "row": 0,
+            "height": "low",
+            "isHigh": false,
+            "position": 0.390255,
+            "time": "2010-01-01T03:11:56.648Z",
+            "saturation": 43.1363,
+            "hue": 138.812,
+            "stddev": null,
+            "color": "brown",
+            "exists": true
+        }
+    }
+]

@@ -68,6 +68,14 @@ app.post('/control/stop', function(req, res) {
     res.send('I am happy.');
 });
 
+app.post('/control/go', function(req, res) {
+    console.log('server.js: go');
+    if (car) {
+        car.send({command: 'go'});
+    }
+    res.send('I am happy.');
+});
+
 app.post('/control/eval', function(req, res) {
     var car = require('./lib/car');
     req.rawBody = '';

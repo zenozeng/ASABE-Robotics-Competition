@@ -4,6 +4,7 @@
  */
 var writeLog = function(log) {
     if (log.tree) {
+        console.log(log.tree);
         // if (log.tree.empty) {
         //     log.message = '<i class="fa fa-circle-thin"></i>' + 'Empty ';
         // } else {
@@ -67,18 +68,31 @@ var drawLog = function(log) {
         }
 
         var url = '/logs';
-        // var url = 'log.json';
+        url = 'logs2.json';
 
         $.get(url + '?_=' + Date.now(), function(logs) {
-            logsPending = false;
-
-            treeCount = 0; // reset count
-            $('#canvas i').remove();
-            $('#logs').html('');
-            logs.forEach(function(log) {
-                writeLog(log);
-                drawLog(log);
-            });
+            try {
+                console.log(logs);
+                if (typeof logs == "string") {
+                    logs = JSON.parse(logs);
+                }
+                treeCount = 0; // reset count
+                $('#canvas i').remove();
+                $('#logs').html('');
+                logs.forEach(function(log) {
+                    writeLog({
+                        tree: {
+                            col: log.tree.col,
+                            row: log.tree.row,
+                            height: log.tree.height,
+                            color: log.tree.color
+                        }
+                    });
+                    drawLog(log);
+                });
+            } finally {
+                logsPending = false;
+            }
         }).fail(function() {
             logsPending = false;
         });

@@ -8,7 +8,6 @@ $(function() {
     setInterval(function() {
         // update image
         if (!imagePending) {
-            console.log(imagePending);
             var image = new Image();
             imagePending = true;
             image.onload = function() {
