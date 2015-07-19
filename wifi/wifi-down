@@ -1,0 +1,12 @@
+#!/bin/bash
+
+APP_PREFIX=/srv/wifi
+
+mkdir -p $APP_PREFIX/logs
+echo -n "[Down] $IFACE" >> $APP_PREFIX/logs/ifuplogs
+
+if [[ $IFACE =~ wlan[0-9] ]]; then
+    echo " - is_wlan" >> $APP_PREFIX/logs/ifuplogs
+    $APP_PREFIX/stop-spec.sh $IFACE
+fi
+
