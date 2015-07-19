@@ -94,16 +94,26 @@ int main()
         // 反色
         bitwise_not(ROI_L_BW, ROI_L_BW);
 
+        // 将 hue 整体右移 120，（240 -> 360, 0 -> 120），
+        // 这样红色会连接在一起
+        Mat ROI_H2 = ROI_H.clone();
+        for (int y = 0; y < ROI_H2.rows; y++) {
+            for (int x = 0; x < ROI_H2.cols; x++) {
+                int hue = ROI_H2.at<uchar>(y, x);
+                hue += 255 / 3;
+                if (hue > 255) {
+                    hue -= 255;
+                }
+                ROI_H2.at<uchar>(y, x) = hue;
+            }
+        }
+
         Mat ROI_H_BW;
-        threshold(ROI_H, ROI_H_BW, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU); // OTSU
+        threshold(ROI_H2, ROI_H_BW, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU); // OTSU
         bitwise_not(ROI_H_BW, ROI_H_BW);
 
         Mat ROI_BW;
         bitwise_and(ROI_L_BW, ROI_H_BW, ROI_BW);
-
-        imshow("ROI_H_BW", ROI_H_BW);
-        imshow("ROI_L_BW", ROI_L_BW);
-
 
         ///////////////////////////////////
         //
@@ -117,18 +127,11 @@ int main()
 
         // 将 hue 整体右移 120，（240 -> 360, 0 -> 120），
         // 这样红色会连接在一起
-        Mat ROI_H2 = ROI_H.clone();
-        for (int y = 0; y < ROI_H2.rows; y++) {
-            for (int x = 0; x < ROI_H2.cols; x++) {
-                if (ROI_BW.at<uchar>(y, x) == 255) {
-                    int hue = ROI_H2.at<uchar>(y, x);
-                    hue += 255 / 3;
-                    if (hue > 255) {
-                        hue -= 255;
-                    }
-                    ROI_H2.at<uchar>(y, x) = hue;
-                } else {
-                    ROI_H2.at<uchar>(y, x) = 255;
+        Mat ROI_H3 = ROI_H2.clone();
+        for (int y = 0; y < ROI_H3.rows; y++) {
+            for (int x = 0; x < ROI_H3.cols; x++) {
+                if (ROI_BW.at<uchar>(y, x) != 255) {
+                    ROI_H3.at<uchar>(y, x) = 255;
                 }
             }
         }
@@ -141,7 +144,7 @@ int main()
                 for (int x = 0; x < ROI_BW.cols; x++) {
                     if (ROI_BW.at<Vec3b>(y, x)[0] == 255) {
                         count++;
-                        hueSum += ROI_H.at<Vec3b>(y, x)[0];
+                        hueSum += ROI_H2.at<Vec3b>(y, x)[0];
                         sSum += ROI_S.at<Vec3b>(y, x)[0];
                     }
                 }
@@ -150,29 +153,22 @@ int main()
             saturation = 1.0 * sSum / count;
 
             // hue: 0 - 360
-            // Brown: (Gloss Leather Brown Spray Paint, HSL: 12, 19, 27)
-            // Yellow (Gloss Sun Yellow Spray Paint, HSL: 46, 91, 50)
-            // Green (Gloss Hosta Leaf Spray Paint, HSL: 78, 43, 27)
+            // Brown: (Gloss Leather Brown Spray Paint, HSL: 12, 19, 27)，右移后为 132
+            // Yellow (Gloss Sun Yellow Spray Paint, HSL: 46, 91, 50)，右移后为 166
+            // Green (Gloss Hosta Leaf Spray Paint, HSL: 78, 43, 27)，右移后为 198
 
             // 由于实际测试中我们的棕色木块色相可以接近三四十，会导致误判为黄色
             // 所以我们结合饱和度信息
 
-            int green = abs(hue - 78);
-            int yellow = abs(hue - 46);
+            int p1 = (12 + 46) / 2 + 120;
+            int p2 = (46 + 78) / 2 + 120;
 
-            green = green > 180 ? 360 - green : green;
-            yellow = yellow > 180 ? 360 - yellow : yellow;
-
-            if (green < yellow) {
+            if (hue < p1) {
+                color = "Brown";
+            } else if (hue > p2) {
                 color = "Green";
             } else {
-                int d1 = (saturation - 19) * (saturation - 19) + (hue - 12) * (hue - 12);
-                int d2 = (saturation - 91) * (saturation - 91) + (hue - 46) * (hue - 46);
-                if (d1 < d2) {
-                    color = "Brown";
-                } else {
-                    color = "Yellow";
-                }
+                color = "Yellow";
             }
         }
 
