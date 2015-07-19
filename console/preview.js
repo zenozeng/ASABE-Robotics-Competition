@@ -32,7 +32,6 @@ $(function() {
             };
             image.src = "frame.jpg?_=" + Date.now();
         }
-        // update info
         if (!statusPending) {
             statusPending = true;
             $.get('/status', function(data) {
@@ -41,6 +40,7 @@ $(function() {
                     data = JSON.parse(data);
                     data = JSON.stringify(data, null, 4);
                 } finally {
+                    delete data.tree; // only display for debug
                     $status.html(data);
                 }
             }).fail(function() {
