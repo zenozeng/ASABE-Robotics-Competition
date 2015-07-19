@@ -1,0 +1,5 @@
+auto WLAN_INTERFACE
+allow-hotplug WLAN_INTERFACE
+iface WLAN_INTERFACE inet static
+address WLAN_IP
+netmask 255.255.255.0
