@@ -12,13 +12,33 @@ module.exports = {
     // 后循迹片刚好黑的时候触发
     unload: function() {
         analogWrite(5, 30);
-        var steps = 6000;
+        var steps = 1000;
         var forward = false;
         var count = 0;
+        // forward
         car.go(true, true, 1, 1, 200, 200, true);
-        car.go(false, false, 0, 3, 0, steps, true);
-        car.go(false, false, 0, 3, 0, steps, true);
-        car.go(true, true, 0, 3, 0, steps * 2, true);
+        // shake
+
+        car.go(false, false, 0, 1, 0, steps, true);
+        analogWrite(5, 150);
+        delayMicroseonds(1000 * 1000);
+        analogWrite(5, 30);
+
+        car.go(false, true, 0, 1, 0, steps, true);
+        analogWrite(5, 150);
+        delayMicroseonds(1000 * 1000);
+        analogWrite(5, 30);
+
+        car.go(false, false, 0, 1, 0, steps, true);
+        analogWrite(5, 150);
+        delayMicroseonds(1000 * 1000);
+        analogWrite(5, 30);
+
+        car.go(true, true, 0, 1, 0, steps, true);
+        analogWrite(5, 150);
+        delayMicroseonds(1000 * 1000);
+        analogWrite(5, 30);
+
         analogWrite(5, 0);
         // var shake = function() {
         //     count++;
