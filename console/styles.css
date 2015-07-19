@@ -163,7 +163,7 @@ li#popkart-mode, li#ctrl-pause, li#ctrl-resume, li#record-mode, li#ctrl-stop, li
     margin-left: 2em;
     color: #777;
     float: left;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 #current::after {

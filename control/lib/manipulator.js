@@ -33,11 +33,11 @@ Manipulator.prototype.moveTo = function(position) {
 };
 
 Manipulator.prototype.set = function() {
-    this.move(3700 / stepScale);
+    this.move(3700 * 6);
 };
 
 Manipulator.prototype.unset = function() {
-    this.move(- 3700 / stepScale);
+    this.move(- 3700 * 6);
 };
 
 

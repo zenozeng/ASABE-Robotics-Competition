@@ -38,9 +38,9 @@ $(function() {
                 statusPending = false;
                 try {
                     data = JSON.parse(data);
+                    delete data.tree; // only display for debug
                     data = JSON.stringify(data, null, 4);
                 } finally {
-                    delete data.tree; // only display for debug
                     $status.html(data);
                 }
             }).fail(function() {

@@ -228,6 +228,8 @@ process.on('message', function(msg) {
     }
     if (msg.command == "go") {
         console.log('index.js: Command Go.');
+        end_effector.close();
+        end_effector.stop();
         log('Car: turn left 90deg now.');
         car.turnLeft90Sync();
         log('Car: auto forward mode (row#2).');
