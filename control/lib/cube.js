@@ -1,8 +1,14 @@
 var e = require('./lib/end-effector');
 var m = require('./lib/manipulator');
 
-e.open();
-m.move(3700);
-e.close();
-m.move(-3700);
-m.slowOpen();
+var collect = function() {
+    e.open();
+    m.set();
+    e.close();
+    m.unset();
+    m.slowOpen();
+};
+
+module.exports = {
+    collect: collect
+};

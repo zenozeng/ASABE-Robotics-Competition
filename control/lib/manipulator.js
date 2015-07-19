@@ -12,7 +12,7 @@ function Manipulator() {
     this.position = 0;
 }
 
-var stepsScale = 0.25;
+var stepScale = 0.25;
 
 // offset 为正则是向外
 Manipulator.prototype.move = function(offsetSteps) {
@@ -33,9 +33,11 @@ Manipulator.prototype.moveTo = function(position) {
 };
 
 Manipulator.prototype.set = function() {
+    this.move(3700 / stepScale);
 };
 
 Manipulator.prototype.unset = function() {
+    this.move(- 3700 / stepScale);
 };
 
 
