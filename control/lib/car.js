@@ -5,7 +5,7 @@ var head = require('./head');
 
 var STEPS_FOR_90_DEG_SPEED_0_1 = 240 * 16;
 var STEPS_FOR_90_DEG_SPEED_1_2 = STEPS_FOR_90_DEG_SPEED_0_1 * 2;
-var STEPS_FOR_A_BLOCK = 7750;
+var STEPS_FOR_A_BLOCK = 8125;
 var STEPS_FOR_A_TREE_BLOCK = STEPS_FOR_A_BLOCK * 3 / 5;
 
 var DEBUG = false;
@@ -143,6 +143,20 @@ Car.prototype.getTreeIndex = function() {
 
 Car.prototype.resetSteps = function() {
     this.steps = 0;
+};
+
+// forwardBlocks(1)
+// forwardBlocks(2)
+// 走在黑线上时调用
+Car.prototype.forwardBlocks = function(blocks) {
+    var steps = STEPS_FOR_90_DEG_SPEED_0_1;
+    car.go(false, false, 0.5, 0.5, 1000, 1000, true);
+    car.go(true, true, 0.25, 0.5, steps, steps * 2, true);
+    car.go(true, true, 0.5, 0.5, 480, 480, true);
+    var offset = blocks - 1;
+    car.go(true, true, 0.5, 0.5, STEPS_FOR_A_BLOCK * offset + 1, STEPS_FOR_A_BLOCK * offset + 1, true);
+    car.go(true, true, 0.25, 0.5, steps, steps * 2, true);
+    car.rotateToFindLine(15);
 };
 
 Car.prototype.turn180 = function(rightFirst, offsetBlocks) {
