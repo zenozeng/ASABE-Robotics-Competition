@@ -115,7 +115,6 @@ Car.prototype.autoForwardSync = function(steps) {
     var targetSteps = this.getSteps() + steps;
     while (this.getSteps() < targetSteps) {
         this._autoForward();
-        delayMicroseconds(20000);
     }
     this.stop();
     console.log('Auto Forward Sync done.');
@@ -125,8 +124,9 @@ Car.prototype.autoForward = function() {
     console.log('Car: autoForward()');
     var car = this;
     car.stopAuto();
-    car.forward();
+    car.forward(1000);
     car.autoInterval = setInterval(function() {
+        // console.log('autoForward, interval');
         car._autoForward();
     }, 20);
 };
@@ -158,7 +158,8 @@ Car.prototype.resetSteps = function() {
 };
 
 Car.prototype.isAuto = function() {
-    return typeof this.autoInterval !== "undefined";
+    var isAuto = !!this.autoInterval;
+    return isAuto;
 };
 
 Car.prototype.stopAuto = function() {
@@ -172,29 +173,58 @@ Car.prototype.turn180 = function(rightFirst, offsetBlocks) {
     log('turn 180');
     var steps = STEPS_FOR_90_DEG_SPEED_0_1;
     this.stop();
+    car = this;
     // 先出来一点
-    car.go(true, true, 1, 1, steps * 0.85, steps * 0.85, true);
+    car.go(true, true, 0.25, 0.25, steps * 0.7, steps * 0.7, true);
     if (rightFirst) {
         // 右轮不动，向右转出 30°
-        car.go(true, true, 1, 0, steps / 3, 0, true);
+        car.go(true, true, 0.25, 0, steps / 3, 0, true);
         // 左右轮齐动，向右 60°
-        car.go(true, false, 1, 1, steps / 3, steps / 3, true);
+        car.go(true, false, 0.25, 0.25, steps / 3, steps / 3, true);
     } else {
         // 左轮不动，向左转出 30°
-        car.go(true, true, 0, 1, 0, steps / 3, true);
+        car.go(true, true, 0, 0.25, 0, steps / 3, true);
         // 左右轮齐动，再转 60°
-        car.go(false, true, 1, 1, steps / 3, steps / 3, true);
+        car.go(false, true, 0.25, 0.25, steps / 3, steps / 3, true);
     }
-    this.go(false, false, 1, 1, steps, steps, true);
-    this.go(false, false, 1, 1,
+    car.go(false, false, 0.5, 0.5, steps * 1, steps * 1, true);
+    car.go(false, false, 0.5, 0.5,
             STEPS_FOR_A_BLOCK * offsetBlocks + 1, // because 0 will be ignored and will go forever, so use >= 1
             STEPS_FOR_A_BLOCK * offsetBlocks + 1,
             true);
     if (rightFirst) {
-        this.go(true, true, 2, 1, steps * 2, steps, true);
+        car.go(true, true, 0.5, 0.25, steps * 2, steps, true);
     } else {
-        this.go(true, true, 1, 2, steps, steps * 2, true);
+        car.go(true, true, 0.25, 0.5, steps, steps * 2, true);
     }
+    car.rotateToFindLine(15);
+};
+
+// cw 是否先顺时针
+Car.prototype.rotateToFindLine = function(deg, cw) {
+    var car = this;
+    var steps = STEPS_FOR_90_DEG_SPEED_0_1;
+    car.stop();
+
+    steps = steps / 6 * (deg / 30);
+
+    // 先转 deg
+    car.go(cw, !cw, 0.25, 0.25, steps, steps, true);
+    // 接下来反向旋转 2 * deg 度去寻找黑线 (async)
+    car.go(!cw, cw, 0.25, 0.25, steps * 2, steps * 2);
+
+    var now = Date.now();
+    var timeout = 10 * 1000;
+    while ((Date.now() - now) < timeout) {
+        var sensors = head.read();
+        if (sensors[0] + sensors[1] < 2) { // 如果有一片找到黑色那么就好噜
+            car.stop();
+            break;
+        }
+    }
+
+    car.autoForwardSync(2000);
+    car.go(false, false, 1, 1, 2000, 2000, true);
 };
 
 Car.prototype.goBack = function() {
@@ -215,6 +245,8 @@ Car.prototype.turnLeft90Sync = function() {
     this.stop();
     var steps = STEPS_FOR_90_DEG_SPEED_0_1;
     this.go(true, true, 0, 1, steps, steps, true);
+    // 再往前走一点
+    this.go(true, true, 0.5, 0.5, steps / 4, steps / 4, true);
 };
 
 // 右轮不动

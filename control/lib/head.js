@@ -30,6 +30,10 @@ var equal = function(obj1, obj2) {
 var getBlackLineDirection = function() {
     var data = read();
 
+    // // only use front 2 sensors
+    // data[2] = 0;
+    // data[3] = 0;
+
     if (equal(data, [1, 1, 1, 1])) {
         return 0;
     }
@@ -51,7 +55,6 @@ var getBlackLineDirection = function() {
     return sum * -1;
 };
 
-// 是否走在黑横线上
 var getSum = function(arr) {
     var sum = 0;
     arr.forEach(function(id) {
@@ -66,11 +69,12 @@ var getAll = function() {
     });
 };
 
+// 是否走在黑横线上
 var isCrossing = function() {
-    var front = [1, 2, 5];
+    var front = [1, 2, 5, 6];
     var back = [3, 4];
     // 前面至少三个灭，后面至少一个灭
-    return (getSum(front) === 0) && (getSum(back) < 2);
+    return (getSum(front) <= 1) && (getSum(back) < 2);
 };
 
 module.exports = {

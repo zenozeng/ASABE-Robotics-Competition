@@ -4,6 +4,7 @@ var end_effector = require('./lib/end-effector');
 var car = require('./lib/car');
 var head = require('./lib/head');
 var belt = require('./lib/belt');
+var cube = require('./lib/cube');
 
 require('yapcduino')({global: true});
 
@@ -83,7 +84,13 @@ var lastRowDetectedTime = Date.now();
 
 var rightFirst = false;
 setInterval(function() {
+    if (!car.isAuto()) {
+        return;
+    }
+
     if (head.isCrossing()) {
+
+        console.log('isCrossing！');
 
         if ((Date.now() - lastRowDetectedTime) < 10 * 1000) {
             // ignore first black line、turn 180 after black line
@@ -92,13 +99,11 @@ setInterval(function() {
 
         lastRowDetectedTime = Date.now();
 
-        console.log('isCrossing！');
-
-        if (car.isAuto()) {
-            var task = tasks.shift();
-            if (task) {
-                task();
-            }
+        car.stopAuto();
+        car.stop();
+        var task = tasks.shift();
+        if (task) {
+            task();
         }
     }
 }, 20);
@@ -121,7 +126,7 @@ setInterval(function() {
             var treeInfo = tree.getTree();
             treeInfo.row = row;
             treeInfo.col = leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex());
-            treeInfo.color = treeInfo.color.toLowerCase();
+            treeInfo.color = treeInfo.color && treeInfo.color.toLowerCase();
             logs.push({tree: treeInfo});
             console.log(treeInfo);
 
@@ -132,7 +137,7 @@ setInterval(function() {
             });
 
             if (collectedTypes.indexOf(type) > -1) {
-                return; // already collected before
+                // return; // already collected before
             }
 
             collectedTypes.push(type);
@@ -142,12 +147,10 @@ setInterval(function() {
             car.stop();
             // 运行到树对准传送带
             car.autoForwardSync(1600);
+
             // 对准小木块
-            end_effector.open(); // sync open
-            manipulator.move(1100); // sync move manipulator
-            end_effector.close(); // sync close
-            manipulator.move(-1100); // sync move back
-            end_effector.open(); // sync open
+            cube.collect();
+
             // 往前开一小段避免树被再次判断到
             car.autoForwardSync(3000);
             // 恢复自动运行
@@ -232,6 +235,7 @@ process.on('message', function(msg) {
         end_effector.stop();
         log('Car: turn left 90deg now.');
         car.turnLeft90Sync();
+        car.rotateToFindLine(30, false);
         log('Car: auto forward mode (row#2).');
         row = 2;
         car.autoForward();

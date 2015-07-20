@@ -1,10 +1,12 @@
-var e = require('./lib/end-effector');
-var m = require('./lib/manipulator');
-var b = require('./lib/belt');
+var e = require('./end-effector');
+var m = require('./manipulator');
+var b = require('./belt');
 
 var steps = 30000;
 
 var collect = function() {
+    delayMicroseconds(1 * 1000 * 1000);
+    return; // for now
     b.load();
     e.open();
     m.move(steps);
