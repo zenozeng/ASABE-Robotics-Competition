@@ -261,13 +261,10 @@ Car.prototype.goBack = function() {
     var car = this;
     var steps = STEPS_FOR_90_DEG_SPEED_0_1;
     car.forwardBlocks(2);
-    car.go(false, false, 0.25, 0.25, 3500, 3500, true);
+    car.go(false, false, 0.25, 0.25, 3800, 3800, true);
     car.go(true, false, 0.25, 0.25, steps / 2, steps / 2, true);
+    car.go(true, true, 0.5, 0.25, steps, steps, true);
     car.go(true, true, 0.25, 0.25);
-    // car.go(false, false, 0.5, 0.5, 1000, 1000, true);
-    // car.go(true, true, 0.25, 0.5, steps, steps * 2, true);
-    // steps = STEPS_FOR_A_BLOCK * 3;
-    // car.go(true, true, 0.25, 0.25);
 };
 
 // 左轮不动

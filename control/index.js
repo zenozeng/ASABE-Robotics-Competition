@@ -207,9 +207,9 @@ function init() {
     end_effector.close();
     end_effector.stop();
 
-    // log('Car: turn left 90deg now.');
-    // car.turnLeft90Sync();
-    // car.rotateToFindLine(30, false);
+    log('Car: turn left 90deg now.');
+    car.turnLeft90Sync();
+    car.rotateToFindLine(30, false);
 
     log('Car: auto forward mode (row#2).');
     row = 2;
