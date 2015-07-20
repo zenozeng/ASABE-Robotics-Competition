@@ -30,8 +30,7 @@ var tasks = [
         log('Car: turn180 (leftFirst), block = 0');
         row = 1; // 接下来机械臂指向 row#1
         var rightFirst = false;
-        var blocks = 0;
-        car.turn180(rightFirst, blocks);
+        car.turn180(rightFirst, 0);
         car.resetSteps();
         leftToRight = true;
         log('Car: auto forward mode (row#1).');
@@ -42,8 +41,7 @@ var tasks = [
         row = 4;
         var rightFirst = true;
         var blocks = 2;
-        log('Car: turn180 (right first), block = 2');
-        car.turn180(rightFirst, blocks);
+        car.forwardBlocks(2);
         car.resetSteps();
         leftToRight = false;
         log('Car: auto forward mode (row#4).');
@@ -53,9 +51,8 @@ var tasks = [
         console.log('TAKS 3');
         row = 3;
         var rightFirst = true;
-        var blocks = 0;
         log('Car: turn180 (right first), block = 0');
-        car.turn180(rightFirst, blocks);
+        car.turn180(rightFirst, 0);
         car.resetSteps();
         leftToRight = true;
         log('Car: auto forward mode (row#3).');
@@ -64,8 +61,8 @@ var tasks = [
     function() {
         console.log('TAKS 4');
         row = 5;
-        log('Car: turn180 (left first), block = -1');
-        car.turn180(false, -1);
+        log('Car: forwardBlocks(1)');
+        car.forwardBlocks(1);
         car.resetSteps();
         leftToRight = false;
         log('Car: auto forward mode (row#5).');
@@ -85,17 +82,9 @@ var rightFirst = false;
 var collectedTypes = [];
 
 var loop = function() {
-    // console.log('interval');
 
-    ////////////////////////////////
-    //
-    // 自动循迹
-    //
-    ////////////////////////////////
-
-    if (autoForward) {
-        car._autoForward();
-    }
+    console.log('interval');
+    console.log(head.isCrossing());
 
     ////////////////////////////////
     //
@@ -115,6 +104,16 @@ var loop = function() {
         if (task) {
             task();
         }
+    }
+
+    ////////////////////////////////
+    //
+    // 自动循迹
+    //
+    ////////////////////////////////
+
+    if (autoForward) {
+        car._autoForward();
     }
 
     ////////////////////////////////////////
