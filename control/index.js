@@ -69,8 +69,11 @@ var tasks = [
         autoForward = true;
     },
     function() {
-        console.log('TAKS 5');
+        console.log('TASK 5');
         car.goBack(); // Sync go back
+    },
+    function() {
+        console.log('TASK 6');
         // todo: 下货
     }
 ];

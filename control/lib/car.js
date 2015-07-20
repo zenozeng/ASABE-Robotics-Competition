@@ -222,30 +222,52 @@ Car.prototype.rotateToFindLine = function(deg, cw) {
     // 接下来反向旋转 2 * deg 度去寻找黑线 (async)
     car.go(!cw, cw, 0.25, 0.25, steps * 2, steps * 2);
 
+    var timeout = 5 * 1000;
+    var done = false;
+
+    // 先尝试两点检测
     var now = Date.now();
-    var timeout = 10 * 1000;
     while ((Date.now() - now) < timeout) {
         var sensors = head.read();
-        if (sensors[0] + sensors[1] < 2) { // 如果有一片找到黑色那么就好噜
+        if (sensors[0] + sensors[1] < 1) { // 如果有两片都找到黑色那么就好噜
+            done = true;
             car.stop();
             break;
         }
     }
 
+    // 再尝试单点检测
+    if (!done) {
+        // 先转 deg
+        car.go(cw, !cw, 0.25, 0.25, steps, steps, true);
+        // 接下来反向旋转 2 * deg 度去寻找黑线 (async)
+        car.go(!cw, cw, 0.25, 0.25, steps * 2, steps * 2);
+
+        now = Date.now();
+        while ((Date.now() - now) < timeout) {
+            sensors = head.read();
+            if (sensors[0] + sensors[1] < 2) { // 如果有片找到黑色那么就好噜
+                car.stop();
+                break;
+            }
+        }
+    }
+
     car.autoForwardSync(2000);
-    car.go(false, false, 1, 1, 2000, 2000, true);
+    car.go(false, false, 0.25, 0.25, 2000, 2000, true);
 };
 
 Car.prototype.goBack = function() {
     var car = this;
     var steps = STEPS_FOR_90_DEG_SPEED_0_1;
-    // 左轮不动，转出 30°
-    car.go(true, true, 0, 1, 0, steps / 3, true);
-    // 左右轮齐动，再转 60°
-    car.go(false, true, 1, 1, steps / 3, steps / 3, true);
-    // 再向前走 3 个 block
-    steps = STEPS_FOR_A_BLOCK * 3;
-    car.go(true, true, 1, 1, steps, steps, true);
+    car.forwardBlocks(2);
+    car.go(false, false, 0.25, 0.25, 3500, 3500, true);
+    car.go(true, false, 0.25, 0.25, steps / 2, steps / 2, true);
+    car.go(true, true, 0.25, 0.25);
+    // car.go(false, false, 0.5, 0.5, 1000, 1000, true);
+    // car.go(true, true, 0.25, 0.5, steps, steps * 2, true);
+    // steps = STEPS_FOR_A_BLOCK * 3;
+    // car.go(true, true, 0.25, 0.25);
 };
 
 // 左轮不动
