@@ -90,7 +90,7 @@ Car.prototype.turnRight = function(speed) {
 
 Car.prototype._autoForward = function() {
     var dir = head.getBlackLineDirection();
-    console.log({dir: dir});
+    // console.log({dir: dir});
     var isCrossing = head.isCrossing();
     var speed = {
         "-1": [0.8, 1],

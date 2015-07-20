@@ -66,7 +66,7 @@ var tasks = [
         row = 5;
         var rightFirst = true;
         var blocks = 1;
-        log('Car: turn180 (right first), block = 2');
+        log('Car: turn180 (right first), block = 1');
         car.turn180(rightFirst, blocks);
         car.resetSteps();
         leftToRight = false;
@@ -87,7 +87,7 @@ var rightFirst = false;
 var collectedTypes = [];
 
 var loop = function() {
-    console.log('interval');
+    // console.log('interval');
 
     ////////////////////////////////
     //
@@ -125,8 +125,8 @@ var loop = function() {
     //
     ///////////////////////////////////////
 
-    if (false) {
-    // if (tree.shouldStop()) { // if tree detected and tree is in center
+    // if (false) {
+    if (tree.shouldStop()) { // if tree detected and tree is in center
 
         console.log('tree.shouldStop()');
 
@@ -165,17 +165,19 @@ var loop = function() {
         autoForward = true;
     }
 
+};
+
+setInterval(function() {
+
     //////////////////////////////////
     //
     // 与 Server 通信
     //
     /////////////////////////////////
 
-    if (false) {
-        syncLog();
-    }
+    syncLog();
 
-};
+}, 100);
 
 // sync status
 function syncLog() {
@@ -198,9 +200,9 @@ function init() {
     end_effector.close();
     end_effector.stop();
 
-    // log('Car: turn left 90deg now.');
-    // car.turnLeft90Sync();
-    // car.rotateToFindLine(30, false);
+    log('Car: turn left 90deg now.');
+    car.turnLeft90Sync();
+    car.rotateToFindLine(30, false);
 
     log('Car: auto forward mode (row#2).');
     row = 2;
