@@ -11,10 +11,19 @@ sensors.forEach(function(pin) {
 });
 
 pinMode(pins.BLACK_AND_WHITE_SENSOR_5, INPUT);
+pinMode(pins.BLACK_AND_WHITE_SENSOR_6, INPUT);
 
 var read = function() {
     // result (from left to right) (eg, black, black, white, white: [0, 0, 1, 1])
     return sensors.map(function(pin) {
+        return digitalRead(pin);
+    });
+};
+
+var readOuter = function() {
+    return [5, 6].map(function(i) {
+        return pins["BLACK_AND_WHITE_SENSOR_" + i];
+    }).map(function(pin) {
         return digitalRead(pin);
     });
 };
@@ -29,30 +38,93 @@ var equal = function(obj1, obj2) {
 // 返回一个数字，若黑线在车的右边则为正，否则为负
 var getBlackLineDirection = function() {
     var data = read();
+    var outer = readOuter();
+    // console.log({inner: data, outer: outer});
 
-    // // only use front 2 sensors
-    // data[2] = 0;
-    // data[3] = 0;
-
-    if (equal(data, [1, 1, 1, 1])) {
+    if (equal(data, [0, 0, 0, 0])) {
         return 0;
     }
 
-    // 车前后都在线的左边
-    if (data[0] * data[2] > 0) {
+    if (equal(data, [1, 0, 0, 0])) {
+        return 1;
+    }
+
+    if (equal(data, [0, 1, 0, 0])) {
+        return -1;
+    }
+
+    if (equal(data, [0, 0, 1, 0])) {
+        return -1;
+    }
+
+    if (equal(data, [0, 0, 0, 1])) {
+        return 1;
+    }
+
+    if (equal(data, [1, 1, 0, 0])) {
+        return 0;
+    }
+
+    if (equal(data, [1, 0, 1, 0])) {
         return 2;
     }
 
-    // 车前后都在线的右边
-    if (data[1] * data[3] > 0) {
+    if (equal(data, [1, 0, 0, 1])) {
+        return 2;
+    }
+
+    if (equal(data, [0, 1, 1, 0])) {
         return -2;
     }
 
-    var sum = 0;
-    data.forEach(function(v, i) {
-        sum += weights[i] * v;
-    });
-    return sum * -1;
+    if (equal(data, [0, 1, 0, 1])) {
+        return -2;
+    }
+
+    if (equal(data, [0, 0, 1, 1])) {
+        return 0;
+    }
+
+    if (equal(data, [1, 1, 1, 0])) {
+        if (equal(outer, [1, 0])) {
+            return 3;
+        } else if (equal(outer, [0, 1])) {
+            return -3;
+        } else {
+            return 0;
+        }
+    }
+
+    if (equal(data, [1, 1, 0, 1])) {
+        if (equal(outer, [1, 0])) {
+            return 3;
+        } else if (equal(outer, [0, 1])) {
+            return -3;
+        } else {
+            return 0;
+        }
+    }
+
+    if (equal(data, [1, 0, 1, 1])) {
+        return 1;
+    }
+
+    if (equal(data, [0, 1, 1, 1])) {
+        return -1;
+    }
+
+    if (equal(data, [1, 1, 1, 1])) {
+        if (equal(outer, [1, 0])) {
+            return 3;
+        } else if (equal(outer, [0, 1])) {
+            return -3;
+        } else {
+            return 0;
+        }
+    }
+
+    return 0;
+
 };
 
 var getSum = function(arr) {
@@ -74,7 +146,9 @@ var isCrossing = function() {
     var front = [1, 2, 5, 6];
     var back = [3, 4];
     // 前面至少三个灭，后面至少一个灭
-    return (getSum(front) <= 1) && (getSum(back) < 2);
+    var isCrossing = (getSum(front) <= 1) && (getSum(back) < 2);
+    //console.log({isCrossing: isCrossing});
+    return isCrossing;
 };
 
 module.exports = {

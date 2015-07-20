@@ -32,20 +32,16 @@ $(function() {
             };
             image.src = "frame.jpg?_=" + Date.now();
         }
-        if (!statusPending) {
-            statusPending = true;
-            $.get('/status', function(data) {
-                statusPending = false;
-                try {
-                    data = JSON.parse(data);
-                    // delete data.tree; // only display for debug
-                    data = JSON.stringify(data, null, 4);
-                } finally {
-                    $status.html(data);
-                }
-            }).fail(function() {
-                statusPending = false;
-            });
-        }
     }, 500);
+    setInterval(function() {
+        $.get('/status', function(data) {
+            try {
+                data = JSON.parse(data);
+                // delete data.tree; // only display for debug
+                data = JSON.stringify(data, null, 4);
+            } finally {
+                $status.html(data);
+            }
+        });
+    }, 100);
 });

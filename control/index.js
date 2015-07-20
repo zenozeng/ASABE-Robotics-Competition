@@ -25,6 +25,7 @@ var log = function(msg) {
 
 var tasks = [
     function() {
+        console.log('TAKS 1');
         log('Car: turn180 (leftFirst), block = 0');
         row = 1; // 接下来机械臂指向 row#1
         var rightFirst = false;
@@ -36,6 +37,7 @@ var tasks = [
         car.autoForward();
     },
     function() {
+        console.log('TAKS 2');
         row = 4;
         var rightFirst = true;
         var blocks = 2;
@@ -47,6 +49,7 @@ var tasks = [
         car.autoForward();
     },
     function() {
+        console.log('TAKS 3');
         row = 3;
         var rightFirst = true;
         var blocks = 0;
@@ -58,6 +61,7 @@ var tasks = [
         car.autoForward();
     },
     function() {
+        console.log('TAKS 4');
         row = 5;
         var rightFirst = true;
         var blocks = 1;
@@ -69,6 +73,7 @@ var tasks = [
         car.autoForward();
     },
     function() {
+        console.log('TAKS 5');
         car.goBack(); // Sync go back
         // todo: 下货
     }
@@ -84,6 +89,8 @@ var lastRowDetectedTime = Date.now();
 
 var rightFirst = false;
 setInterval(function() {
+    console.log({interval: 'isCrossingInterval', isAuto: car.isAuto()});
+
     if (!car.isAuto()) {
         return;
     }
@@ -92,10 +99,10 @@ setInterval(function() {
 
         console.log('isCrossing！');
 
-        if ((Date.now() - lastRowDetectedTime) < 10 * 1000) {
-            // ignore first black line、turn 180 after black line
-            return;
-        }
+        // if ((Date.now() - lastRowDetectedTime) < 10 * 1000) {
+        //     // ignore first black line、turn 180 after black line
+        //     return;
+        // }
 
         lastRowDetectedTime = Date.now();
 
@@ -117,6 +124,9 @@ setInterval(function() {
 var collectedTypes = [];
 
 setInterval(function() {
+    console.log('tree interval');
+    return;
+
     if (tree.shouldStop()) { // if tree detected and tree is in center
         if (car.isAuto()) {
 
@@ -167,6 +177,7 @@ setInterval(function() {
 
 // sync status
 function syncLog() {
+    return;
     var data = {};
     data.tree = tree.getTree();
     delete data.tree.time;
@@ -181,6 +192,7 @@ function syncLog() {
     });
 };
 setInterval(function() {
+    console.log('sync interval');
     syncLog();
 }, 100);
 
@@ -233,9 +245,11 @@ process.on('message', function(msg) {
         console.log('index.js: Command Go.');
         end_effector.close();
         end_effector.stop();
-        log('Car: turn left 90deg now.');
-        car.turnLeft90Sync();
-        car.rotateToFindLine(30, false);
+
+        // log('Car: turn left 90deg now.');
+        // car.turnLeft90Sync();
+        // car.rotateToFindLine(30, false);
+
         log('Car: auto forward mode (row#2).');
         row = 2;
         car.autoForward();

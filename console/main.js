@@ -4,7 +4,6 @@
  */
 var writeLog = function(log) {
     if (log.tree) {
-        console.log(log.tree);
         // if (log.tree.empty) {
         //     log.message = '<i class="fa fa-circle-thin"></i>' + 'Empty ';
         // } else {
@@ -76,7 +75,6 @@ var drawLog = function(log) {
 
         $.get(url + '?_=' + Date.now(), function(logs) {
             try {
-                console.log(logs);
                 if (typeof logs == "string") {
                     logs = JSON.parse(logs);
                 }

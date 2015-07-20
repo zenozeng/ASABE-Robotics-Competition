@@ -29,6 +29,14 @@ var rightMotor = new SoftPWM(right.clk);
 
 function Car() {
     this.steps = 0;
+
+    var car = this;
+    car.autoInterval = setInterval(function() {
+        console.log('autoForward, interval, run:', car.runAuto);
+        if (car.runAuto) {
+            car._autoForward();
+        }
+    }, 20);
 }
 
 Car.prototype.stop = function() {
@@ -94,19 +102,22 @@ Car.prototype.auto = function(forward) {
 
 Car.prototype._autoForward = function() {
     var dir = head.getBlackLineDirection();
+    console.log({dir: dir});
     var isCrossing = head.isCrossing();
     var speed = {
         "-1": [0.8, 1],
         "-2": [0.5, 1],
+        "-3": [0, 1],
         "1": [1, 0.8],
-        "2": [1, 0.5]
+        "2": [1, 0.5],
+        "3": [1, 0]
     };
     if (dir != 0 && !isCrossing) {
         car.steps += car.getCurrentSteps();
-        car.go(true, true, speed[dir][0], speed[dir][1]);
+        car.go(true, true, speed[dir][0], speed[dir][1], 1000, 1000);
     } else {
         car.steps += car.getCurrentSteps();
-        car.forward();
+        car.go(true, true, 1, 1);
     }
 };
 
@@ -123,12 +134,8 @@ Car.prototype.autoForwardSync = function(steps) {
 Car.prototype.autoForward = function() {
     console.log('Car: autoForward()');
     var car = this;
-    car.stopAuto();
-    car.forward(1000);
-    car.autoInterval = setInterval(function() {
-        // console.log('autoForward, interval');
-        car._autoForward();
-    }, 20);
+    car.runAuto = true;
+    car.forward(1000); // 给一点前进量
 };
 
 // Get current steps since last write
@@ -158,15 +165,12 @@ Car.prototype.resetSteps = function() {
 };
 
 Car.prototype.isAuto = function() {
-    var isAuto = !!this.autoInterval;
-    return isAuto;
+    return this.runAuto;
 };
 
 Car.prototype.stopAuto = function() {
-    if (typeof this.autoInterval !== "undefined") {
-        clearInterval(this.autoInterval);
-    }
-    this.autoInterval = undefined;
+    console.log('stopAuto');
+    this.runAuto = false;
 };
 
 Car.prototype.turn180 = function(rightFirst, offsetBlocks) {
