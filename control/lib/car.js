@@ -112,11 +112,29 @@ Car.prototype._autoForward = function() {
 Car.prototype.autoForwardSync = function(steps) {
     console.log('Auto Forward Sync: ', steps, 'steps.');
     var targetSteps = this.getSteps() + steps;
+    var ret = false;
     while (this.getSteps() < targetSteps) {
+        if (head.isCrossing()) {
+            ret = true;
+        }
         this._autoForward();
     }
     this.stop();
     console.log('Auto Forward Sync done.');
+    return ret;
+};
+
+Car.prototype.autoForwardAutoStopSync = function(steps) {
+    console.log('Auto Forward Auto Stop Sync: ', steps, 'steps.');
+    var targetSteps = this.getSteps() + steps;
+    while (this.getSteps() < targetSteps) {
+        if (head.isCrossing()) {
+            break;
+        }
+        this._autoForward();
+    }
+    this.stop();
+    console.log('Auto Forward Auto Stop Sync done.');
 };
 
 // Get current steps since last write
