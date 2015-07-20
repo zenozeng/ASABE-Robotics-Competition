@@ -29,14 +29,6 @@ var rightMotor = new SoftPWM(right.clk);
 
 function Car() {
     this.steps = 0;
-
-    var car = this;
-    car.autoInterval = setInterval(function() {
-        console.log('autoForward, interval, run:', car.runAuto);
-        if (car.runAuto) {
-            car._autoForward();
-        }
-    }, 20);
 }
 
 Car.prototype.stop = function() {
@@ -96,10 +88,6 @@ Car.prototype.turnRight = function(speed) {
     this.go(true, true, speed, speed * 0.5);
 };
 
-Car.prototype.auto = function(forward) {
-    forward ? this.autoForward() : this.autoBackward();
-};
-
 Car.prototype._autoForward = function() {
     var dir = head.getBlackLineDirection();
     console.log({dir: dir});
@@ -131,13 +119,6 @@ Car.prototype.autoForwardSync = function(steps) {
     console.log('Auto Forward Sync done.');
 };
 
-Car.prototype.autoForward = function() {
-    console.log('Car: autoForward()');
-    var car = this;
-    car.runAuto = true;
-    car.forward(1000); // 给一点前进量
-};
-
 // Get current steps since last write
 Car.prototype.getCurrentSteps = function() {
     var loops = [leftMotor.getLoopCount(), rightMotor.getLoopCount()].map(function(loops) {
@@ -162,15 +143,6 @@ Car.prototype.getTreeIndex = function() {
 
 Car.prototype.resetSteps = function() {
     this.steps = 0;
-};
-
-Car.prototype.isAuto = function() {
-    return this.runAuto;
-};
-
-Car.prototype.stopAuto = function() {
-    console.log('stopAuto');
-    this.runAuto = false;
 };
 
 Car.prototype.turn180 = function(rightFirst, offsetBlocks) {

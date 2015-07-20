@@ -14,8 +14,9 @@ var row = 0; // row 从 1 到 5
 var leftToRight = false;
 
 var logs = [];
+var autoForward = false;
 
-console.log('Car process started.');
+console.log('Car v2 process started.');
 
 var log = function(msg) {
     logs.push({message: msg});
@@ -34,7 +35,7 @@ var tasks = [
         car.resetSteps();
         leftToRight = true;
         log('Car: auto forward mode (row#1).');
-        car.autoForward();
+        autoForward = true;
     },
     function() {
         console.log('TAKS 2');
@@ -46,7 +47,7 @@ var tasks = [
         car.resetSteps();
         leftToRight = false;
         log('Car: auto forward mode (row#4).');
-        car.autoForward();
+        autoForward = true;
     },
     function() {
         console.log('TAKS 3');
@@ -58,7 +59,7 @@ var tasks = [
         car.resetSteps();
         leftToRight = true;
         log('Car: auto forward mode (row#3).');
-        car.autoForward();
+        autoForward = true;
     },
     function() {
         console.log('TAKS 4');
@@ -70,7 +71,7 @@ var tasks = [
         car.resetSteps();
         leftToRight = false;
         log('Car: auto forward mode (row#5).');
-        car.autoForward();
+        autoForward = true;
     },
     function() {
         console.log('TAKS 5');
@@ -79,105 +80,105 @@ var tasks = [
     }
 ];
 
-////////////////////////////////
-//
-// 如果到了边界则进行旋转、变道等操作
-//
-////////////////////////////////
 
 var lastRowDetectedTime = Date.now();
 
 var rightFirst = false;
-setInterval(function() {
-    console.log({interval: 'isCrossingInterval', isAuto: car.isAuto()});
+var collectedTypes = [];
 
-    if (!car.isAuto()) {
-        return;
+var loop = function() {
+    console.log('interval');
+
+    ////////////////////////////////
+    //
+    // 自动循迹
+    //
+    ////////////////////////////////
+
+    if (autoForward) {
+        car._autoForward();
     }
+
+    ////////////////////////////////
+    //
+    // 如果到了边界则进行旋转、变道等操作
+    //
+    ////////////////////////////////
 
     if (head.isCrossing()) {
 
         console.log('isCrossing！');
 
-        // if ((Date.now() - lastRowDetectedTime) < 10 * 1000) {
-        //     // ignore first black line、turn 180 after black line
-        //     return;
-        // }
-
         lastRowDetectedTime = Date.now();
 
-        car.stopAuto();
+        autoForward = false;
         car.stop();
         var task = tasks.shift();
         if (task) {
             task();
         }
     }
-}, 20);
 
-////////////////////////////////////////
-//
-// 如果发现树且在自动状态，则执行相关操作
-//
-///////////////////////////////////////
+    ////////////////////////////////////////
+    //
+    // 如果发现树且在自动状态，则执行相关操作
+    //
+    ///////////////////////////////////////
 
-var collectedTypes = [];
+    if (false) {
+    // if (tree.shouldStop()) { // if tree detected and tree is in center
 
-setInterval(function() {
-    console.log('tree interval');
-    return;
+        console.log('tree.shouldStop()');
 
-    if (tree.shouldStop()) { // if tree detected and tree is in center
-        if (car.isAuto()) {
+        // log tree
+        var treeInfo = tree.getTree();
+        treeInfo.row = row;
+        treeInfo.col = leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex());
+        treeInfo.color = treeInfo.color && treeInfo.color.toLowerCase();
+        logs.push({tree: treeInfo});
+        console.log(treeInfo);
 
-            console.log('tree.shouldStop() and isAuto');
+        // log types
+        var type = JSON.stringify({
+            color: treeInfo.color,
+            height: treeInfo.height
+        });
 
-            // log tree
-            var treeInfo = tree.getTree();
-            treeInfo.row = row;
-            treeInfo.col = leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex());
-            treeInfo.color = treeInfo.color && treeInfo.color.toLowerCase();
-            logs.push({tree: treeInfo});
-            console.log(treeInfo);
-
-            // log types
-            var type = JSON.stringify({
-                color: treeInfo.color,
-                height: treeInfo.height
-            });
-
-            if (collectedTypes.indexOf(type) > -1) {
-                // return; // already collected before
-            }
-
-            collectedTypes.push(type);
-
-            // 暂停
-            car.stopAuto();
-            car.stop();
-            // 运行到树对准传送带
-            car.autoForwardSync(1600);
-
-            // 对准小木块
-            cube.collect();
-
-            // 往前开一小段避免树被再次判断到
-            car.autoForwardSync(3000);
-            // 恢复自动运行
-            car.autoForward();
+        if (collectedTypes.indexOf(type) > -1) {
+            // return; // already collected before
         }
-    }
-}, 20);
 
-//////////////////////////////////
-//
-// 与 Server 通信
-//
-/////////////////////////////////
+        collectedTypes.push(type);
+
+        // 暂停
+        autoForward = false;
+        car.stop();
+        // 运行到树对准传送带
+        car.autoForwardSync(1600);
+
+        // 对准小木块
+        cube.collect();
+
+        // 往前开一小段避免树被再次判断到
+        car.autoForwardSync(3000);
+        // 恢复自动运行
+        autoForward = true;
+    }
+
+    //////////////////////////////////
+    //
+    // 与 Server 通信
+    //
+    /////////////////////////////////
+
+    if (false) {
+        syncLog();
+    }
+
+};
 
 // sync status
 function syncLog() {
-    return;
     var data = {};
     data.tree = tree.getTree();
     delete data.tree.time;
@@ -191,10 +192,25 @@ function syncLog() {
         status: data
     });
 };
-setInterval(function() {
-    console.log('sync interval');
-    syncLog();
-}, 100);
+
+function init() {
+    console.log('index.js: Command Go.');
+    end_effector.close();
+    end_effector.stop();
+
+    // log('Car: turn left 90deg now.');
+    // car.turnLeft90Sync();
+    // car.rotateToFindLine(30, false);
+
+    log('Car: auto forward mode (row#2).');
+    row = 2;
+    autoForward = true;
+
+    while (true) {
+        loop();
+        process.nextTick();
+    }
+};
 
 process.on('message', function(msg) {
     console.log('index.js: Command Received -- ', msg);
@@ -242,27 +258,15 @@ process.on('message', function(msg) {
         log('Unit test: all tests finished');
     }
     if (msg.command == "go") {
-        console.log('index.js: Command Go.');
-        end_effector.close();
-        end_effector.stop();
-
-        // log('Car: turn left 90deg now.');
-        // car.turnLeft90Sync();
-        // car.rotateToFindLine(30, false);
-
-        log('Car: auto forward mode (row#2).');
-        row = 2;
-        car.autoForward();
+        init();
     }
     if (msg.command == "pause") {
         console.log('index.js: Command Pause.');
-        if (car.isAuto()) {
-            car.stopAuto();
-            car.stop();
-        }
+        autoForward = false;
+        car.stop();
     }
     if (msg.command == "resume") {
         console.log('index.js: Command Resume.');
-        car.autoForward();
+        autoForward = true;
     }
 });
