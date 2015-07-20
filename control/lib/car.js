@@ -164,10 +164,11 @@ Car.prototype.turn180 = function(rightFirst, offsetBlocks) {
         car.go(false, true, 0.25, 0.25, steps / 3, steps / 3, true);
     }
     car.go(false, false, 0.5, 0.5, steps * 1, steps * 1, true);
-    car.go(false, false, 0.5, 0.5,
-            STEPS_FOR_A_BLOCK * offsetBlocks + 1, // because 0 will be ignored and will go forever, so use >= 1
-            STEPS_FOR_A_BLOCK * offsetBlocks + 1,
-            true);
+    var blockSteps = STEPS_FOR_A_BLOCK * offsetBlocks;
+    car.go(blockSteps < 0, blockSteps < 0, 0.5, 0.5,
+           Math.abs(blockSteps) + 1, // because 0 will be ignored and will go forever, so use >= 1
+           Math.abs(blockSteps) + 1,
+           true);
     if (rightFirst) {
         car.go(true, true, 0.5, 0.25, steps * 2, steps, true);
     } else {

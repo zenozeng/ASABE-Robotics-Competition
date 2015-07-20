@@ -64,10 +64,8 @@ var tasks = [
     function() {
         console.log('TAKS 4');
         row = 5;
-        var rightFirst = true;
-        var blocks = 1;
-        log('Car: turn180 (right first), block = 1');
-        car.turn180(rightFirst, blocks);
+        log('Car: turn180 (left first), block = -1');
+        car.turn180(false, -1);
         car.resetSteps();
         leftToRight = false;
         log('Car: auto forward mode (row#5).');
