@@ -140,6 +140,7 @@ var loop = function() {
         treeInfo.col = leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex());
         treeInfo.color = treeInfo.color && treeInfo.color.toLowerCase();
         treeInfo.steps = car.getSteps();
+        treeInfo.treeIndex = car.getTreeIndex();
         logs.push({tree: treeInfo});
         console.log(treeInfo);
 

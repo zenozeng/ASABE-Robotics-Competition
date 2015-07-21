@@ -159,8 +159,11 @@ Car.prototype.getSteps = function() {
 // Tree index for current position of current forward task
 // Note: Index starts from 1
 Car.prototype.getTreeIndex = function() {
-    var index = parseInt((this.getSteps() - 2800) / STEPS_FOR_A_TREE_BLOCK) + 1;
-    return Math.min(index, 5);
+    var y = this.getSteps();
+    var x = (y - 809.5) / 3977.5;
+    x = Math.min(x, 5);
+    x = Math.max(x, 1);
+    return Math.round(x);
 };
 
 Car.prototype.resetSteps = function() {
@@ -258,14 +261,27 @@ Car.prototype.rotateToFindLine = function(deg, cw) {
     }
 
     car.autoForwardSync(2000);
-    car.go(false, false, 0.25, 0.25, 2000, 2000, true);
+
+    while(true) {
+        car.go(false, false, 0.25, 0.25, 1000, 1000);
+        // console.log(head.isCrossing());
+        if (head.isCrossing()) {
+            car.stop();
+            break;
+        }
+    }
+
+    while(head.isCrossing()) {
+        car.go(true, true, 0.25, 0.25, 1000, 1000);
+    }
+    car.stop();
 };
 
 Car.prototype.goBack = function() {
     var car = this;
     var steps = STEPS_FOR_90_DEG_SPEED_0_1;
     car.forwardBlocks(2);
-    car.go(false, false, 0.25, 0.25, 3800, 3800, true);
+    // car.go(false, false, 0.25, 0.25, 3800, 3800, true);
     car.go(true, false, 0.25, 0.25, steps / 2, steps / 2, true);
     car.go(true, true, 0.5, 0.25, steps, steps, true);
     car.go(true, true, 0.25, 0.25);
