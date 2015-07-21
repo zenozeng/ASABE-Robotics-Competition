@@ -25,7 +25,7 @@ var getTree = function() {
 var exists = function() {
     var tree = getTree();
     var exists = tree.exists;
-    exists = exists && (tree.position > 0.4 && tree.position < 0.6);
+    exists = exists && (tree.position > 0.45 && tree.position < 0.6);
     // exists = exists && head.isOnBlackLine();
     return exists;
 };

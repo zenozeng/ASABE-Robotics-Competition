@@ -210,6 +210,9 @@ int main()
         json << "\"position\": \"" << position << "\"";
         json << "}" << endl;
 
+        if (DEBUG) {
+            cout << json.str();
+        }
         cout << "Sync to /run/shm/vision.jpg" << endl;
         imwrite("/run/shm/vision.jpg", frame);
 

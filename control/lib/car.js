@@ -112,7 +112,7 @@ Car.prototype._autoForward = function(speedScale) {
     }
 };
 
-Car.prototype.autoForwardSync = function(steps) {
+Car.prototype.autoForwardSync = function(steps, speedScale) {
     console.log('Auto Forward Sync: ', steps, 'steps.');
     var targetSteps = this.getSteps() + steps;
     var ret = false;
@@ -120,7 +120,7 @@ Car.prototype.autoForwardSync = function(steps) {
         if (head.isCrossing()) {
             ret = true;
         }
-        this._autoForward();
+        this._autoForward(speedScale);
     }
     this.stop();
     console.log('Auto Forward Sync done.');

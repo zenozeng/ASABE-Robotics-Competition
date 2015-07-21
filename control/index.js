@@ -127,7 +127,6 @@ var loop = function() {
     ///////////////////////////////////////
 
     // if (false) {
-    // console.log({exists: tree.exists() });
     if (tree.exists()) { // if tree detected
 
         // 暂停
@@ -157,24 +156,26 @@ var loop = function() {
         collectedTypes.push(type);
 
         // 运行到树对准传送带
-        var hasCrossed = false;
-        while(true) {
-            if (tree.shouldStop()) {
-                break;
-            }
-            if (head.isCrossing()) {
-                hasCrossed = true;
-            }
-            car._autoForward(0.25);
-        }
+        // var hasCrossed = false;
+        var hasCrossed = car.autoForwardSync(1000, 0.25);
+
+        // while(true) {
+        //     if (tree.shouldStop()) {
+        //         break;
+        //     }
+        //     if (head.isCrossing()) {
+        //         hasCrossed = true;
+        //     }
+        //     car._autoForward();
+        // }
 
         cube.collect();
 
         console.log({hasCrossed: hasCrossed});
         if (hasCrossed) {
             // 之前超过了黑线，我们退回去，然后往前开到黑线处
-            car.go(false, false, 1, 1, 1600, 1600, true);
-            car.autoForwardAutoStopSync(1600);
+            car.go(false, false, 1, 1, 1000, 1000, true);
+            car.autoForwardAutoStopSync(1000);
         } else {
             // 往前开一小段避免树被再次判断到
             car.autoForwardAutoStopSync(2000);
@@ -211,9 +212,9 @@ function init() {
     end_effector.close();
     end_effector.stop();
 
-    // log('Car: turn left 90deg now.');
-    // car.turnLeft90Sync();
-    // car.rotateToFindLine(30, false);
+    log('Car: turn left 90deg now.');
+    car.turnLeft90Sync();
+    car.rotateToFindLine(30, false);
 
     log('Car: auto forward mode (row#2).');
     row = 2;
