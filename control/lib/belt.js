@@ -2,6 +2,7 @@ require('yapcduino')({global: true});
 var pins = require('./pins');
 var pin = pins.BELT_SERVO;
 var car = require('./car');
+var end_effector = require('./end-effector');
 
 pwmfreq_set(pin, 260);
 
@@ -21,12 +22,12 @@ module.exports = {
 
         car.go(false, false, 0, 1, 0, steps, true);
         analogWrite(5, 150);
-        delayMicroseonds(1000 * 1000);
+        delayMicroseconds(1000 * 1000);
         analogWrite(5, 30);
 
         car.go(false, true, 0, 1, 0, steps, true);
         analogWrite(5, 150);
-        delayMicroseonds(1000 * 1000);
+        delayMicroseconds(1000 * 1000);
         analogWrite(5, 30);
 
         car.go(false, false, 0, 1, 0, steps, true);
