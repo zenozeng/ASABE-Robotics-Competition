@@ -5,6 +5,9 @@ var serveStatic = require('serve-static');
 var cp = require('child_process');
 var fs = require('fs');
 
+var spawn = require('child_process').spawn;
+spawn('../vision/vision');
+
 var car = null;
 var serverStartTimestamp = Date.now();
 var processStartTimestamp = null;
@@ -60,8 +63,8 @@ app.post('/control/stop', function(req, res) {
         // 注意 vision cpp 进程不会被杀死，但是它会被复用，所以不用担心
         // 估计是 Node 的 module 缓存做的好事。
         car.kill('SIGHUP');
-        console.log('Index.js killed, try to pkill vision');
-        cp.exec('sudo pkill vision');
+        // console.log('Index.js killed, try to pkill vision');
+        // cp.exec('sudo pkill vision');
     }
     car = null;
     processStartTimestamp = null;
@@ -139,8 +142,8 @@ app.get('/status', function(req, res) {
 app.get('/frame.jpg', function(req, res) {
     // console.log('fetch /run/shm/frame.jpg');
     res.writeHead(200, { 'content-type': 'image/jpeg' });
-    if (fs.existsSync('/run/shm/frame.jpg')) {
-        fs.createReadStream('/run/shm/frame.jpg').pipe(res);
+    if (fs.existsSync('/run/shm/vision.jpg')) {
+        fs.createReadStream('/run/shm/vision.jpg').pipe(res);
     } else {
         res.end();
     }

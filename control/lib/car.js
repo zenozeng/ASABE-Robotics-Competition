@@ -6,7 +6,7 @@ var head = require('./head');
 var STEPS_FOR_90_DEG_SPEED_0_1 = 240 * 16;
 var STEPS_FOR_90_DEG_SPEED_1_2 = STEPS_FOR_90_DEG_SPEED_0_1 * 2;
 var STEPS_FOR_A_BLOCK = 8125;
-var STEPS_FOR_A_TREE_BLOCK = STEPS_FOR_A_BLOCK * 3 / 5;
+var STEPS_FOR_A_TREE_BLOCK = STEPS_FOR_A_BLOCK * 4 / 7;
 
 var DEBUG = false;
 
@@ -156,7 +156,8 @@ Car.prototype.getSteps = function() {
 // Tree index for current position of current forward task
 // Note: Index starts from 1
 Car.prototype.getTreeIndex = function() {
-    return parseInt(this.getSteps() / STEPS_FOR_A_TREE_BLOCK) + 1;
+    var index = Math.round(this.getSteps() / STEPS_FOR_A_TREE_BLOCK) + 1;
+    return Math.min(index, 5);
 };
 
 Car.prototype.resetSteps = function() {

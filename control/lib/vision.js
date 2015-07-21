@@ -1,52 +1,16 @@
-var path = require('path');
-var bin = path.join(__dirname, '../../vision/vision');
-var spawn = require('child_process').spawn;
+var fs = require('fs');
 
-// Usage:
-// v = require('./vision');
-// will run on background
-// you can read this.exists || this.color || this.hue when you need it
-
-function Vision(options) {
-    options = options || {};
-    this.process = spawn(bin);
-    var v = this;
-    this.process.stdout.on('data', function(data) {
-        var msg = data.toString();
-        var obj = null;
-        msg.split('\n').forEach(function(msg) {
+var vision = {
+    getTree: function() {
+        if (fs.existsSync('/run/shm/vision.json')) {
+            var v = {};
             try {
-                obj = JSON.parse(msg);
-                if (obj) {
-                    v.exists = (obj.exists == "1");
-                    v.color = obj.color == "null" ? null : obj.color;
-                    v.hue = parseFloat(obj.hue);
-                    v.saturation = parseFloat(obj.saturation);
-                    v.position = parseFloat(obj.position);
-                    v.stddev = parseFloat(obj.stddev);
-                    v.time = new Date();
-                }
-            } catch (e) {
-                // console.warn('Ignore: ', e);
-                // console.warn(msg);
-            }
-        });
-    });
-    this.process.stderr.on('data', function(data) {
-        console.error(data.toString());
-    });
-    return this;
-}
-
-var vision = new Vision({debug: true});
-
-process.on('exit', function(code) {
-    console.info('lib/vision.js: about to exit with code(' + code + '), try to kill vision bin process.');
-    if (vision.process) {
-        console.info('lib/vision.js: vision binary process detected - ', vision.process.pid);
-        vision.process.kill('SIGKILL');
-        console.info('lib/vision.js: process killed.');
+                v = JSON.parse(fs.readFileSync('/run/shm/vision.json'));
+            } catch (e) {}
+            return v;
+        }
+        return {};
     }
-});
+};
 
 module.exports = vision;

@@ -2,6 +2,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -17,6 +18,8 @@ int main()
     cout << "Vision Started." << endl;
 
     VideoCapture capture;
+
+    ofstream file;
 
     for (int i = 0; i < 3; i++) {
         capture.open(i);
@@ -197,17 +200,23 @@ int main()
         //
         ////////////////////////////
 
-        cout << "{";
-        cout << "\"exists\": \"" << exists << "\", ";
-        cout << "\"color\": \"" << color << "\", ";
+        stringstream json;
+        json << "{";
+        json << "\"exists\": \"" << exists << "\", ";
+        json << "\"color\": \"" << color << "\", ";
         // cout << "\"stddev\": \"" << stddev << "\", ";
-        cout << "\"hue\": \"" << hue << "\", ";
-        cout << "\"saturation\": \"" << saturation << "\", ";
-        cout << "\"position\": \"" << position << "\"";
-        cout << "}" << endl;
-        cout << flush;
+        json << "\"hue\": \"" << hue << "\", ";
+        json << "\"saturation\": \"" << saturation << "\", ";
+        json << "\"position\": \"" << position << "\"";
+        json << "}" << endl;
 
-        imwrite("/run/shm/frame.jpg", frame);
+        cout << "Sync to /run/shm/vision.jpg" << endl;
+        imwrite("/run/shm/vision.jpg", frame);
+
+        cout << "Sync to /run/shm/vision.json" << endl;
+        file.open ("/run/shm/vision.json", ios::out | ios::trunc);
+        file << json.str();
+        file.close();
 
         if (DEBUG) {
             imshow("frame", frame);
@@ -216,8 +225,10 @@ int main()
             imshow("ROI_H2", ROI_H2);
             imshow("ROI_S", ROI_S);
             imshow("ROI_L", ROI_L);
-            waitKey(100);
         }
+        waitKey(100);
+
+        // usleep(20 * 1000);
     }
 
     return 0;
