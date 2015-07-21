@@ -5,7 +5,7 @@ var b = require('./belt');
 var steps = 30000;
 
 var collect = function() {
-    delayMicroseconds(1 * 1000 * 1000);
+    delayMicroseconds(10 * 1000 * 1000);
     return; // for now
     b.load();
     e.open();

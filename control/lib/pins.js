@@ -25,6 +25,8 @@ module.exports = {
     IR_TREE: 6,
     IR_HIGH_TREE: 15,
 
+    IR_TREE_FINAL_STOP: 16,
+
     // 循迹片
     BLACK_AND_WHITE_SENSOR_1: 9, // 前左
     BLACK_AND_WHITE_SENSOR_2: 10, // 前右

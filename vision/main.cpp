@@ -228,7 +228,7 @@ int main()
         }
         waitKey(100);
 
-        // usleep(20 * 1000);
+        usleep(100 * 1000);
     }
 
     return 0;

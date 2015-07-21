@@ -127,15 +127,20 @@ var loop = function() {
     ///////////////////////////////////////
 
     // if (false) {
-    if (tree.shouldStop()) { // if tree detected and tree is in center
+    // console.log({exists: tree.exists() });
+    if (tree.exists()) { // if tree detected
 
-        console.log('tree.shouldStop()');
+        // 暂停
+        autoForward = false;
+        car.stop();
+        delayMicroseconds(1000 * 1000);
 
         // log tree
         var treeInfo = tree.getTree();
         treeInfo.row = row;
         treeInfo.col = leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex());
         treeInfo.color = treeInfo.color && treeInfo.color.toLowerCase();
+        treeInfo.steps = car.getSteps();
         logs.push({tree: treeInfo});
         console.log(treeInfo);
 
@@ -151,13 +156,18 @@ var loop = function() {
 
         collectedTypes.push(type);
 
-        // 暂停
-        autoForward = false;
-        car.stop();
         // 运行到树对准传送带
-        var hasCrossed = car.autoForwardSync(1600);
+        var hasCrossed = false;
+        while(true) {
+            if (tree.shouldStop()) {
+                break;
+            }
+            if (head.isCrossing()) {
+                hasCrossed = true;
+            }
+            car._autoForward(0.25);
+        }
 
-        // 对准小木块
         cube.collect();
 
         console.log({hasCrossed: hasCrossed});
@@ -165,10 +175,10 @@ var loop = function() {
             // 之前超过了黑线，我们退回去，然后往前开到黑线处
             car.go(false, false, 1, 1, 1600, 1600, true);
             car.autoForwardAutoStopSync(1600);
+        } else {
+            // 往前开一小段避免树被再次判断到
+            car.autoForwardAutoStopSync(2000);
         }
-
-        // 往前开一小段避免树被再次判断到
-        car.autoForwardAutoStopSync(2000);
         // 恢复自动运行
         autoForward = true;
     }
@@ -201,12 +211,13 @@ function init() {
     end_effector.close();
     end_effector.stop();
 
-    log('Car: turn left 90deg now.');
-    car.turnLeft90Sync();
-    car.rotateToFindLine(30, false);
+    // log('Car: turn left 90deg now.');
+    // car.turnLeft90Sync();
+    // car.rotateToFindLine(30, false);
 
     log('Car: auto forward mode (row#2).');
     row = 2;
+    car.resetSteps();
     autoForward = true;
 
     while (true) {

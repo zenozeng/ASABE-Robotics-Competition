@@ -2,6 +2,10 @@ var vision = require('./vision');
 var pins = require('./pins');
 var head = require('./head');
 
+[pins.IR_TREE, pins.IR_HIGH_TREE, pins.IR_TREE_FINAL_STOP].forEach(function(pin) {
+    pinMode(pin, INPUT);
+});
+
 var getTree = function() {
     var isHigh = digitalRead(pins.IR_HIGH_TREE) == 0;
     var v = vision.getTree();
@@ -18,15 +22,20 @@ var getTree = function() {
     };
 };
 
-var shouldStop = function() {
+var exists = function() {
     var tree = getTree();
     var exists = tree.exists;
-    // exists = exists && (tree.position > 0.4 && tree.position < 0.6);
+    exists = exists && (tree.position > 0.4 && tree.position < 0.6);
     // exists = exists && head.isOnBlackLine();
     return exists;
 };
 
+var shouldStop = function() {
+    return digitalRead(pins.IR_TREE_FINAL_STOP) == 0;
+};
+
 module.exports = {
     shouldStop: shouldStop,
+    exists: exists,
     getTree: getTree
 };
