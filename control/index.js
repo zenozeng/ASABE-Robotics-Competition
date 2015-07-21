@@ -168,7 +168,7 @@ var loop = function() {
         }
 
         // 往前开一小段避免树被再次判断到
-        car.autoForwardAutoStopSync(3000);
+        car.autoForwardAutoStopSync(2000);
         // 恢复自动运行
         autoForward = true;
     }
