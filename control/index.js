@@ -5,6 +5,7 @@ var car = require('./lib/car');
 var head = require('./lib/head');
 var belt = require('./lib/belt');
 var cube = require('./lib/cube');
+var fs = require('fs');
 
 require('yapcduino')({global: true});
 
@@ -196,10 +197,7 @@ function syncLog() {
         currentStep: car.getCurrentSteps(),
         isOnBlackLine: head.isOnBlackLine()
     };
-    process.send({
-        logs: logs,
-        status: data
-    });
+    fs.writeFile('/run/shm/data.json', JSON.stringify({logs: logs, status: data}));
 };
 
 function init() {

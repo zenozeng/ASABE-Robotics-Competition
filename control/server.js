@@ -5,9 +5,6 @@ var serveStatic = require('serve-static');
 var cp = require('child_process');
 var fs = require('fs');
 
-var spawn = require('child_process').spawn;
-spawn('../vision/vision');
-
 var car = null;
 var serverStartTimestamp = Date.now();
 var processStartTimestamp = null;
@@ -121,6 +118,18 @@ var HHMMSS = function(sec_num) {
     var time  = hours+':'+minutes+':'+seconds;
     return time;
 };
+
+setInterval(function() {
+    if (fs.existsSync('/run/shm/data.json')) {
+        try {
+            var data = JSON.parse(fs.readFileSync('/run/shm/data.json'));
+            carLogs = data.logs;
+            carStatus = data.status;
+        } catch(e) {
+            // console.log(e);
+        }
+    }
+}, 100);
 
 app.get('/logs', function(req, res) {
     res.send(JSON.stringify(carLogs));
