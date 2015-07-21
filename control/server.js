@@ -119,24 +119,28 @@ var HHMMSS = function(sec_num) {
     return time;
 };
 
-setInterval(function() {
-    if (fs.existsSync('/run/shm/data.json')) {
-        try {
-            var data = JSON.parse(fs.readFileSync('/run/shm/data.json'));
-            carLogs = data.logs;
-            carStatus = data.status;
-        } catch(e) {
-            // console.log(e);
-        }
-    }
-}, 100);
+// setInterval(function() {
+//     if (fs.existsSync('/run/shm/data.json')) {
+//         try {
+//             var data = JSON.parse(fs.readFileSync('/run/shm/data.json'));
+//             carLogs = data.logs;
+//             carStatus = data.status;
+//         } catch(e) {
+//             // console.log(e);
+//         }
+//     }
+// }, 100);
 
 app.get('/logs', function(req, res) {
-    res.send(JSON.stringify(carLogs));
+    if (fs.existsSync('/run/shm/data.json')) {
+        fs.createReadStream('/run/shm/data.json').pipe(res);
+    } else {
+        res.end();
+    }
 });
 
 app.get('/status', function(req, res) {
-    var status = JSON.parse(JSON.stringify(carStatus));
+    var status = {}; // JSON.parse(JSON.stringify(carStatus));
 
     status.server = {
         uptime: HHMMSS((Date.now() - serverStartTimestamp) / 1000)

@@ -150,37 +150,39 @@ var loop = function() {
             height: treeInfo.height
         });
 
-        if (collectedTypes.indexOf(type) > -1) {
-            // return; // already collected before
+        syncLog();
+
+        var CHECK_COLLECTED_BEFORE = true;
+        if (CHECK_COLLECTED_BEFORE && (collectedTypes.indexOf(type) == -1)) {
+            collectedTypes.push(type);
+
+            // 运行到树对准传送带
+            // var hasCrossed = false;
+            var hasCrossed = car.autoForwardSync(1000, 0.25);
+
+            // while(true) {
+            //     if (tree.shouldStop()) {
+            //         break;
+            //     }
+            //     if (head.isCrossing()) {
+            //         hasCrossed = true;
+            //     }
+            //     car._autoForward();
+            // }
+
+            cube.collect();
+
+            console.log({hasCrossed: hasCrossed});
+            if (hasCrossed) {
+                // 之前超过了黑线，我们退回去，然后往前开到黑线处
+                car.go(false, false, 1, 1, 1000, 1000, true);
+                car.autoForwardAutoStopSync(1000);
+            } else {
+                // 往前开一小段避免树被再次判断到
+                car.autoForwardAutoStopSync(2000);
+            }
         }
 
-        collectedTypes.push(type);
-
-        // 运行到树对准传送带
-        // var hasCrossed = false;
-        var hasCrossed = car.autoForwardSync(1000, 0.25);
-
-        // while(true) {
-        //     if (tree.shouldStop()) {
-        //         break;
-        //     }
-        //     if (head.isCrossing()) {
-        //         hasCrossed = true;
-        //     }
-        //     car._autoForward();
-        // }
-
-        cube.collect();
-
-        console.log({hasCrossed: hasCrossed});
-        if (hasCrossed) {
-            // 之前超过了黑线，我们退回去，然后往前开到黑线处
-            car.go(false, false, 1, 1, 1000, 1000, true);
-            car.autoForwardAutoStopSync(1000);
-        } else {
-            // 往前开一小段避免树被再次判断到
-            car.autoForwardAutoStopSync(2000);
-        }
         // 恢复自动运行
         autoForward = true;
     }

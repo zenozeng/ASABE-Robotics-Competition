@@ -77,6 +77,7 @@ var drawLog = function(log) {
             try {
                 if (typeof logs == "string") {
                     logs = JSON.parse(logs);
+                    logs = logs.logs;
                 }
                 treeCount = 0; // reset count
                 $('#canvas i').remove();
@@ -101,5 +102,5 @@ var drawLog = function(log) {
             logsPending = false;
         });
 
-    }, 500);
+    }, 100);
 })();
