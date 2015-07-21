@@ -173,10 +173,6 @@ var loop = function() {
         autoForward = true;
     }
 
-};
-
-setInterval(function() {
-
     //////////////////////////////////
     //
     // 与 Server 通信
@@ -185,7 +181,7 @@ setInterval(function() {
 
     syncLog();
 
-}, 100);
+};
 
 // sync status
 function syncLog() {
@@ -197,7 +193,7 @@ function syncLog() {
         currentStep: car.getCurrentSteps(),
         isOnBlackLine: head.isOnBlackLine()
     };
-    fs.writeFile('/run/shm/data.json', JSON.stringify({logs: logs, status: data}));
+    fs.writeFileSync('/run/shm/data.json', JSON.stringify({logs: logs, status: data}));
 };
 
 function init() {
