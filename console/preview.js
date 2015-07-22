@@ -39,7 +39,8 @@ $(function() {
                 data = JSON.parse(data);
                 delete data.tree; // only display for debug
                 delete data.car;
-                data = JSON.stringify(data, null, 4);
+                // data = JSON.stringify(data, null, 4);
+                data = JSON.stringify(data);
             } finally {
                 $status.html(data);
             }

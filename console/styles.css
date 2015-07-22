@@ -112,8 +112,8 @@ h1 .fa {
 }
 
 #frame {
-    width: 240px;
-    height: 240px;
+    width: 290px;
+    height: 290px;
 }
 
 #control {
@@ -162,7 +162,7 @@ li#popkart-mode, li#ctrl-pause, li#ctrl-resume, li#record-mode, li#ctrl-stop, li
     margin: 0;
     margin-left: 2em;
     color: #777;
-    float: left;
+    float: right;
     font-size: 14px;
 }
 

@@ -263,7 +263,8 @@ Car.prototype.rotateToFindLine = function(deg, cw) {
     car.autoForwardSync(2000);
 
     while(true) {
-        car.go(false, false, 0.25, 0.25, 1000, 1000);
+        // car.go(false, false, 0.25, 0.25, 1000, 1000);
+        car.go(false, false, 0.5, 0.5, 1000, 1000);
         // console.log(head.isCrossing());
         if (head.isCrossing()) {
             car.stop();
