@@ -1,1 +1,0 @@
-cmd_Release/obj.target/vision.node := flock ./Release/linker.lock g++ -shared -pthread -rdynamic -m64  -Wl,-soname=vision.node -o Release/obj.target/vision.node -Wl,--start-group Release/obj.target/vision/vision.o -Wl,--end-group 

@@ -1,16 +1,12 @@
-var fs = require('fs');
+var vision = require('../build/Release/vision.node');
 
-var vision = {
+module.exports = {
     getTree: function() {
-        if (fs.existsSync('/run/shm/vision.json')) {
-            var v = {};
-            try {
-                v = JSON.parse(fs.readFileSync('/run/shm/vision.json'));
-            } catch (e) {}
-            return v;
+        var data = {};
+        try {
+            data = JSON.parse(vision.getVision());
+        } finally {
+            return data;
         }
-        return {};
     }
 };
-
-module.exports = vision;
