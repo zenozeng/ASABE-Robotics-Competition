@@ -144,7 +144,7 @@ h1 .fa {
     color: #777;
 }
 
-li#popkart-mode, li#ctrl-pause, li#ctrl-resume, li#record-mode, li#ctrl-stop, li#ctrl-unit-test {
+li#popkart-mode, li#ctrl-pause, li#ctrl-resume, li#record-mode, li#ctrl-stop, li#ctrl-unit-test, li#ctrl-debug {
     font-size: 12px;
 }
 

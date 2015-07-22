@@ -64,16 +64,20 @@ var drawLog = function(log) {
  * Main Logic
  */
 (function() {
-    var logsPending = false;
-    setInterval(function() {
-        if (logsPending) {
-            return;
-        }
+    var lastLogsLength = null;
 
+    setInterval(function() {
         var url = '/logs';
         // url = 'logs2.json';
 
         $.get(url + '?_=' + Date.now(), function(logs) {
+            // only update if necessary
+
+            if (logs && (logs.length === lastLogsLength)) {
+                return;
+            }
+            lastLogsLength = logs.length;
+
             try {
                 if (typeof logs == "string") {
                     logs = JSON.parse(logs);
@@ -96,10 +100,7 @@ var drawLog = function(log) {
                     drawLog(log);
                 });
             } finally {
-                logsPending = false;
             }
-        }).fail(function() {
-            logsPending = false;
         });
 
     }, 100);

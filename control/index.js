@@ -158,7 +158,7 @@ var loop = function() {
 
             // 运行到树对准传送带
             // var hasCrossed = false;
-            var hasCrossed = car.autoForwardSync(1000, 0.25);
+            var hasCrossed = car.autoForwardSync(1200, 0.25);
 
             // while(true) {
             //     if (tree.shouldStop()) {
@@ -213,14 +213,16 @@ function syncLog() {
     fs.writeFileSync('/run/shm/data.json', JSON.stringify({logs: logs, status: data}));
 };
 
-function init() {
+function init(debug) {
     console.log('index.js: Command Go.');
     end_effector.close();
     end_effector.stop();
 
-    log('Car: turn left 90deg now.');
-    car.turnLeft90Sync();
-    car.rotateToFindLine(30, false);
+    if (!debug) {
+        log('Car: turn left 90deg now.');
+        car.turnLeft90Sync();
+        car.rotateToFindLine(30, false);
+    }
 
     log('Car: auto forward mode (row#2).');
     row = 2;
@@ -279,7 +281,12 @@ process.on('message', function(msg) {
         log('Unit test: all tests finished');
     }
     if (msg.command == "go") {
+        log('Car> message from server: command go.');
         init();
+    }
+    if (msg.command == "debug") {
+        log('Car> message from server: command debug.');
+        init(true);
     }
     if (msg.command == "pause") {
         console.log('index.js: Command Pause.');

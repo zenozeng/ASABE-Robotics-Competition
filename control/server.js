@@ -76,6 +76,14 @@ app.post('/control/go', function(req, res) {
     res.send('I am happy.');
 });
 
+app.post('/control/debug', function(req, res) {
+    console.log('server.js: debug');
+    if (car) {
+        car.send({command: 'debug'});
+    }
+    res.send('I am happy.');
+});
+
 app.post('/control/unit-test', function(req, res) {
     console.log('server.js: test');
     if (car) {

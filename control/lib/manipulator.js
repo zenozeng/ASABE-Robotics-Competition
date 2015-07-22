@@ -19,7 +19,7 @@ Manipulator.prototype.move = function(offsetSteps) {
     this.position += offsetSteps;
     digitalWrite(cw, offsetSteps > 0 ? LOW : HIGH);
     motor.write(0.5, {
-        period: 500 * stepScale,
+        period: 1000 * stepScale,
         loops: Math.abs(offsetSteps)
     });
     motor.sync();
