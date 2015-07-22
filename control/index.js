@@ -17,6 +17,9 @@ var leftToRight = false;
 var logs = [];
 var autoForward = false;
 
+var checkSteps = true;
+// y = 3977.5x + 809.5
+
 console.log('Car v2 process started.');
 
 var log = function(msg) {
@@ -24,6 +27,8 @@ var log = function(msg) {
     console.log(msg);
     syncLog();
 };
+
+var looping = true;
 
 var tasks = [
     function() {
@@ -74,6 +79,8 @@ var tasks = [
         car.forwardBlocks(3); // go to black row #1
         belt.unload();
         log('All tasks done - Total progress 100%');
+        looping = false;
+        syncLog();
     }
 ];
 
@@ -94,19 +101,37 @@ var loop = function() {
     //
     ////////////////////////////////
 
-    if (head.isCrossing()) {
+    var stepsDone = car.getSteps() > 22685;
 
-        console.log('isCrossing！');
+    console.log(car.getSteps(), stepsDone);
 
-        lastRowDetectedTime = Date.now();
+    if (checkSteps) {
+        if (stepsDone) {
+            // 退回到黑线上
+            while (!head.isCrossing()) {
+                car.go(false, false, 0.25, 0.25);
+            }
+            autoForward = false;
+            car.stop();
 
-        autoForward = false;
-        car.stop();
-        var task = tasks.shift();
-        if (task) {
-            task();
+            var task = tasks.shift();
+            if (task) {
+                task();
+            }
         }
     }
+
+    // if (head.isCrossing()) {
+    //     console.log('isCrossing！');
+    //     lastRowDetectedTime = Date.now();
+    //     autoForward = false;
+    //     car.stop();
+    //     var task = tasks.shift();
+    //     if (task) {
+    //         task();
+    //     }
+    // }
+
 
     ////////////////////////////////
     //
@@ -171,17 +196,24 @@ var loop = function() {
             cube.collect();
 
             console.log({hasCrossed: hasCrossed});
-            if (hasCrossed) {
-                // 之前超过了黑线，我们退回去，然后往前开到黑线处
-                car.go(false, false, 1, 1, 1000, 1000, true);
-                car.autoForwardAutoStopSync(1000);
-            } else {
-                // 往前开一小段避免树被再次判断到
-                car.autoForwardAutoStopSync(2000);
+
+            if (!hasCrossed) {
+                // 如果之前没有越过黑线，那么向前开一小段避免树被再次判断到
+                car.autoForwardSync(2000);
             }
+
+            // if (hasCrossed) {
+            //     // 之前超过了黑线，我们退回去，然后往前开到黑线处
+            //     car.go(false, false, 1, 1, 1000, 1000, true);
+            //     car.autoForwardAutoStopSync(1000);
+            // } else {
+            //     // 往前开一小段避免树被再次判断到
+            //     car.autoForwardAutoStopSync(2000);
+            // }
         } else {
             // 往前开一小段避免树被再次判断到
-            car.autoForwardAutoStopSync(2000);
+            car.autoForwardSync(2000);
+            // car.autoForwardAutoStopSync(2000);
         }
 
         // 恢复自动运行
@@ -228,7 +260,7 @@ function init(debug) {
     car.resetSteps();
     autoForward = true;
 
-    while (true) {
+    while (looping) {
         loop();
         process.nextTick();
     }

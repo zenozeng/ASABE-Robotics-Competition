@@ -213,7 +213,7 @@ Car.prototype.turn180 = function(rightFirst, offsetBlocks) {
     } else {
         car.go(true, true, 0.25, 0.5, steps, steps * 2, true);
     }
-    car.rotateToFindLine(15);
+    car.rotateToFindLine(30);
 };
 
 // cw 是否先顺时针
