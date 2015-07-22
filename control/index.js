@@ -71,11 +71,8 @@ var tasks = [
     },
     function() {
         console.log('TASK 5');
-        car.goBack(); // Sync go back
-    },
-    function() {
-        console.log('TASK 6');
-        // todo: 下货
+        car.forwardBlocks(3); // go to black row #1
+        belt.unload();
     }
 ];
 
