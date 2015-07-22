@@ -27,7 +27,7 @@ var log = function(msg) {
 
 var tasks = [
     function() {
-        console.log('TAKS 1');
+        log('Task 2 - Total progress 17%');
         log('Car: turn180 (leftFirst), block = 0');
         row = 1; // 接下来机械臂指向 row#1
         var rightFirst = false;
@@ -38,7 +38,7 @@ var tasks = [
         autoForward = true;
     },
     function() {
-        console.log('TAKS 2');
+        log('Task 3 - Total progress 33%');
         row = 4;
         var rightFirst = true;
         var blocks = 2;
@@ -49,7 +49,7 @@ var tasks = [
         autoForward = true;
     },
     function() {
-        console.log('TAKS 3');
+        log('Task 4 - Total progress 50%');
         row = 3;
         var rightFirst = true;
         log('Car: turn180 (right first), block = 0');
@@ -60,7 +60,7 @@ var tasks = [
         autoForward = true;
     },
     function() {
-        console.log('TAKS 4');
+        log('Task 5 - Total progress 67%');
         row = 5;
         log('Car: forwardBlocks(1)');
         car.forwardBlocks(1);
@@ -70,9 +70,10 @@ var tasks = [
         autoForward = true;
     },
     function() {
-        console.log('TASK 5');
+        log('Task 6 - Total progress 83%');
         car.forwardBlocks(3); // go to black row #1
         belt.unload();
+        log('All tasks done - Total progress 100%');
     }
 ];
 
@@ -216,6 +217,7 @@ function init(debug) {
     end_effector.stop();
 
     if (!debug) {
+        log('Task 1 - Total progress 0%');
         log('Car: turn left 90deg now.');
         car.turnLeft90Sync();
         car.rotateToFindLine(30, false);
