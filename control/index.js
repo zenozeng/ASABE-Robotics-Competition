@@ -76,6 +76,8 @@ var tasks = [
     },
     function() {
         log('Task 6 - Total progress 83%');
+        car.go(false, false, 0.25, 0.25, 2000, 2000);
+        car.autoForwardAutoStopSync(2000, 0.25);
         car.forwardBlocks(3); // go to black row #1
         belt.unload();
         log('All tasks done - Total progress 100%');
@@ -153,9 +155,9 @@ var loop = function() {
     if (tree.exists()) { // if tree detected
 
         // 暂停
-        autoForward = false;
-        car.stop();
-        delayMicroseconds(1000 * 1000);
+        // autoForward = false;
+        // car.stop();
+        // delayMicroseconds(1000 * 1000);
 
         // log tree
         var treeInfo = tree.getTree();
@@ -181,7 +183,7 @@ var loop = function() {
 
             // 运行到树对准传送带
             // var hasCrossed = false;
-            var hasCrossed = car.autoForwardSync(1200, 0.25);
+            var hasCrossed = car.autoForwardSync(500, 0.25);
 
             // while(true) {
             //     if (tree.shouldStop()) {
