@@ -245,7 +245,10 @@ function syncLog() {
     fs.writeFileSync('/run/shm/data.json', JSON.stringify({logs: logs, status: data}));
 };
 
+var started = false;
 function init(debug) {
+    started = true;
+
     console.log('index.js: Command Go.');
     end_effector.close();
     end_effector.stop();
@@ -267,6 +270,14 @@ function init(debug) {
         process.nextTick();
     }
 };
+
+var prepare = function() {
+    if (!started) {
+        tree.getTree(); // force vision to init, to reduce the init time
+        setTimeout(prepare, 100);
+    }
+};
+prepare();
 
 process.on('message', function(msg) {
     console.log('index.js: Command Received -- ', msg);
