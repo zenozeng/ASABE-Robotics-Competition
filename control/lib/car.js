@@ -224,26 +224,39 @@ Car.prototype.rotateToFindLine = function(deg, cw) {
 
     steps = steps / 6 * (deg / 30);
 
-    // 先转 deg
-    car.go(cw, !cw, 0.25, 0.25, steps, steps, true);
-    // 接下来反向旋转 2 * deg 度去寻找黑线 (async)
-    car.go(!cw, cw, 0.25, 0.25, steps * 2, steps * 2);
 
     var timeout = 5 * 1000;
     var done = false;
 
+    var sensors = head.read();
+    if (sensors[0] + sensors[1] < 1) {
+        done = true;
+    }
+
     // 先尝试两点检测
-    var now = Date.now();
-    while ((Date.now() - now) < timeout) {
-        var sensors = head.read();
-        if (sensors[0] + sensors[1] < 1) { // 如果有两片都找到黑色那么就好噜
-            done = true;
-            car.stop();
-            break;
+    if (!done) {
+
+        // 先转 deg
+        car.go(cw, !cw, 0.25, 0.25, steps, steps, true);
+        // 接下来反向旋转 2 * deg 度去寻找黑线 (async)
+        car.go(!cw, cw, 0.25, 0.25, steps * 2, steps * 2);
+
+        var now = Date.now();
+        while ((Date.now() - now) < timeout) {
+            sensors = head.read();
+            if (sensors[0] + sensors[1] < 1) { // 如果有两片都找到黑色那么就好噜
+                done = true;
+                car.stop();
+                break;
+            }
         }
     }
 
     // 再尝试单点检测
+    if (sensors[0] + sensors[1] < 2) {
+        done = true;
+    }
+
     if (!done) {
         // 先转 deg
         car.go(cw, !cw, 0.25, 0.25, steps, steps, true);
