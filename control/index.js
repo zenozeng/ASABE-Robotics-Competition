@@ -92,7 +92,7 @@ var lastRowDetectedTime = Date.now();
 var rightFirst = false;
 var collectedTypes = [];
 
-var loop = function() {
+var loop = function(debug) {
 
     // console.log('interval');
     // console.log(head.isCrossing());
@@ -159,8 +159,16 @@ var loop = function() {
         // car.stop();
         // delayMicroseconds(1000 * 1000);
 
+        // delayMicroseconds(10 * 1000 * 1000);
+
         // log tree
         var treeInfo = tree.getTree();
+
+        if (debug) {
+            console.log(treeInfo);
+        }
+
+
         treeInfo.row = row;
         treeInfo.col = leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex());
         treeInfo.color = treeInfo.color && treeInfo.color.toLowerCase();
@@ -182,27 +190,17 @@ var loop = function() {
             collectedTypes.push(type);
 
             // 运行到树对准传送带
-            // var hasCrossed = false;
-            var hasCrossed = car.autoForwardSync(500, 0.25);
+            // > // var hasCrossed = car.autoForwardSync(500, 0.25);
 
-            // while(true) {
-            //     if (tree.shouldStop()) {
-            //         break;
-            //     }
-            //     if (head.isCrossing()) {
-            //         hasCrossed = true;
-            //     }
-            //     car._autoForward();
-            // }
-
+            car.stop();
             cube.collect();
 
-            console.log({hasCrossed: hasCrossed});
+            // > // console.log({hasCrossed: hasCrossed});
 
-            if (!hasCrossed) {
-                // 如果之前没有越过黑线，那么向前开一小段避免树被再次判断到
-                car.autoForwardSync(2000);
-            }
+            // > // if (!hasCrossed) {
+            // > //     // 如果之前没有越过黑线，那么向前开一小段避免树被再次判断到
+            // > //     car.autoForwardSync(2000);
+            // > // }
 
             // if (hasCrossed) {
             //     // 之前超过了黑线，我们退回去，然后往前开到黑线处
@@ -266,7 +264,11 @@ function init(debug) {
     autoForward = true;
 
     while (looping) {
-        loop();
+        // if (debug) {
+        //     console.log(tree.getTree());
+        //     console.log({ir: digitalRead(6)});
+        // }
+        loop(debug);
         process.nextTick();
     }
 };

@@ -65,11 +65,15 @@ app.post('/control/stop', function(req, res) {
     }
     car = null;
     processStartTimestamp = null;
+    goStartTimestamp = null;
     res.send('I am happy.');
 });
 
+var goStartTimestamp = null;
+
 app.post('/control/go', function(req, res) {
     console.log('server.js: go');
+    goStartTimestamp = Date.now();
     if (car) {
         car.send({command: 'go'});
     }
@@ -150,11 +154,10 @@ app.get('/logs', function(req, res) {
 app.get('/status', function(req, res) {
     var status = {}; // JSON.parse(JSON.stringify(carStatus));
 
-    status.server = {
-        uptime: HHMMSS((Date.now() - serverStartTimestamp) / 1000)
-    };
-    status.process = {
-        uptime: processStartTimestamp ? HHMMSS((Date.now() - processStartTimestamp) / 1000) : null
+    status.uptime = {
+        server: HHMMSS((Date.now() - serverStartTimestamp) / 1000),
+        process: processStartTimestamp ? HHMMSS((Date.now() - processStartTimestamp) / 1000) : null,
+        go: goStartTimestamp ? HHMMSS((Date.now() - goStartTimestamp) / 1000) : null
     };
 
     res.send(JSON.stringify(status));
