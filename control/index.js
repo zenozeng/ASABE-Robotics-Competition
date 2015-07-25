@@ -154,12 +154,8 @@ var loop = function(debug) {
     // if (false) {
     if (tree.exists()) { // if tree detected
 
-        // 暂停
-        // autoForward = false;
-        // car.stop();
-        // delayMicroseconds(1000 * 1000);
-
-        // delayMicroseconds(10 * 1000 * 1000);
+        // 摄像头对准树
+        car.autoForwardSync(200); // todo: fix steps
 
         // log tree
         var treeInfo = tree.getTree();
@@ -191,6 +187,12 @@ var loop = function(debug) {
 
             // 运行到树对准传送带
             // > // var hasCrossed = car.autoForwardSync(500, 0.25);
+
+            while (!tree.shouldStop()) {
+                car._autoForward(0.25);
+            }
+
+            car.autoForwardSync(900);
 
             car.stop();
             cube.collect();
