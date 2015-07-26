@@ -146,7 +146,10 @@ var isCrossing = function() {
     var front = [1, 2, 5, 6];
     var back = [3, 4];
     // 前面至少三个灭，后面至少一个灭
-    var isCrossing = (getSum(front) <= 1) && (getSum(back) < 2);
+    // var isCrossing = (getSum(front) <= 1) && (getSum(back) < 2);
+
+    // 前面至少三个灭
+    var isCrossing = getSum(front) <= 1;
     //console.log({isCrossing: isCrossing});
     return isCrossing;
 };

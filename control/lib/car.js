@@ -240,7 +240,6 @@ Car.prototype.rotateToFindLine = function(deg, cw) {
 
     steps = steps / 6 * (deg / 30);
 
-
     var timeout = 5 * 1000;
     var done = false;
 
