@@ -151,6 +151,8 @@ var loop = function(debug) {
     //
     ///////////////////////////////////////
 
+    // tree.getTree(); // update cam
+
     // if (false) {
     if (tree.exists()) { // if tree detected
 
@@ -163,8 +165,11 @@ var loop = function(debug) {
             }
         });
 
-        // log tree
-        var treeInfo = tree.getTree();
+        var start = Date.now();
+        var treeInfo;
+        while ((Date.now() - start) < 1000) {
+            treeInfo = tree.getTree();
+        }
 
         if (debug) {
             console.log(treeInfo);
@@ -187,7 +192,7 @@ var loop = function(debug) {
         }
 
         // 运行到树正对红外线
-        car.autoForwardSyncWithFn(900, 1, function() {
+        car.autoForwardSyncWithFn(1100, 1, function() {
             if (tree.isHigh()) {
                 isHigh = true;
             }
@@ -207,29 +212,8 @@ var loop = function(debug) {
         var CHECK_COLLECTED_BEFORE = true;
         if (CHECK_COLLECTED_BEFORE && (collectedTypes.indexOf(type) == -1)) {
             collectedTypes.push(type);
-
             car.stop();
             cube.collect();
-
-            // > // console.log({hasCrossed: hasCrossed});
-
-            // > // if (!hasCrossed) {
-            // > //     // 如果之前没有越过黑线，那么向前开一小段避免树被再次判断到
-            // > //     car.autoForwardSync(2000);
-            // > // }
-
-            // if (hasCrossed) {
-            //     // 之前超过了黑线，我们退回去，然后往前开到黑线处
-            //     car.go(false, false, 1, 1, 1000, 1000, true);
-            //     car.autoForwardAutoStopSync(1000);
-            // } else {
-            //     // 往前开一小段避免树被再次判断到
-            //     car.autoForwardAutoStopSync(2000);
-            // }
-        } else {
-            // 往前开一小段避免树被再次判断到
-            car.autoForwardSync(2000);
-            // car.autoForwardAutoStopSync(2000);
         }
 
         // 恢复自动运行

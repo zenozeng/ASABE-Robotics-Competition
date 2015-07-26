@@ -25,8 +25,8 @@ var getTree = function() {
 };
 
 var exists = function() {
-    var tree = getTree();
-    var exists = tree.exists;
+    var exists = digitalRead(pins.IR_TREE) == 0;
+    // var tree = getTree();
     // exists = exists && (tree.position > 0.45 && tree.position < 0.6);
     // exists = exists && (tree.position > 0.5 && tree.position < 0.6);
     return exists;
