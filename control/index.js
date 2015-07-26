@@ -172,7 +172,10 @@ var loop = function(debug) {
         }
 
         if (debug) {
+            // log current treeInfo
+            console.log('>>> TREE DEBUG BEGIN <<<');
             console.log(treeInfo);
+            console.log('>>> TREE DEBUG END <<<');
         }
 
         treeInfo.row = row;
@@ -227,7 +230,6 @@ var loop = function(debug) {
     /////////////////////////////////
 
     syncLog();
-
 };
 
 // sync status
@@ -264,10 +266,6 @@ function init(debug) {
     autoForward = true;
 
     while (looping) {
-        // if (debug) {
-        //     console.log(tree.getTree());
-        //     console.log({ir: digitalRead(6)});
-        // }
         loop(debug);
         process.nextTick();
     }
