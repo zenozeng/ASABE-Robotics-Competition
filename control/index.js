@@ -154,8 +154,12 @@ var loop = function(debug) {
     // if (false) {
     if (tree.exists()) { // if tree detected
 
+        tree.resetHeightInfo();
+
         // 摄像头对准树
-        car.autoForwardSync(200); // todo: fix steps
+        car.autoForwardSyncWithFn(400, 1, function() {
+            tree.collectHeightInfo();
+        });
 
         // log tree
         var treeInfo = tree.getTree();

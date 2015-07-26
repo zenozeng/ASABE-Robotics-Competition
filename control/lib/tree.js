@@ -6,8 +6,18 @@ var head = require('./head');
     pinMode(pin, INPUT);
 });
 
+var heightInfo = [];
+
+var collectHeightInfo = function() {
+    heightInfo.push(digitalRead(pins.IR_HIGH_TREE));
+};
+
+var resetHeightInfo = function() {
+    heightInfo = [];
+};
+
 var getTree = function() {
-    var isHigh = digitalRead(pins.IR_HIGH_TREE) == 0;
+    var isHigh = heightInfo.indexOf(0) > -1;
     var v = vision.getTree();
     return {
         exists: digitalRead(pins.IR_TREE) == 0,
@@ -37,5 +47,7 @@ var shouldStop = function() {
 module.exports = {
     shouldStop: shouldStop,
     exists: exists,
-    getTree: getTree
+    getTree: getTree,
+    collectHeightInfo: collectHeightInfo,
+    resetHeightInfo: resetHeightInfo
 };

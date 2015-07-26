@@ -112,6 +112,22 @@ Car.prototype._autoForward = function(speedScale) {
     }
 };
 
+Car.prototype.autoForwardSyncWithFn = function(steps, speedScale, fn) {
+    console.log('Auto Forward Sync: ', steps, 'steps.');
+    var targetSteps = this.getSteps() + steps;
+    var ret = false;
+    while (this.getSteps() < targetSteps) {
+        fn();
+        if (head.isCrossing()) {
+            ret = true;
+        }
+        this._autoForward(speedScale);
+    }
+    this.stop();
+    console.log('Auto Forward Sync done.');
+    return ret;
+};
+
 Car.prototype.autoForwardSync = function(steps, speedScale) {
     console.log('Auto Forward Sync: ', steps, 'steps.');
     var targetSteps = this.getSteps() + steps;
