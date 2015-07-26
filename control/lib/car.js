@@ -5,7 +5,7 @@ var head = require('./head');
 
 var STEPS_FOR_90_DEG_SPEED_0_1 = 240 * 16;
 var STEPS_FOR_90_DEG_SPEED_1_2 = STEPS_FOR_90_DEG_SPEED_0_1 * 2;
-var STEPS_FOR_A_BLOCK = 8125;
+var STEPS_FOR_A_BLOCK = 8050;
 var STEPS_FOR_A_TREE_BLOCK = 3700;
 
 var DEBUG = false;

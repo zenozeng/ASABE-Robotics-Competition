@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rsync -rv --exclude node_modules * zju@zju:control
+rsync -rv --exclude node_modules --exclude build * zju@zju:control
