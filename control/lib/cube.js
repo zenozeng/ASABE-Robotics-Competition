@@ -2,7 +2,7 @@ var e = require('./end-effector');
 var m = require('./manipulator');
 var b = require('./belt');
 
-var steps = 30000;
+var steps = 40000;
 
 var collect = function() {
     b.load();

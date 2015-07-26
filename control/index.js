@@ -154,11 +154,13 @@ var loop = function(debug) {
     // if (false) {
     if (tree.exists()) { // if tree detected
 
-        tree.resetHeightInfo();
+        var isHigh = false;
 
         // 摄像头对准树
         car.autoForwardSyncWithFn(400, 1, function() {
-            tree.collectHeightInfo();
+            if (tree.isHigh()) {
+                isHigh = true;
+            }
         });
 
         // log tree
@@ -168,7 +170,6 @@ var loop = function(debug) {
             console.log(treeInfo);
         }
 
-
         treeInfo.row = row;
         treeInfo.col = leftToRight ? car.getTreeIndex() : (6 - car.getTreeIndex());
         treeInfo.color = treeInfo.color && treeInfo.color.toLowerCase();
@@ -176,6 +177,24 @@ var loop = function(debug) {
         treeInfo.treeIndex = car.getTreeIndex();
         logs.push({tree: treeInfo});
         console.log(treeInfo);
+
+        // 运行到树对准传送带红外检测到
+        while (!tree.shouldStop()) {
+            car._autoForward(0.25);
+            if (tree.isHigh()) {
+                isHigh = true;
+            }
+        }
+
+        // 运行到树正对红外线
+        car.autoForwardSyncWithFn(900, 1, function() {
+            if (tree.isHigh()) {
+                isHigh = true;
+            }
+        });
+
+        treeInfo.isHigh = isHigh;
+        treeInfo.height = isHigh ? "high" : "low";
 
         // log types
         var type = JSON.stringify({
@@ -188,15 +207,6 @@ var loop = function(debug) {
         var CHECK_COLLECTED_BEFORE = true;
         if (CHECK_COLLECTED_BEFORE && (collectedTypes.indexOf(type) == -1)) {
             collectedTypes.push(type);
-
-            // 运行到树对准传送带
-            // > // var hasCrossed = car.autoForwardSync(500, 0.25);
-
-            while (!tree.shouldStop()) {
-                car._autoForward(0.25);
-            }
-
-            car.autoForwardSync(900);
 
             car.stop();
             cube.collect();
